@@ -1,11 +1,11 @@
 import streamlit as st
 import random
 
-st.set_page_config(page_title="BhavPath - India's Placement DNA", page_icon="🧬", layout="wide")
+st.set_page_config(page_title="BhavPath - Placement Predictor", page_icon="🚀", layout="wide")
 
-st.markdown("<h1 style='text-align: center;'>🧬 BhavPath - India's First Placement DNA Test</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center;'>Not your basic predictor, this is your future decoded!</p>", unsafe_allow_html=True)
-st.markdown("---")
+st.markdown("<h1 style='text-align: center;'>🚀 BhavPath - India's First Placement DNA Test</h1>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; color: #666;'>What's Your Placement Story ??</h2>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 18px;'>An AI-powered Placement Readiness Predictor. <b>Discover, Predict & Improve your career!</b></p>", unsafe_allow_html=True)
 
 # Input Section
 col1, col2 = st.columns(2)
