@@ -6,8 +6,7 @@ st.set_page_config(
    layout="wide"
 
 )
-st.markdown("<p style='text-align: center; font-size: 18px;'>An AI-powered Placement Readiness Predictor. <b>Discover, Predict & Improve your career!</b></p>", unsafe_allow_html=True)
-
+st.markdown("<p style='text-align: center; font-size: 18px;'>An AI-powered Placement Readiness Predictor. <b>Discover, Predict & Improve your journey!</b></p>", unsafe_allow_html=True)
 # Input Section
 col1, col2 = st.columns(2)
 with col1:
@@ -70,5 +69,11 @@ if st.button("🧬 GENERATE MY PLACEMENT DNA", type="primary", use_container_wid
         st.info("Copy and drop it on WhatsApp / LinkedIn - everyone gonna check your BhavPath and we going top!")
 
 st.caption("🚀 Built by Bhavya Sri | Public Use - For All Indian Students | 2026")
+# ... nee motham code ...
+# Result chupinche code ...
+# st.balloons() lanti code ...
 
-
+# ---- GOOGLE SEO KOSAM ----
+st.write("---")
+st.write("BhavPath is India's First Placement DNA Test - A Placement Readiness Predictor for B.Tech students.")
+st.write("Keywords: BhavPath, Placement Predictor, JNTU Placement, B.Tech Placement Readiness")
