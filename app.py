@@ -1,6 +1,5 @@
 import streamlit as st
 import random
-
 st.set_page_config(page_title="BhavPath - Whats Your Placement Story", page_icon="🚀", layout="wide")
 
 st.markdown("<p style='text-align: center;'>An AI-powered Placement Readiness Predictor. <b>Discover, Predict & Improve</b></p>", unsafe_allow_html=True)
