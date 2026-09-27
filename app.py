@@ -2,7 +2,6 @@
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 import io, textwrap
-
 def get_font(s,b=False,i=False):
     try:
         if b: return ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",s)
