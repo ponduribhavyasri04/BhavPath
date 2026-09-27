@@ -4,7 +4,6 @@ from datetime import datetime
 import os
 from PIL import Image, ImageDraw
 import io
-
 # ================= BEFORE CODE PART - PDF GENERATOR (Monna ledhu, ippudu add chesam) =================
 def make_pdf_bytes(title, sections):
     W, H = 800, 1100
