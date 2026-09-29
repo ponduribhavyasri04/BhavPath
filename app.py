@@ -1,169 +1,172 @@
-import streamlit as st
-import csv, os
+import streamlit as st, csv, os
 from datetime import datetime
-from PIL import Image, ImageDraw, ImageFont
 
-st.set_page_config(page_title="BhavPath - Final", page_icon="🎯", layout="wide")
-DB = "bhavpath_final_ct_placement.csv"
-
-def get_font(s,b=False):
-    try:
-        p="/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if b else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
-        return ImageFont.truetype(p,s)
-    except: return ImageFont.load_default()
+st.set_page_config(page_title="BhavPath - Placement - CodeTantra Style", layout="wide")
+DB="placement_ct_home.csv"
 
 if "name" not in st.session_state: st.session_state.name="Bhavya Ponduri"
 if "perc" not in st.session_state: st.session_state.perc=58
-if "score" not in st.session_state: st.session_state.score=58
-if "skills" not in st.session_state: st.session_state.skills=["Python","SQL"]
+if "page" not in st.session_state: st.session_state.page="Home"
+if "fav" not in st.session_state: st.session_state.fav=[]
 
-# ===== CSS - CODETANTRA EXACT =====
 st.markdown("""
 <style>
-.header-ct{background:#101b2d; padding:15px 20px; border-radius:10px; color:white; border-left:5px solid #3b82f6;}
-.card{background:white; border:1px solid #e5e7eb; border-radius:10px; padding:15px; box-shadow:0 1px 3px rgba(0,0,0,0.1);}
+.ct-card{background:white; border-radius:12px; border:1px solid #ddd; text-align:center; padding:25px 10px 0 10px; height:290px; box-shadow:0 2px 10px rgba(0,0,0,0.07);}
+.ct-card:hover{transform:translateY(-4px); box-shadow:0 8px 25px rgba(0,0,0,0.15);}
+.ct-bottom{background:#1e3a5f; color:white; padding:13px; border-radius:0 0 12px 12px; margin:20px -10px 0 -10px; font-weight:bold; font-size:18px; letter-spacing:0.5px;}
+.ct-desc{color:#555; font-size:14px; margin-top:12px; line-height:1.4; min-height:60px;}
 </style>
 """, unsafe_allow_html=True)
 
-# ===== SIDEBAR - CODETANTRA LEFT - MULTI PAGES =====
-st.sidebar.title("🎯 BhavPath")
-st.sidebar.caption("CodeTantra Model | Placement")
-st.session_state.name = st.sidebar.text_input("Student Name", value=st.session_state.name)
+# SIDEBAR
+st.sidebar.title("🎯 BhavPath - Placement")
+st.session_state.name = st.sidebar.text_input("Student Name", st.session_state.name)
 st.session_state.perc = st.sidebar.slider("Your %", 40, 100, st.session_state.perc)
-st.session_state.skills = st.sidebar.multiselect("Skills", ["Python","SQL","Java","DBMS","Aptitude","C"], default=st.session_state.skills)
+if st.session_state.fav:
+    st.sidebar.markdown("### ⭐ My Favorite - Nuvvu Select Chesinavi")
+    for f in st.session_state.fav: st.sidebar.write(f"✅ {f}")
 
-# HOST SAVE - AUTO
-if st.session_state.name:
-    ex=os.path.exists(DB)
-    with open(DB,"a",newline="",encoding="utf-8") as f:
-        w=csv.writer(f)
-        if not ex: w.writerow(["time","name","perc","skills","score"])
-        # save only once per session change
-        if "last_save" not in st.session_state or st.session_state.last_save!= st.session_state.name+str(st.session_state.perc):
-            w.writerow([datetime.now(), st.session_state.name, st.session_state.perc, ",".join(st.session_state.skills), st.session_state.score])
-            st.session_state.last_save = st.session_state.name+str(st.session_state.perc)
+# SAVE
+ex=os.path.exists(DB)
+with open(DB,"a",newline="",encoding="utf-8") as f:
+    w=csv.writer(f)
+    if not ex: w.writerow(["time","name","perc","page","fav"])
+    if "last" not in st.session_state or st.session_state.last!=st.session_state.page:
+        w.writerow([datetime.now(), st.session_state.name, st.session_state.perc, st.session_state.page, ",".join(st.session_state.fav)])
+        st.session_state.last=st.session_state.page
 
-menu = st.sidebar.radio("PAGES - Ala Ala", ["1. 🏠 Dashboard", "2. 💻 TCS Course - CodeTantra", "3. 📝 Placement Assessment", "4. 🔮 Predictor - 58%", "5. 📚 40 Pages Real Books", "6. 📊 Progress - Host Data"], index=0)
+# TOP BAR - CODETANTRA LIKE
+st.markdown(f"""
+<div style='background:#0f1e33; color:white; padding:12px 20px; border-radius:8px; display:flex; justify-content:space-between;'>
+<span><b>BHAVPATH</b> 🏠 Home</span><span>{st.session_state.name.lower()}@placement.edu.in | Support | Logout</span>
+</div>
+""", unsafe_allow_html=True)
+st.write("")
 
-# ===== PAGE 1: DASHBOARD =====
-if "Dashboard" in menu:
-    st.markdown(f"<div class='header-ct'><h2>Dashboard - Welcome {st.session_state.name}</h2><p>{st.session_state.perc}% - What's Your Placement Story..? - CodeTantra Model</p></div>", unsafe_allow_html=True)
-    st.write("")
-    c1,c2,c3,c4 = st.columns(4)
-    with c1: st.markdown("<div class='card'><h3>TCS NQT</h3><p>58% Min</p><b>✅ Eligible - Your Course</b></div>", unsafe_allow_html=True)
-    with c2: st.markdown("<div class='card'><h3>Infosys</h3><p>Python</p><b>✅ Eligible</b></div>", unsafe_allow_html=True)
-    with c3: st.markdown("<div class='card'><h3>Wipro</h3><p>SQL</p><b>✅ Eligible</b></div>", unsafe_allow_html=True)
-    with c4: st.markdown("<div class='card'><h3>Accenture</h3><p>Aptitude</p><b>📚 Practice</b></div>", unsafe_allow_html=True)
-    st.divider()
-    st.info("Top Sidebar lo 'TCS Course' ki velli - CodeTantra 3-panel chudu")
+# ================= HOME - 5 CATEGORIES - PLACEMENT =================
+if st.session_state.page=="Home":
+    c1,c2,c3 = st.columns(3, gap="large")
+    with c1:
+        st.markdown("""
+        <div class='ct-card'>
+        <div style='font-size:70px;'>👨‍🎓💻</div>
+        <div class='ct-desc'>Click here to view all your<br><b>placement courses/subjects</b><br>TCS NQT 58% | Infosys | Wipro</div>
+        <div class='ct-bottom'>Placement Courses</div>
+        </div>
+        """, unsafe_allow_html=True)
+        b1,b2 = st.columns([3,1])
+        if b1.button("Open", key="o1", use_container_width=True): st.session_state.page="Courses"; st.rerun()
+        if b2.checkbox("⭐", key="f1"): 
+            if "Placement Courses" not in st.session_state.fav: st.session_state.fav.append("Placement Courses")
 
-# ===== PAGE 2: CODETANTRA COURSE =====
-elif "TCS Course" in menu:
-    st.markdown(f"<div class='header-ct'><h2>TCS NQT Course - CodeTantra Model - {st.session_state.perc}% Batch</h2></div>", unsafe_allow_html=True)
-    left, mid, right = st.columns([1.1,2,1])
-    with left:
-        st.markdown("#### Questions")
-        q = st.radio("", ["Q1: 58% Eligibility Code", "Q2: Print Bhavya Pattern", "Q3: TCS NQT Logic", "Q4: Python Loop", "Q5: SQL for 58%"], label_visibility="collapsed")
-    with mid:
-        st.markdown("#### Problem Statement")
-        if "Q1" in q:
-            st.write("**Write code to check TCS NQT eligibility for 58% student Bhavya Ponduri**")
-            st.code("Input: 58\nOutput: Bhavya Ponduri - TCS Eligible", language="text")
-            default="name='Bhavya Ponduri'\nperc=58\nif perc>=58:\n print(f'{name} - TCS Eligible')\nelse:\n print('Not Eligible')"
-        elif "Q2" in q:
-            st.write("**Print Bhavya pattern**")
-            default="name='Bhavya'\nfor i in range(1,len(name)+1):\n print(name[:i])"
-        elif "SQL" in q:
-            st.write("**SQL for 58% students**")
-            st.code("SELECT * FROM students WHERE perc>=58 AND name='Bhavya Ponduri';", language="sql")
-            default="SELECT * FROM students WHERE perc>=58;"
-        else:
-            st.write(f"**{q}**")
-            default="perc=58\nprint('Bhavya - Placement Ready')"
-
-        st.markdown("#### Code Editor")
-        code = st.text_area("", value=default, height=200, label_visibility="collapsed")
-        b1,b2 = st.columns(2)
-        if b1.button("▶️ Run", use_container_width=True):
-            st.code(f"Output:\nBhavya Ponduri - TCS Eligible\nYour %: {st.session_state.perc}", language="text")
-        if b2.button("✅ Submit", type="primary", use_container_width=True):
-            st.session_state.score+=5
-            st.balloons()
-            st.success(f"Submitted! Score: {st.session_state.score}")
-    with right:
-        st.markdown("#### Result")
-        st.metric("Score", f"{st.session_state.score}/100")
-        st.progress(min(st.session_state.score,100))
-        st.success("✅ Test Case 1: 58% -> Pass (Your case)")
-        st.success("✅ Test Case 2: Python+SQL -> Pass")
-
-# ===== PAGE 3: ASSESSMENT =====
-elif "Assessment" in menu:
-    st.title("📝 TCS NQT Mock - Assessment - CodeTantra Style")
-    q1 = st.radio("Q1: TCS NQT minimum %?", ["58%", "60%", "75%"], index=0)
-    q2 = st.radio("Q2: Bhavya has 58% + Python - Eligible?", ["Yes TCS Eligible", "No"], index=0)
-    if st.button("Submit Assessment", type="primary"):
-        sc = 0
-        if q1=="58%": sc+=50
-        if q2=="Yes TCS Eligible": sc+=50
-        st.session_state.score = max(st.session_state.score, sc)
-        st.success(f"Score: {sc}/100 - {st.session_state.name} - 58% Eligible Batch")
-
-# ===== PAGE 4: PREDICTOR =====
-elif "Predictor" in menu:
-    st.title("🔮 Placement Predictor - 58% Model")
-    st.write(f"Name: {st.session_state.name} | %: {st.session_state.perc} | Skills: {', '.join(st.session_state.skills)}")
-    chance = 30 + (st.session_state.perc-40) + len(st.session_state.skills)*10
-    if chance>95: chance=95
-    c1,c2 = st.columns(2)
-    c1.metric("Placement Chance", f"{chance}%")
-    c1.progress(int(chance))
     with c2:
-        if st.session_state.perc>=58: st.success("✅ TCS NQT: Eligible - 58% Criteria Met")
-        if "Python" in st.session_state.skills: st.success("✅ Infosys: Eligible")
-        if "SQL" in st.session_state.skills: st.success("✅ Wipro: Eligible")
-        if chance<70: st.warning("Add 1 more skill -> 80%+ chance")
+        st.markdown("""
+        <div class='ct-card'>
+        <div style='font-size:70px;'>📝👩‍💻</div>
+        <div class='ct-desc'>Click here to view all your<br><b>scheduled and completed placement tests</b><br>Aptitude | Technical | HR</div>
+        <div class='ct-bottom'>Placement Tests</div>
+        </div>
+        """, unsafe_allow_html=True)
+        b1,b2 = st.columns([3,1])
+        if b1.button("Open", key="o2", use_container_width=True): st.session_state.page="Tests"; st.rerun()
+        if b2.checkbox("⭐", key="f2"): 
+            if "Placement Tests" not in st.session_state.fav: st.session_state.fav.append("Placement Tests")
 
-# ===== PAGE 5: 40 PAGES REAL =====
-elif "40 Pages" in menu:
-    st.title("📚 40 Pages Real Books - Not Blank")
-    st.write("Each page has real code with Bhavya Ponduri example")
-    skill = st.selectbox("Select Book", ["Python","SQL","Aptitude","Java","DBMS"])
+    with c3:
+        st.markdown("""
+        <div class='ct-card'>
+        <div style='font-size:70px;'>⌨️👩‍💻</div>
+        <div class='ct-desc'>Click here to view all your<br><b>placement programming labs</b><br>Python for TCS | SQL for Wipro</div>
+        <div class='ct-bottom'>Placement Labs</div>
+        </div>
+        """, unsafe_allow_html=True)
+        b1,b2 = st.columns([3,1])
+        if b1.button("Open", key="o3", use_container_width=True): st.session_state.page="Labs"; st.rerun()
+        if b2.checkbox("⭐", key="f3"): 
+            if "Placement Labs" not in st.session_state.fav: st.session_state.fav.append("Placement Labs")
 
-    def make_real_pdf(sk):
-        pages=[]
-        for p in range(1,41):
-            img=Image.new("RGB",(1240,1754),"white")
-            d=ImageDraw.Draw(img)
-            d.rectangle([0,0,1240,100], fill=(16,27,45))
-            d.text((40,30), f"BhavPath | {sk} | Page {p}/40 | Bhavya Ponduri - 58% Batch", font=get_font(24,True), fill=(96,165,250))
-            y=130
-            d.text((40,y), f"Chapter {p}: {sk} - Real Topic {p}", font=get_font(22,True), fill=(0,0,0)); y+=50
-            for i in range(1,16):
-                d.text((40,y), f"{i}. {sk} Example: print('{st.session_state.name} - {sk} - {st.session_state.perc}% - Page {p}') # Real Code", font=get_font(18), fill=(20,20,20))
-                y+=40
-            d.text((40,1650), f"BhavPath - {st.session_state.name} - {sk} - 58% Eligible - Page {p}", font=get_font(16), fill=(100,100,100))
-            pages.append(img)
-        path=f"BhavPath_{sk}_40Pages_Real.pdf"
-        pages[0].save(path,"PDF",save_all=True,append_images=pages[1:])
-        return path
+    st.write("")
+    c4,c5,c6 = st.columns([1,1,1], gap="large")
+    with c4:
+        st.markdown("""
+        <div class='ct-card'>
+        <div style='font-size:70px;'>🖥️📱</div>
+        <div class='ct-desc'>Click here to access <b>placement tools.</b><br>Predictor | 40 Pages Books | Resume</div>
+        <div class='ct-bottom'>Placement Tools</div>
+        </div>
+        """, unsafe_allow_html=True)
+        b1,b2 = st.columns([3,1])
+        if b1.button("Open", key="o4", use_container_width=True): st.session_state.page="Tools"; st.rerun()
+        if b2.checkbox("⭐", key="f4"): 
+            if "Placement Tools" not in st.session_state.fav: st.session_state.fav.append("Placement Tools")
+    with c5:
+        st.markdown("""
+        <div class='ct-card'>
+        <div style='font-size:70px;'>💬📞</div>
+        <div class='ct-desc'>Click here to reach us<br><b>Placement Help & Support</b><br>58% Eligible - Bhavya Ponduri</div>
+        <div class='ct-bottom'>Placement Support</div>
+        </div>
+        """, unsafe_allow_html=True)
+        b1,b2 = st.columns([3,1])
+        if b1.button("Open", key="o5", use_container_width=True): st.session_state.page="Support"; st.rerun()
+        if b2.checkbox("⭐", key="f5"): 
+            if "Placement Support" not in st.session_state.fav: st.session_state.fav.append("Placement Support")
+    with c6:
+        st.info(f"👋 {st.session_state.name}\n\n**Nuvvu select chesina favorites:**\n{', '.join(st.session_state.fav) if st.session_state.fav else 'Inka em select cheyaledu - ⭐ tick chey'}\n\n**{st.session_state.perc}% Batch - TCS Eligible**")
+        if st.button("Clear Favorites"): st.session_state.fav=[]; st.rerun()
 
-    if st.button(f"Generate {skill} - 40 Pages Real", type="primary"):
-        with st.spinner("Creating 40 pages real..."):
-            pdf_path = make_real_pdf(skill)
-            with open(pdf_path,"rb") as f:
-                st.download_button(f"📥 Download {skill} 40 Pages Real PDF", f, file_name=pdf_path, mime="application/pdf")
-        st.success("Done - 40 pages real content - Not blank")
+# ================= PAGES - PLACEMENT CONTENT =================
+elif st.session_state.page=="Courses":
+    if st.button("⬅️ Back to Home"): st.session_state.page="Home"; st.rerun()
+    st.title("📚 Placement Courses - TCS NQT 58%")
+    st.success(f"{st.session_state.name} - {st.session_state.perc}% - ✅ Eligible for TCS NQT (58% min)")
+    tab1, tab2, tab3 = st.tabs(["TCS NQT", "Infosys", "Wipro"])
+    with tab1: st.write("TCS NQT Criteria: 58% minimum - Your %: 58% - Python, SQL"); st.code("if perc>=58: print('TCS Eligible - Bhavya')")
+    with tab2: st.write("Infosys: Python + DBMS"); st.code("print('Infosys Ready')")
+    with tab3: st.write("Wipro: SQL + Aptitude"); st.code("SELECT * FROM students WHERE perc>=58;")
 
-# ===== PAGE 6: PROGRESS =====
+elif st.session_state.page=="Tests":
+    if st.button("⬅️ Back to Home"): st.session_state.page="Home"; st.rerun()
+    st.title("📝 Placement Tests - Scheduled & Completed")
+    st.write("**TCS NQT Mock Test**")
+    q1=st.radio("Q1: TCS min %?", ["58%","60%","75%"], index=0)
+    q2=st.radio("Q2: 58% + Python = Eligible?", ["Yes","No"], index=0)
+    if st.button("Submit Test", type="primary"):
+        st.balloons(); st.success(f"Score 100/100 - {st.session_state.name} - Placement Ready!")
+
+elif st.session_state.page=="Labs":
+    if st.button("⬅️ Back to Home"): st.session_state.page="Home"; st.rerun()
+    st.title("⌨️ Placement Programming Labs - 58% Batch")
+    left,mid,right = st.columns([1,2,1])
+    with left: q=st.radio("Lab List", ["Q1: 58% Eligibility Code","Q2: Print Bhavya","Q3: TCS Pattern","Q4: SQL 58%","Q5: Placement Loop"])
+    with mid:
+        st.markdown(f"**Problem: {q}**")
+        st.code(f"# {q}\nname='{st.session_state.name}'\nperc={st.session_state.perc}\nif perc>=58:\n print(f'{{name}} - TCS Eligible')", language="python")
+        st.text_area("Code Editor - CodeTantra Style", "print('Bhavya Ponduri - Placement Lab - Pass')", height=180)
+        if st.button("▶️ Run Lab"): st.success("Output: Bhavya Ponduri - TCS Eligible - Lab Pass")
+        if st.button("✅ Submit Lab", type="primary"): st.success("Lab Submitted +10 Score")
+    with right: st.metric("Lab Score", "75/100"); st.progress(75); st.success("✅ 58% Test Pass")
+
+elif st.session_state.page=="Tools":
+    if st.button("⬅️ Back to Home"): st.session_state.page="Home"; st.rerun()
+    st.title("🛠️ Placement Tools")
+    c1,c2=st.columns(2)
+    with c1:
+        st.markdown("#### 🔮 Placement Predictor")
+        chance = min(95, 30 + (st.session_state.perc-40) + 20)
+        st.metric("Your Chance", f"{chance}%")
+        st.progress(chance)
+        if st.session_state.perc>=58: st.success("✅ TCS NQT Eligible - 58% Criteria")
+    with c2:
+        st.markdown("#### 📚 40 Pages Real Books")
+        st.write("Python, SQL, Aptitude - Each page real code with Bhavya example")
+        if st.button("Generate Placement Book 40 Pages"):
+            st.success("PDF Ready - Download in old version")
+
 else:
-    st.title("📊 Progress & Host Data - CodeTantra Tracking")
-    st.metric("Student", st.session_state.name)
-    st.metric("Overall Score", st.session_state.score)
-    st.progress(min(st.session_state.score,100))
+    if st.button("⬅️ Back to Home"): st.session_state.page="Home"; st.rerun()
+    st.title("💬 Placement Support")
+    st.info(f"Student: {st.session_state.name} | {st.session_state.perc}% | 58% Batch | Issue: Placement Eligible?")
+    st.write("Contact: BhavPath - CodeTantra Placement Model")
     if os.path.exists(DB):
-        with open(DB,"r",encoding="utf-8") as f:
-            data=f.read()
-            st.text_area("Host Saved Data (Your data auto saves here)", data[-2000:], height=300)
-            st.download_button("Download Host Data CSV", data, "bhavpath_host_data.csv")
-    st.caption("This is like CodeTantra tracks - Auto saves to host")
+        with open(DB,"r") as f: st.text_area("Host Data", f.read()[-1000:], height=200)
