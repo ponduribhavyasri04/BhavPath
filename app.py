@@ -1,6 +1,5 @@
 import streamlit as st, csv, os
 from datetime import datetime
-
 st.set_page_config(page_title="BhavPath - Placement - CodeTantra Style", layout="wide")
 DB="placement_ct_home.csv"
 
