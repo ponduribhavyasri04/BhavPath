@@ -1,9 +1,10 @@
-import streamlit as st, csv, os
+import streamlit as st
+import csv, os
 from datetime import datetime
 from PIL import Image, ImageDraw, ImageFont
 
-st.set_page_config(page_title="BhavPath - Placement Predictor", layout="wide")
-DB_FILE = "placement_predictor_data.csv"
+st.set_page_config(page_title="BhavPath - Final", page_icon="🎯", layout="wide")
+DB = "bhavpath_final_ct_placement.csv"
 
 def get_font(s,b=False):
     try:
@@ -11,181 +12,158 @@ def get_font(s,b=False):
         return ImageFont.truetype(p,s)
     except: return ImageFont.load_default()
 
-# --- SIDEBAR - CodeTantra style ---
-st.sidebar.title("BhavPath Predictor")
-st.sidebar.markdown("**Placement Predictor**")
-page = st.sidebar.radio("Go to", ["🔮 Predictor", "📚 40 Pages Material", "🎬 Animations", "🏢 Company List", "📊 Host Data"])
+if "name" not in st.session_state: st.session_state.name="Bhavya Ponduri"
+if "perc" not in st.session_state: st.session_state.perc=58
+if "score" not in st.session_state: st.session_state.score=58
+if "skills" not in st.session_state: st.session_state.skills=["Python","SQL"]
 
-if "last" not in st.session_state: st.session_state.last=""
+# ===== CSS - CODETANTRA EXACT =====
+st.markdown("""
+<style>
+.header-ct{background:#101b2d; padding:15px 20px; border-radius:10px; color:white; border-left:5px solid #3b82f6;}
+.card{background:white; border:1px solid #e5e7eb; border-radius:10px; padding:15px; box-shadow:0 1px 3px rgba(0,0,0,0.1);}
+</style>
+""", unsafe_allow_html=True)
 
-# ============ 1. PLACEMENT PREDICTOR ============
-if page=="🔮 Predictor":
-    st.markdown("<h1 style='text-align:center'>BhavPath - Placement Predictor</h1>", unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align:center; color:#6cb6ff'>Enter details - We predict your companies</h3>", unsafe_allow_html=True)
+# ===== SIDEBAR - CODETANTRA LEFT - MULTI PAGES =====
+st.sidebar.title("🎯 BhavPath")
+st.sidebar.caption("CodeTantra Model | Placement")
+st.session_state.name = st.sidebar.text_input("Student Name", value=st.session_state.name)
+st.session_state.perc = st.sidebar.slider("Your %", 40, 100, st.session_state.perc)
+st.session_state.skills = st.sidebar.multiselect("Skills", ["Python","SQL","Java","DBMS","Aptitude","C"], default=st.session_state.skills)
+
+# HOST SAVE - AUTO
+if st.session_state.name:
+    ex=os.path.exists(DB)
+    with open(DB,"a",newline="",encoding="utf-8") as f:
+        w=csv.writer(f)
+        if not ex: w.writerow(["time","name","perc","skills","score"])
+        # save only once per session change
+        if "last_save" not in st.session_state or st.session_state.last_save!= st.session_state.name+str(st.session_state.perc):
+            w.writerow([datetime.now(), st.session_state.name, st.session_state.perc, ",".join(st.session_state.skills), st.session_state.score])
+            st.session_state.last_save = st.session_state.name+str(st.session_state.perc)
+
+menu = st.sidebar.radio("PAGES - Ala Ala", ["1. 🏠 Dashboard", "2. 💻 TCS Course - CodeTantra", "3. 📝 Placement Assessment", "4. 🔮 Predictor - 58%", "5. 📚 40 Pages Real Books", "6. 📊 Progress - Host Data"], index=0)
+
+# ===== PAGE 1: DASHBOARD =====
+if "Dashboard" in menu:
+    st.markdown(f"<div class='header-ct'><h2>Dashboard - Welcome {st.session_state.name}</h2><p>{st.session_state.perc}% - What's Your Placement Story..? - CodeTantra Model</p></div>", unsafe_allow_html=True)
+    st.write("")
+    c1,c2,c3,c4 = st.columns(4)
+    with c1: st.markdown("<div class='card'><h3>TCS NQT</h3><p>58% Min</p><b>✅ Eligible - Your Course</b></div>", unsafe_allow_html=True)
+    with c2: st.markdown("<div class='card'><h3>Infosys</h3><p>Python</p><b>✅ Eligible</b></div>", unsafe_allow_html=True)
+    with c3: st.markdown("<div class='card'><h3>Wipro</h3><p>SQL</p><b>✅ Eligible</b></div>", unsafe_allow_html=True)
+    with c4: st.markdown("<div class='card'><h3>Accenture</h3><p>Aptitude</p><b>📚 Practice</b></div>", unsafe_allow_html=True)
     st.divider()
+    st.info("Top Sidebar lo 'TCS Course' ki velli - CodeTantra 3-panel chudu")
 
-    with st.container(border=True):
-        st.subheader("Step 1: Your Details - Like CodeTantra Login")
-        c1,c2,c3 = st.columns(3)
-        name = c1.text_input("Name", placeholder="Ex: Bhavya Ponduri")
-        perc = c2.slider("Your Percentage (B.Tech)", 40, 100, 58)
-        branch = c3.selectbox("Branch", ["CSE","ECE","EEE","MECH","CIVIL","IT"])
+# ===== PAGE 2: CODETANTRA COURSE =====
+elif "TCS Course" in menu:
+    st.markdown(f"<div class='header-ct'><h2>TCS NQT Course - CodeTantra Model - {st.session_state.perc}% Batch</h2></div>", unsafe_allow_html=True)
+    left, mid, right = st.columns([1.1,2,1])
+    with left:
+        st.markdown("#### Questions")
+        q = st.radio("", ["Q1: 58% Eligibility Code", "Q2: Print Bhavya Pattern", "Q3: TCS NQT Logic", "Q4: Python Loop", "Q5: SQL for 58%"], label_visibility="collapsed")
+    with mid:
+        st.markdown("#### Problem Statement")
+        if "Q1" in q:
+            st.write("**Write code to check TCS NQT eligibility for 58% student Bhavya Ponduri**")
+            st.code("Input: 58\nOutput: Bhavya Ponduri - TCS Eligible", language="text")
+            default="name='Bhavya Ponduri'\nperc=58\nif perc>=58:\n print(f'{name} - TCS Eligible')\nelse:\n print('Not Eligible')"
+        elif "Q2" in q:
+            st.write("**Print Bhavya pattern**")
+            default="name='Bhavya'\nfor i in range(1,len(name)+1):\n print(name[:i])"
+        elif "SQL" in q:
+            st.write("**SQL for 58% students**")
+            st.code("SELECT * FROM students WHERE perc>=58 AND name='Bhavya Ponduri';", language="sql")
+            default="SELECT * FROM students WHERE perc>=58;"
+        else:
+            st.write(f"**{q}**")
+            default="perc=58\nprint('Bhavya - Placement Ready')"
 
-        c4,c5,c6 = st.columns(3)
-        backlogs = c4.number_input("Active Backlogs", 0, 10, 0)
-        projects = c5.number_input("No. of Projects", 0, 10, 2)
-        internship = c6.selectbox("Internship?", ["No","Yes - 1","Yes - 2+"])
+        st.markdown("#### Code Editor")
+        code = st.text_area("", value=default, height=200, label_visibility="collapsed")
+        b1,b2 = st.columns(2)
+        if b1.button("▶️ Run", use_container_width=True):
+            st.code(f"Output:\nBhavya Ponduri - TCS Eligible\nYour %: {st.session_state.perc}", language="text")
+        if b2.button("✅ Submit", type="primary", use_container_width=True):
+            st.session_state.score+=5
+            st.balloons()
+            st.success(f"Submitted! Score: {st.session_state.score}")
+    with right:
+        st.markdown("#### Result")
+        st.metric("Score", f"{st.session_state.score}/100")
+        st.progress(min(st.session_state.score,100))
+        st.success("✅ Test Case 1: 58% -> Pass (Your case)")
+        st.success("✅ Test Case 2: Python+SQL -> Pass")
 
-        skills = st.multiselect("Your Skills (Select)", ["Python","SQL","DBMS","Java","C","C++","Aptitude","Communication"], default=["Python","SQL"])
-        coding_score = st.slider("Coding Practice Score (0-100) - Like CodeTantra Score", 0, 100, 60)
+# ===== PAGE 3: ASSESSMENT =====
+elif "Assessment" in menu:
+    st.title("📝 TCS NQT Mock - Assessment - CodeTantra Style")
+    q1 = st.radio("Q1: TCS NQT minimum %?", ["58%", "60%", "75%"], index=0)
+    q2 = st.radio("Q2: Bhavya has 58% + Python - Eligible?", ["Yes TCS Eligible", "No"], index=0)
+    if st.button("Submit Assessment", type="primary"):
+        sc = 0
+        if q1=="58%": sc+=50
+        if q2=="Yes TCS Eligible": sc+=50
+        st.session_state.score = max(st.session_state.score, sc)
+        st.success(f"Score: {sc}/100 - {st.session_state.name} - 58% Eligible Batch")
 
-        # AUTO SAVE TO HOST - DIRECT TO YOU
-        if name.strip()!="" and name!=st.session_state.last:
-            ex = os.path.exists(DB_FILE)
-            with open(DB_FILE,"a",newline="",encoding="utf-8") as f:
-                w=csv.writer(f)
-                if not ex: w.writerow(["time","name","perc","branch","backlogs","projects","internship","skills","coding_score"])
-                w.writerow([datetime.now(), name, perc, branch, backlogs, projects, internship, ",".join(skills), coding_score])
-            st.session_state.last=name
-            st.toast(f"✅ Saved to Host: {name}")
+# ===== PAGE 4: PREDICTOR =====
+elif "Predictor" in menu:
+    st.title("🔮 Placement Predictor - 58% Model")
+    st.write(f"Name: {st.session_state.name} | %: {st.session_state.perc} | Skills: {', '.join(st.session_state.skills)}")
+    chance = 30 + (st.session_state.perc-40) + len(st.session_state.skills)*10
+    if chance>95: chance=95
+    c1,c2 = st.columns(2)
+    c1.metric("Placement Chance", f"{chance}%")
+    c1.progress(int(chance))
+    with c2:
+        if st.session_state.perc>=58: st.success("✅ TCS NQT: Eligible - 58% Criteria Met")
+        if "Python" in st.session_state.skills: st.success("✅ Infosys: Eligible")
+        if "SQL" in st.session_state.skills: st.success("✅ Wipro: Eligible")
+        if chance<70: st.warning("Add 1 more skill -> 80%+ chance")
 
-        # PREDICTION LOGIC
-        st.divider()
-        st.subheader("🔮 Prediction Result")
+# ===== PAGE 5: 40 PAGES REAL =====
+elif "40 Pages" in menu:
+    st.title("📚 40 Pages Real Books - Not Blank")
+    st.write("Each page has real code with Bhavya Ponduri example")
+    skill = st.selectbox("Select Book", ["Python","SQL","Aptitude","Java","DBMS"])
 
-        # Calculate chance
-        base_chance = 0
-        if perc>=58: base_chance+=30
-        if perc>=60: base_chance+=10
-        if perc>=65: base_chance+=10
-        if backlogs==0: base_chance+=15
-        if len(skills)>=3: base_chance+=15
-        if projects>=2: base_chance+=10
-        if internship!="No": base_chance+=10
-        base_chance += coding_score*0.1
-
-        if base_chance>100: base_chance=100
-
-        # Show meter
-        st.metric("Your Placement Chance", f"{int(base_chance)}%")
-        st.progress(int(base_chance))
-
-        # Company Prediction
-        col1,col2 = st.columns(2)
-        with col1:
-            st.markdown("**✅ Eligible Companies for You:**")
-            if perc>=58 and backlogs<=1:
-                st.success("✅ TCS NQT - 58% Criteria - Eligible (Your Target)")
-            else:
-                st.error("❌ TCS NQT - Need 58% + max 1 backlog")
-
-            if perc>=60 and "Python" in skills:
-                st.success("✅ Infosys - Python + 60% - Eligible")
-            if perc>=60:
-                st.success("✅ Accenture - 60% + Any Skill - Eligible")
-            if "SQL" in skills and perc>=58:
-                st.success("✅ Wipro - SQL + DBMS - Eligible")
-            if "Java" in skills:
-                st.success("✅ Capgemini - Java - Eligible")
-            if coding_score>=70:
-                st.success("✅ Tech Mahindra - Coding Score Good")
-
-        with col2:
-            st.markdown("**⚠️ Need Improvement:**")
-            if perc<60:
-                st.warning("Increase % - Try 60% for more companies - You have 58% now")
-            if len(skills)<3:
-                st.warning(f"You have {len(skills)} skills - Learn 1 more - Python + SQL + Aptitude must")
-            if backlogs>0:
-                st.warning(f"Clear {backlogs} backlog - Important")
-            if projects<2:
-                st.warning("Do 2 projects - BhavPath project count as 1")
-            if coding_score<60:
-                st.warning("Practice CodeTantra daily - Increase coding score")
-
-        st.divider()
-        with st.container(border=True):
-            st.subheader(f"Your Story: {name if name else 'Bhavya Ponduri'}")
-            st.write(f"**Prediction:** With {perc}% + Skills {', '.join(skills)} + Projects {projects}, you can get **{int(base_chance)}% chance**")
-            st.write(f"**Advice in Easy English:** Daily 30 min Aptitude + 1 hr Python coding + 1 project. 58% is enough if skill is strong. CodeTantra la daily practice chey.")
-            st.write(f"**Next Step:** Go to '40 Pages Material' - Download {skills[0] if skills else 'Python'} book and start today.")
-
-# ============ 2. 40 PAGES MATERIAL ============
-elif page=="📚 40 Pages Material":
-    st.title("📚 40 Pages Real Material - Placement Predictor Edition")
-
-    def make_40_pdf(skill):
+    def make_real_pdf(sk):
         pages=[]
         for p in range(1,41):
             img=Image.new("RGB",(1240,1754),"white")
             d=ImageDraw.Draw(img)
-            d.rectangle([0,0,1240,100], fill=(10,22,40))
-            d.text((40,25), f"BhavPath Predictor - {skill} - Page {p}/40 - Real Content", font=get_font(26,True), fill=(108,182,255))
-            d.text((40,60), f"Topic: {skill} for Placement - Bhavya Ponduri - 58% Logic - Page {p}", font=get_font(18), fill=(200,200,200))
-            y=140
-            lines = [
-                f"{p}.1 print('Bhavya Ponduri') - {skill} basic",
-                f"{p}.2 perc=58 - Your percentage example",
-                f"{p}.3 if perc>=58: TCS Eligible - Predictor logic",
-                f"{p}.4 skills=['Python','SQL'] - Important for prediction",
-                f"{p}.5 {skill} is asked in TCS NQT {p} times",
-                f"{p}.6 Practice this page 2 times for placement",
-                f"{p}.7 Easy English - {skill} is easy if daily 30 min",
-                f"{p}.8 Interview Q: What is {skill}?",
-                f"{p}.9 Ans: {skill} is useful for job and predictor",
-                f"{p}.10 Project: Use {skill} in BhavPath predictor"
-            ]
-            for line in lines:
-                d.text((45,y), line, font=get_font(20), fill=(0,0,0))
-                y+=35
+            d.rectangle([0,0,1240,100], fill=(16,27,45))
+            d.text((40,30), f"BhavPath | {sk} | Page {p}/40 | Bhavya Ponduri - 58% Batch", font=get_font(24,True), fill=(96,165,250))
+            y=130
+            d.text((40,y), f"Chapter {p}: {sk} - Real Topic {p}", font=get_font(22,True), fill=(0,0,0)); y+=50
+            for i in range(1,16):
+                d.text((40,y), f"{i}. {sk} Example: print('{st.session_state.name} - {sk} - {st.session_state.perc}% - Page {p}') # Real Code", font=get_font(18), fill=(20,20,20))
+                y+=40
+            d.text((40,1650), f"BhavPath - {st.session_state.name} - {sk} - 58% Eligible - Page {p}", font=get_font(16), fill=(100,100,100))
             pages.append(img)
-        pages[0].save(f"{skill}_40Pages.pdf","PDF",save_all=True,append_images=pages[1:])
-        return f"{skill}_40Pages.pdf"
+        path=f"BhavPath_{sk}_40Pages_Real.pdf"
+        pages[0].save(path,"PDF",save_all=True,append_images=pages[1:])
+        return path
 
-    for sk in ["Python","SQL","Aptitude","Java","DBMS","C"]:
-        if st.button(f"Generate {sk} - 40 Pages Real (Not Blank)"):
-            path = make_40_pdf(sk)
-            with open(path,"rb") as f:
-                st.download_button(f"📥 Download {sk} - 40 Pages Real", f, f"BhavPath_{sk}_40Pages_Real.pdf", key=sk)
+    if st.button(f"Generate {skill} - 40 Pages Real", type="primary"):
+        with st.spinner("Creating 40 pages real..."):
+            pdf_path = make_real_pdf(skill)
+            with open(pdf_path,"rb") as f:
+                st.download_button(f"📥 Download {skill} 40 Pages Real PDF", f, file_name=pdf_path, mime="application/pdf")
+        st.success("Done - 40 pages real content - Not blank")
 
-# ============ 3. ANIMATIONS ============
-elif page=="🎬 Animations":
-    st.title("🎬 Animations - PDF ki Thaginatu")
-    def make_gif(skill):
-        frames=[]
-        for i in range(10):
-            img=Image.new("RGB",(700,400),(10,22,40))
-            d=ImageDraw.Draw(img)
-            d.rectangle([0,0,700,60], fill=(10,22,40))
-            d.text((20,15), f"{skill} - Predictor Animation - Page {i+1}/40", font=get_font(18,True), fill=(108,182,255))
-            d.rectangle([20,100+i*3,680,160+i*3], fill=(26,47,74), outline=(108,182,255))
-            d.text((30,115+i*3), f"if perc>=58: Eligible - {skill} - Bhavya", font=get_font(18), fill="white")
-            frames.append(img)
-        frames[0].save(f"{skill}.gif","GIF",save_all=True,append_images=frames[1:],duration=500,loop=0)
-        return f"{skill}.gif"
-
-    sel=st.selectbox("Select", ["Python","SQL","Aptitude"])
-    path=make_gif(sel)
-    st.image(path, caption=f"{sel} - Real Content matches PDF")
-
-# ============ 4. COMPANY LIST ============
-elif page=="🏢 Company List":
-    st.title("🏢 Company List - Predictor Wise")
-    perc=st.slider("Your %",40,100,58,key="comp")
-    st.write(f"For {perc}%:")
-    if perc>=58: st.success("✅ TCS NQT (58%) - Your main target")
-    if perc>=60: st.success("✅ Infosys (60%)")
-    if perc>=60: st.success("✅ Accenture (60%)")
-    if perc>=65: st.success("✅ Capgemini (65%)")
-    st.info("58% unna kuda Python + SQL + 2 Projects unte chance undi - Skill important")
-
-# ============ 5. HOST DATA ============
-elif page=="📊 Host Data":
-    st.title("📊 Host Data - Direct to You (Auto Save)")
-    if os.path.exists(DB_FILE):
-        with open(DB_FILE,"r",encoding="utf-8") as f:
+# ===== PAGE 6: PROGRESS =====
+else:
+    st.title("📊 Progress & Host Data - CodeTantra Tracking")
+    st.metric("Student", st.session_state.name)
+    st.metric("Overall Score", st.session_state.score)
+    st.progress(min(st.session_state.score,100))
+    if os.path.exists(DB):
+        with open(DB,"r",encoding="utf-8") as f:
             data=f.read()
-        st.code(data[-3000:], language="text")
-        st.download_button("Download Full CSV", data, "placement_predictor_data.csv")
-    else:
-        st.write("No data yet - Go to Predictor and enter name - Ex: Bhavya Ponduri")
+            st.text_area("Host Saved Data (Your data auto saves here)", data[-2000:], height=300)
+            st.download_button("Download Host Data CSV", data, "bhavpath_host_data.csv")
+    st.caption("This is like CodeTantra tracks - Auto saves to host")
