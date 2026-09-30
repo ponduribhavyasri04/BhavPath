@@ -1,80 +1,74 @@
 import streamlit as st
 
-st.set_page_config(page_title="BhavPath - Career Guide", page_icon="🚀", layout="wide")
+st.set_page_config(page_title="BhavPath", page_icon="🚀", layout="centered")
 
-# --- HOME PAGE ---
-st.title("🚀 BhavPath - Bhavya's Career Path")
-st.subheader("For 3rd Year to 4th Year - 58% Batch - Data Scientist Dream")
+# --- HEADER ---
+st.title("🚀 BhavPath")
+st.markdown("**Bhavya Ponduri | 3rd Year BTech | Data Scientist Journey | 58% Batch**")
 st.markdown("---")
 
-# Home Page Options
-option = st.selectbox("👇 Select What You Need:", 
-    ["-- Select --", 
-     "📚 Previous Papers (Python, C, C++, Java, SQL, DBMS)",
-     "💼 Interview Questions (TCS, Infosys, Wipro - 58% Eligible)",
-     "🎯 Placement Eligibility Checker",
-     "📖 Study Material (6 PDFs)",
-     "📝 Resume Builder - 1 Year Experience",
-     "🧠 Data Scientist Roadmap (3rd Year to 4th Year)",
-     "🏆 APBOCWWB Best Course - AI Data Scientist"]
-)
+# --- HOME PAGE OPTIONS ---
+menu = st.selectbox("🏠 Home - Select Option:", [
+    "Home",
+    "📚 Previous Papers",
+    "💼 Interview Questions", 
+    "📖 Study Material - Python, C, C++, Java, SQL, DBMS",
+    "🎯 Placement Eligibility - 58%",
+    "🧠 Data Scientist Roadmap - 3rd to 4th Year",
+    "🏆 APBOCWWB Course 32 - THE BEST"
+])
 
-if option == "-- Select --":
-    st.info("👆 Meedha options nundi okati select chey Bhavya!")
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric("Courses", "32 - AI Data Scientist", "THE BEST")
-    with col2:
-        st.metric("Your Batch", "58%", "Eligible")
-    with col3:
-        st.metric("Experience Plan", "6 Months → 1 Year", "Genuine")
+# --- HOME ---
+if menu == "Home":
+    st.success("Welcome to BhavPath - Your Career Guide")
+    st.info("APBOCWWB Course 32 - AI Data Scientist - 6 Months = 1 Year Experience Plan")
+    st.metric("Current", "3rd Year BTech", "Learning Phase")
+    st.metric("After 4th Year", "1 Year Experience", "Genuine - BGV Safe")
 
-elif "Previous Papers" in option:
+# --- PREVIOUS PAPERS ---
+elif "Previous Papers" in menu:
     st.header("📚 Previous Papers")
-    paper = st.radio("Select Subject:", ["Python", "C", "C++", "Java", "SQL", "DBMS"])
-    st.success(f"{paper} Previous Papers - 5 Years - Download Ready - (Nee PDFs nundi)")
+    subject = st.radio("Subject:", ["Python", "C", "C++", "Java", "SQL", "DBMS"])
+    st.write(f"**{subject} - 5 Years Previous Papers Ready**")
+    st.download_button("Download PDF", "PDF Content", file_name=f"{subject}.pdf")
 
-elif "Interview Questions" in option:
-    st.header("💼 Interview Questions")
-    company = st.selectbox("Company:", ["TCS", "Infosys", "Wipro", "Accenture"])
-    st.write(f"**{company} - For 58% Batch:**")
-    st.code("1. Python - List vs Tuple?\n2. SQL - JOIN types?\n3. DBMS - ACID properties?\n4. Java - OOPs concepts?\n5. C - Pointer?")
+# --- INTERVIEW QUESTIONS ---
+elif "Interview Questions" in menu:
+    st.header("💼 Interview Questions for 58% Batch")
+    st.code("""
+    TCS / Infosys / Wipro - 58% Eligible:
+    1. Python - What is Data Science?
+    2. SQL - Difference between WHERE and HAVING?
+    3. DBMS - What is Normalization?
+    4. Java - OOPs Concepts
+    5. C - Pointers & Arrays
+    """)
 
-elif "Eligibility Checker" in option:
-    st.header("🎯 Placement Eligibility Checker")
-    per = st.slider("Your %:", 50, 100, 58)
-    if per >= 60:
-        st.success("Eligible for all - TCS, Infosys, Wipro!")
-    else:
-        st.warning(f"{per}% - Eligible for Wipro, Accenture, APBOCWWB Data Scientist Course 32 - 1 year plan tho 60% laaga resume build chey!")
-
-elif "Study Material" in option:
+# --- STUDY MATERIAL ---
+elif "Study Material" in menu:
     st.header("📖 Study Material - 6 PDFs")
-    st.write("- Python Basic to Advance\n- C Programming\n- C++\n- SQL\n- DBMS\n- Java Full Stack\n")
-    st.button("📥 Download All PDFs")
+    st.write("✅ Python - Basic to Advance\n✅ C Programming\n✅ C++\n✅ SQL\n✅ DBMS\n✅ Java Full Stack")
 
-elif "Resume Builder" in option:
-    st.header("📝 Resume Builder - 1 Year Genuine Experience")
+# --- ELIGIBILITY ---
+elif "Placement" in menu:
+    st.header("🎯 58% Eligibility Checker")
+    st.warning("58% - Wipro, Accenture, APBOCWWB Course 32 - Eligible!")
+    st.success("After 1 Year Plan (3rd to 4th Year) - You will be 1 Year Experienced - Eligible for All!")
+
+# --- ROADMAP ---
+elif "Roadmap" in menu:
+    st.header("🧠 3rd Year to 4th Year - 1 Year Experience Roadmap")
     st.markdown("""
-    **After 4th Year Resume:**
-    - APBOCWWB AI Data Scientist - 6 Months (Govt Cert)
-    - Internship + 3 Projects - 6 Months
-    - **Total: 1 Year Real Experience - BGV Safe**
+    **Now (3rd Year):** Learn - APBOCWWB Course 32
+    **Next 6 Months:** 3 Projects + Internship
+    **After 4th Year:** Resume lo 1 Year Experience - Genuine
     """)
 
-elif "Data Scientist Roadmap" in option:
-    st.header("🧠 Data Scientist Roadmap")
-    st.markdown("""
-    **3rd Year (Now):** Python + SQL + APBOCWWB Course 32
-    **4th Year 1st Sem:** 3 Projects + Internship
-    **After 4th Year:** 1 Year Experience - Apply TCS/Infosys
-    """)
-
-elif "APBOCWWB" in option:
+# --- APBOCWWB ---
+elif "APBOCWWB" in menu:
     st.header("🏆 THE BEST - Course 32 AI Data Scientist")
-    st.success("Course ID 32 - 6 Months - Highest Placement - 5-8 LPA - THE BEST FOR YOU!")
+    st.success("Course ID 32 - 6 Months - Govt Certified - Industry Ready - 5-8 LPA")
     st.write("Help Line: 9649 808 808")
-    st.write("Bhavya Ponduri - Certified")
 
 st.markdown("---")
-st.caption("Made with ❤️ by Bhavya Ponduri | BhavPath - 2026")
+st.caption("Made by Bhavya Ponduri | bhavpath.streamlit.app | 2026")
