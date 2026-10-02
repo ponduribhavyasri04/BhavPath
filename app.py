@@ -8,7 +8,14 @@ st.subheader("What's your Placement Story ..?")
 name = st.text_input("Your Name", placeholder="Ex: Bhavya Ponduri")
 college = st.text_input("College Name", placeholder="Ex: RISE Krishna Sai Gandhi Group Of Institutions")
 percent = st.slider("Your B.Tech %", 0, 100, 58)
-branch = st.selectbox("Branch", ["CSE", "ECE", "EEE", "MECH", "AI & DS"])
+
+branch = st.selectbox(
+    "Branch", 
+    ["", "CSE", "ECE", "EEE", "MECH", "CIVIL", "Data Science", "AI & ML", "AI & DS", "CSM", "CSD"],
+    index=0,
+    placeholder="Select your Branch"
+)
+
 powers = st.multiselect("Pick Your Superpowers", ["Python", "Communication", "SQL", "Java", "C", "DBMS"], placeholder="Choose your skills")
 
 if st.button("GENERATE MY PLACEMENT DNA"):
