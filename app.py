@@ -1,7 +1,9 @@
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
+import zipfile
+import io
 
-st.set_page_config(page_title="BhavPath", layout="wide", page_icon="📘")
+st.set_page_config(page_title="BhavPath Placement Predictor", layout="wide", page_icon="🎯")
 
 def get_font(s,b=False):
     try:
@@ -10,79 +12,122 @@ def get_font(s,b=False):
     except:
         return ImageFont.load_default()
 
-def make_pdf(course, data):
+# All 9 Courses Data
+ALL_DATA = {
+    "Python": [("Python Intro",["Python easy lang"],["print('Hello')"],["Hello"]),("Variables",["Store data"],['name="Bhavya"'],["Bhavya"]),("If Else",["Condition"],['if p>=58:\n print("Eligible")'],["Eligible"]),("Loops",["Repeat"],['for i in range(3): print(i)'],["0 1 2"]),("List",["Many values"],['a=[1,2,3]'],["[1,2,3]"])],
+    "SQL": [("SELECT",["Get data"],["SELECT * FROM Students;"],["Rows"]),("WHERE",["Filter"],["WHERE percent>=58;"],["Filtered"]),("JOIN",["Combine"],["JOIN Marks ON id;"],["Joined"])],
+    "DBMS": [("DBMS",["Manage data"],["DBMS = Storage"],["Stored"]),("Keys",["Unique ID"],["Primary Key"],["Unique"]),("Normalization",["Remove duplicate"],["1NF 2NF 3NF"],["Clean"])],
+    "Java": [("Java Intro",["Java lang"],['System.out.println("Bhavya");'],["Bhavya"]),("If Else",["Check"],['if(p>=58) print("Eligible");'],["Eligible"])],
+    "C": [("C Intro",["C lang"],['printf("Bhavya");'],["Bhavya"]),("Pointers",["Address"],['int *p;'],["Pointer"])],
+    "Cpp": [("Cpp Intro",["Cpp lang"],['cout<<"Bhavya";'],["Bhavya"]),("OOPs",["Class Object"],['class Student{};'],["Class"])],
+    "Aptitude": [("Percentages",["Per 100"],["58% = Pass"], ["Pass"]),("Profit Loss",["SP-CP"],["Profit=SP-CP"],["20"]),("Time Speed",["Speed"], ["Speed=Dist/Time"], ["Result"])],
+    "DataScience": [("DS Intro",["Future"],["import pandas"],["Done"]),("Pandas",["Data"],["pd.read_csv()"],["Loaded"]),("ML Basic",["Learn"],["model.fit()"],["Trained"])],
+    "AIML": [("AI Intro",["Smart Machine"],["AI = Smart"],["Smart"]),("ML Intro",["Learn"],["ML learns"],["Learns"]),("Deep Learning",["Brain"],["Neural Network"],["AI"])]
+}
+
+COMPANIES = {"TCS NQT":58,"Wipro":60,"Infosys":60,"Cognizant":60,"Capgemini":60,"HCL":60,"Tech Mahindra":60,"Accenture":65,"IBM":65,"Deloitte":60,"Amazon":65,"TCS Digital":70,"Microsoft":70,"Infosys SP":68}
+
+def make_one_pdf(course, data, name, percent, branch):
     W,H=800,1100
     pages=[]
-    for i, (title, theory, code, output) in enumerate(data,1):
+    # Page 1 - Student
+    img=Image.new("RGB",(W,H),"white")
+    d=ImageDraw.Draw(img)
+    d.rectangle([0,0,W,60], fill="#0a1628")
+    d.text((20,18), f"BhavPath - {name} - {percent}% | {course}", font=get_font(11, True), fill="#6cb6ff")
+    y=80
+    d.text((25,y), f"Placement Predictor Report", font=get_font(14, True), fill="#0a1628"); y+=35
+    d.text((25,y), f"Name: {name} | Branch: {branch} | Percentage: {percent}%", font=get_font(11), fill="black"); y+=35
+    d.text((25,y), f"Eligible Companies for {percent}%:", font=get_font(12, True), fill="#2e7d32"); y+=28
+    for comp,cut in COMPANIES.items():
+        if percent>=cut:
+            if y>1000:
+                pages.append(img)
+                img=Image.new("RGB",(W,H),"white")
+                d=ImageDraw.Draw(img)
+                y=20
+            d.text((35,y), f"✅ {comp} ({cut}%)", font=get_font(10), fill="black"); y+=20
+    pages.append(img)
+    # Course pages
+    for i,(title,theory,code,output) in enumerate(data,2):
         img=Image.new("RGB",(W,H),"white")
         d=ImageDraw.Draw(img)
         d.rectangle([0,0,W,60], fill="#0a1628")
-        d.text((20,18), f"BhavPath - {course} - Page {i}", font=get_font(12, True), fill="#6cb6ff")
-        d.rectangle([20,80,W-20,115], fill="#e3f2fd")
-        d.text((30,88), f"{i}. {title}", font=get_font(13, True), fill="#0a1628")
-        y=130
-        d.text((25,y), "Theory:", font=get_font(11, True), fill="#0a1628"); y+=18
-        for t in theory:
-            d.text((25,y), t, font=get_font(10), fill="#222"); y+=14
-        y+=10
-        d.rectangle([25,y,W-25,y+95], fill="#0a1628")
-        d.text((35,y+5), "CODE:", font=get_font(10, True), fill="#6cb6ff")
-        yy=y+22
-        for c in code:
-            d.text((35,yy), c, font=get_font(9), fill="white"); yy+=13
-        y+=105
-        d.rectangle([25,y,W-25,y+65], fill="#e8f5e9", outline="#4caf50")
-        d.text((35,y+5), "OUTPUT:", font=get_font(10, True), fill="#2e7d32")
-        d.text((35,y+25), output[0], font=get_font(9), fill="black")
-        y+=75
-        d.rectangle([25,y,W-25,y+55], outline="#6cb6ff", fill="#f8fbff")
-        d.text((35,y+5), "DIAGRAM: Input -> Process -> Output", font=get_font(10, True), fill="#0a1628")
-        d.text((25,H-20), f"Page {i} | BhavPath | Bhavya Ponduri", font=get_font(8), fill="#888")
+        d.text((20,18), f"BhavPath - {course} - Page {i} | {name}", font=get_font(10, True), fill="#6cb6ff")
+        d.rectangle([20,80,W-20,110], fill="#e3f2fd")
+        d.text((30,88), f"{title}", font=get_font(12, True), fill="#0a1628")
+        y=125
+        d.text((25,y), "Theory:", font=get_font(10, True), fill="black"); y+=16
+        for t in theory: d.text((25,y), t, font=get_font(9), fill="#222"); y+=14
+        y+=5
+        d.rectangle([25,y,W-25,y+75], fill="#0a1628")
+        d.text((35,y+5), "CODE:", font=get_font(9, True), fill="#6cb6ff")
+        d.text((35,y+22), code[0], font=get_font(8), fill="white")
+        y+=85
+        d.rectangle([25,y,W-25,y+50], fill="#e8f5e9", outline="#4caf50")
+        d.text((35,y+5), "OUTPUT:", font=get_font(9, True), fill="#2e7d32")
+        d.text((35,y+22), output[0], font=get_font(8), fill="black")
+        d.text((25,H-20), f"{name} | {branch} | BhavPath", font=get_font(7), fill="#888")
         pages.append(img)
-    fname=f"{course}_Bhavya.pdf"
+    fname=f"{course}_{name}.pdf"
     pages[0].save(fname, save_all=True, append_images=pages[1:])
     return fname
 
-# --- All Courses Data ---
-all_courses = {
-    "Python": [("What is Python",["Python is computer language.","Used in Instagram."],['print("Hello")'],["Hello"]),
-               ("Variables",["Box for data."],['name="Bhavya"'],["Bhavya"]),
-               ("If Else",["Check condition."],['if p>=58:\n print("Eligible")'],["Eligible"]),
-               ("Loops",["Repeat."],['for i in range(3):\n print(i)'],["0 1 2"]),
-               ("List",["Many values."],['a=[1,2,3]'],["[1,2,3]"]),
-               ("File",["Save data."],['open("data.csv")'],["File"])],
-    "SQL": [("SELECT",["Get data."],["SELECT * FROM Students;"],["Rows"]),("WHERE",["Filter."],["SELECT * WHERE percent>=58;"],["Eligible"])],
-    "DBMS": [("DBMS Intro",["Manage data."],["DBMS = Storage"],["Stored"]),("Keys",["Unique."],["Primary Key"],["Unique"])],
-    "Java": [("Java Intro",["Java language."],['System.out.println("Bhavya");'],["Bhavya"])],
-    "C": [("C Intro",["C language."],['printf("Bhavya");'],["Bhavya"])],
-    "Cpp": [("C++ Intro",["Cpp language."],['cout<<"Bhavya";'],["Bhavya"])],
-    "Aptitude": [("Percent",["Per 100."],["58% = Pass"],["Pass"]),("Profit",["SP-CP."],["Profit=20"],["20"])],
-    "DataScience": [("DS Intro",["Future."],["import pandas"],["Done"]),("Pandas",["Data."],["df=pd.read_csv()"],["Loaded"])],
-    "AIML": [("AI Intro",["Smart machine."],["AI = Smart"],["Smart"]),("ML Intro",["Machine learns."],["ML = Learn"],["Learn"])]
-}
+# ===== UI =====
+st.title("BhavPath Placement Predictor")
+st.subheader("What is your Placement Story..? 🚀")
+st.write("")
 
-st.title("BhavPath - Bhavya Ponduri")
-st.write("Placement Material - Python, SQL, Java, C, Aptitude, Data Science, AI & ML")
+c1,c2,c3 = st.columns(3)
+with c1:
+    name = st.text_input("Your Name", placeholder="Ex : Bhavya Ponduri")
+with c2:
+    percent_str = st.text_input("Your Percentage", placeholder="Ex : 58")
+with c3:
+    branch = st.text_input("Your Branch", placeholder="Ex : CSE / AIML")
 
-course = st.selectbox("Select Course", list(all_courses.keys()))
-
-data = all_courses[course]
-# expand to many pages automatically
-expanded = (data*7)[:40] # make 40 pages internally but no mention outside
-
-if st.button(f"Generate {course} PDF"):
-    pdf_file = make_pdf(course, expanded)
-    with open(pdf_file, "rb") as f:
-        st.download_button(f"📥 Download {course} PDF", f, file_name=pdf_file, mime="application/pdf")
-    st.success(f"{course} PDF Ready! PDF works 100% - Open in any PDF reader!")
+try: percent = int(percent_str) if percent_str else 58
+except: percent = 58
 
 st.divider()
-st.write("Download All:")
-for c in all_courses.keys():
-    if st.button(f"Generate {c}", key=f"btn_{c}"):
-        pdf = make_pdf(c, (all_courses[c]*7)[:40])
-        with open(pdf, "rb") as file:
-            st.download_button(f"Download {c}", file, file_name=pdf, key=f"dl_{c}")
 
-st.markdown("---")
-st.caption("BhavPath | Made by Bhavya Ponduri | 2026")
+tab1, tab2 = st.tabs(["📘 Single Course PDF", "📦 All 9 PDFs ZIP"])
+
+with tab1:
+    course = st.selectbox("Select Course", list(ALL_DATA.keys()), placeholder="Ex : Python")
+    data = (ALL_DATA[course]*8)[:15]
+    if st.button(f"Generate {course} PDF", type="primary", use_container_width=True):
+        if not name: st.error("Name enter chey!")
+        else:
+            pdf = make_one_pdf(course, data, name, percent, branch or "CSE")
+            with open(pdf,"rb") as f:
+                st.download_button(f"📥 Download {course} PDF for {name}", f, file_name=pdf, mime="application/pdf", use_container_width=True)
+            st.success("Done!")
+            st.subheader(f"🎯 {name} ({percent}%) Eligible For:")
+            for n,c in COMPANIES.items():
+                if percent>=c: st.write(f"✅ {n} ({c}%)")
+            st.balloons()
+
+with tab2:
+    st.write("Generate All 9 Courses at once with your details")
+    if st.button("Generate All 9 PDFs ZIP", type="primary", use_container_width=True):
+        if not name: st.error("Name enter chey!")
+        else:
+            files=[]
+            for course in ALL_DATA.keys():
+                data=(ALL_DATA[course]*8)[:15]
+                fname=make_one_pdf(course, data, name, percent, branch or "CSE")
+                files.append(fname)
+            # Create ZIP
+            zip_buffer = io.BytesIO()
+            with zipfile.ZipFile(zip_buffer, "w") as z:
+                for f in files:
+                    z.write(f)
+            zip_buffer.seek(0)
+            st.download_button("📦 Download All 9 PDFs ZIP", zip_buffer, file_name=f"BhavPath_All_{name}.zip", mime="application/zip", use_container_width=True)
+            st.success(f"All 9 PDFs Generated for {name}!")
+            for course in ALL_DATA.keys():
+                with open(f"{course}_{name}.pdf","rb") as f:
+                    st.download_button(f"Download {course}", f, file_name=f"{course}_{name}.pdf", key=f"dl_{course}")
+
+st.caption("BhavPath | Bhavya Ponduri | Placement Predictor 2026")
