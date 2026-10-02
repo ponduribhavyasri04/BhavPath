@@ -1,116 +1,125 @@
 import streamlit as st
+import io, zipfile, textwrap
 from PIL import Image, ImageDraw, ImageFont
-import zipfile, io
 
-st.set_page_config(page_title="BhavPath Placement Predictor", layout="wide", page_icon="🎯")
+st.set_page_config(page_title="BhavPath - What's Your Placement Story?", layout="wide", page_icon="🎯")
 
 def get_font(s,b=False):
     try:
         p="/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if b else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
         return ImageFont.truetype(p,s)
     except:
-        return ImageFont.load_default() 
+        return ImageFont.load_default()
 
-ALL_DATA = {
-"Python": [("Python Intro",["Created by Guido 1991","High level easy","Used in AI Web DataScience","Fast development"],["print('Hello Bhavya - Welcome to BhavPath')"],["Hello Bhavya"]),("Variables & DataTypes",["Variable stores data","int float str bool list dict","Dynamic typing"],["name='Bhavya'\nperc=58\nprint(name,perc)"],["Bhavya 58"]),("Operators",["+ - * / %","==!= > <","and or not"],["a=58\nb=60\nprint(a>=58)"],["True"]),("If Else",["Decision making","if elif else","Indentation must"],["perc=58\nif perc>=58:\n print('Eligible TCS NQT')\nelse:\n print('Try')"],["Eligible TCS NQT"]),("For & While Loops",["Repeat tasks","range(5)","break continue"],["for i in range(1,6):\n print(i)"],["1 2 3 4 5"]),("Lists",["Mutable [1,2,3]","append pop sort reverse","Slicing"],["marks=[58,60,65,70]\nprint(max(marks))"],["70"]),("Dictionary & Set",["Dict key:value","Set unique","Tuple immutable"],["student={'name':'Bhavya','perc':58}\nprint(student['name'])"],["Bhavya"]),("Strings",["upper lower split","f-string"],["s='BhavPath'\nprint(s.upper())"],["BHAVPATH"]),("Functions",["def reusable","return"],["def eligible(p):\n return p>=58\nprint(eligible(58))"],["True"]),("File Handling",["open read write"],["f=open('a.txt','w')\nf.write('Bhavya')"],["File created"]),("Oops",["Class Object","Inheritance"],["class Student:\n def __init__(self,n):\n self.name=n"],["Object"]),("Exception",["try except finally"],["try:\n x=10/0\nexcept:\n print('Error')"],["Error"]),("Modules",["import math random pandas"],["import math\nprint(math.sqrt(64))"],["8.0"]),("NQT Python",["TCS NQT easy Python","Input output"],["n=int(input())\nif n>=58:\n print('Eligible')"],["Eligible"]),("Project",["BhavPath app","Streamlit project"],["print('Build BhavPath app')"],["Build app"])],
-"SQL": [("SQL Intro",["Structured Query Language","RDBMS"],["SELECT * FROM Students;"],["Data"]),("SELECT WHERE",["Get filter"],["SELECT * WHERE perc>=58;"],["Filtered"]),("JOIN",["Combine tables - TCS Fav"],["SELECT * FROM S JOIN M ON id;"],["Joined"]),("GROUP BY",["COUNT SUM AVG"],["SELECT branch, AVG(perc) GROUP BY branch;"],["Grouped"]),("SQL for NQT",["Easy score"],["SELECT COUNT(*) WHERE perc>=58;"],["Count"])],
-"DBMS": [("DBMS Intro",["Store manage data"],["DBMS"],["Stored"]),("Keys",["Primary Foreign"],["PRIMARY KEY"],["Key"]),("Normalization",["1NF 2NF 3NF"],["Normalized"],["Clean"]),("ACID",["Safe transaction"],["ACID"],["Safe"])],
-"Java": [("Java Intro",["James Gosling WORA OOPs"],["System.out.println(\"Bhavya\");"],["Bhavya"]),("If Else",["Condition"],["if(perc>=58) System.out.println(\"Eligible\");"],["Eligible"])],
-"C": [("C Intro",["Dennis Ritchie 1972 Mother language"],["printf(\"Bhavya\");"],["Bhavya"])],
-"Cpp": [("Cpp Intro",["Bjarne Stroustrup C+OOPs"],["cout<<\"Bhavya\";"],["Bhavya"])],
-"Aptitude": [("Percentages",["Per 100 (Val/Total)*100","58% = 58/100"],["58% to 60% need 2"],["60%"]),("Profit Loss",["SP-CP Profit"],["CP100 SP120 Profit20%"],["20%"]),("Time Speed",["Speed=Dist/Time"],["Dist 120"],["120km"]),("NQT Pattern",["Apt 20 Reas 30 Verbal 20","58% best NQT"],["NQT crack"],["Crack"])],
-"DataScience": [("DS Intro",["Data + Science High salary"],["import pandas"],["Done"])],
-"AIML": [("AI Intro",["AI human like machine","ML learn from data"],["AI"],["Smart"])],
+def draw_para(d, x, y, text):
+    for line in textwrap.wrap(text, width=105):
+        d.text((x,y), line, font=get_font(9), fill="black")
+        y+=15
+        if y>1080: break
+    return y
+
+MEGA = """Python is high-level interpreted OOP language by Guido van Rossum 1991. Dynamically typed, garbage-collected. Supports procedural, OOP, functional. Why Python? TCS NQT, Wipro Elite, Infosys SP, Cognizant GenC all allow Python. 90% of 58% students clear coding round using Python.
+
+VARIABLES: int a=10, float b=10.5, str c='Bhavya', list d=[1,2,3] mutable, tuple e=(1,2,3) immutable, dict f={'name':'Bhavya','perc':58}, set g={1,2,3} unique. Memory private heap, reference counting. OPERATORS: Arithmetic + - * / % ** //, Comparison ==!= > <, Logical and or not, Assignment = += -=, Identity is is not, Membership in not in, Bitwise & | ^ ~ << >>. CONTROL: if-elif-else. Loops: for loop iterating sequence, while loop till false. break exit, continue skip, pass placeholder. Indentation 4 spaces.
+
+FUNCTIONS: Reusable block def. Built-in print() len(), User-defined. Arguments: Positional order matters, Keyword name=value, Default def add(a,b=10), Variable *args tuple, **kwargs dict. Recursion calls itself, base case mandatory. Lambda lambda x:x*2. Map, Filter, Reduce. INPUT OUTPUT: input() string, int(input()) integer. f-string f"Hi {name}". File Handling open() modes r,w,a,r+,w+,a+. with open() best practice. Exception try-except. TIME COMPLEXITY: Big O O(1) constant, O(n) linear, O(n^2) quadratic, O(log n). REAL WORLD: Web Django Flask, Data Science Pandas Numpy, AIML Tensorflow, Automation. For 58% students Python best 30 days. Practice 50 programs daily. ERRORS: IndentationError, NameError, TypeError, ValueError. PROJECTS: Calculator, To-do List, Placement Predictor like BhavPath. TIP: TCS NQT 2024 asked Reverse string, Palindrome, Armstrong, Prime, Fibonacci, GCD LCM, Anagram. All 10 lines Python. So master Python.
+
+Loops Heart. Without loops cannot repeat, without functions cannot reuse. 80% NQT questions involve loops. FOR LOOP: for i in range(5): range(start,stop,step). range(5)=0-4. Iterating list for item in list:. Enumerate idx,val. Nested loops for pattern pyramid diamond. WHILE LOOP: while condition till false. Infinite loop risk. while True with break for menu. CONTROL: break exit, continue skip, pass placeholder. Search if found break. Skip negative if num<0 continue. FUNCTIONS: Reusability, Readability, Debugging, Modularity. Defining def function_name(params): docstring, body, return. Calling function_name(args). Parameters definition, Arguments calling. ARGS: Positional, Keyword, Default, Variable *args tuple, **kwargs dict. def total(*nums): return sum(nums). Recursion calls itself base case mandatory. Factorial fibonacci. Recursion stack memory may cause RecursionError. SCOPE LEGB: Local, Enclosing, Global, Built-in. global keyword, nonlocal, Closure remembering enclosing scope. ERROR HANDLING: try-except-finally raise custom. PRACTICE: Prime 1-100 function, Armstrong, Fibonacci recursive, Pattern * ** *** ****, GCD function. INTERVIEW: function vs method? Recursion limit 1000 sys.setrecursionlimit. pure function? first-class function? For 58% focus 20 patterns 10 functions daily 15 days NQT clear. SQL JOIN is Structured Query Language. SELECT fetch, WHERE filters, JOIN combines 2 tables INNER common, LEFT all left, RIGHT, FULL. JOIN most asked TCS Infosys Wipro. GROUP BY groups same values with aggregate COUNT SUM AVG MAX MIN. HAVING filters groups WHERE filters rows. ORDER BY sorts ASC default DESC. Very important NQT interviews. ACID Atomicity Consistency Isolation Durability. Keys Primary unique, Foreign reference, Normalization 1NF 2NF 3NF BCNF removes redundancy. Transactions commit rollback. Indexing fast search B-Tree. Deadlock two transactions waiting each other. JAVA Oops 4 pillars Encapsulation Inheritance Polymorphism Abstraction. Class blueprint Object instance. __init__ constructor self current object. Inheritance single multiple multilevel. Collections List ArrayList LinkedList Set HashSet Map HashMap. Exception try catch finally. Multithreading Thread Runnable. C Pointers address, Structures collection different types, Memory malloc calloc free, File Handling. C++ OOP STL vector map set algorithm. Aptitude Percentages Profit Loss Time Speed Distance Permutation Combination Probability. DataScience Pandas DataFrame Series, Numpy array, Visualization Matplotlib Seaborn, ML Basics supervised unsupervised. AIML AI Fundamentals, ML Algorithms Linear Regression Decision Tree Random Forest, Deep Learning Neural Network, NLP tokenization.
+"""
+
+SKILLS = {
+"Python": ["Python Basics","Loops & Functions","Oops Concepts","File Handling","TCS NQT Coding"],
+"SQL": ["SELECT & JOIN","GROUP BY","Sub Queries","Window Functions","NQT SQL"],
+"DBMS": ["ACID Properties","Keys & Normalization","Transactions","Indexing","Deadlock"],
+"Java": ["Oops Java","Collections","Exception Handling","Multithreading","Java NQT"],
+"C": ["Pointers","Structures","Memory Management","File C","C NQT"],
+"Cpp": ["Oops C++","STL Library","Pointers C++","Templates","Cpp NQT"],
+"Aptitude": ["Percentages","Profit & Loss","Time Speed Distance","Permutations","NQT Aptitude"],
+"DataScience": ["Pandas","Numpy","Data Visualization","ML Basics","Projects DS"],
+"AIML": ["AI Fundamentals","ML Algorithms","Deep Learning","NLP","Projects AIML"]
 }
-COMPANIES={"TCS NQT":58,"Wipro":60,"Infosys":60,"Cognizant":60,"Capgemini":60,"HCL":60,"Accenture":65,"IBM":65,"Deloitte":60,"Amazon":65,"TCS Digital":70,"Microsoft":70}
 
-def make_pdf(course, data, name, perc, branch):
-    W,H=800,1100
+COMPANIES={"TCS NQT":58,"Wipro":60,"Infosys":60,"Cognizant":60,"Capgemini":60,"HCL":60,"Accenture":65,"TCS Digital":70,"Microsoft":70,"Amazon":65,"Deloitte":60,"IBM":65}
+
+def make_pdf(course, name, perc, branch):
+    W,H=850,1150
     pages=[]
     img=Image.new("RGB",(W,H),"white")
     d=ImageDraw.Draw(img)
-    d.rectangle([0,0,W,70], fill="#0a1628")
-    d.text((20,22), f"BhavPath - {name} - {perc}% | {course} Notes", font=get_font(11,True), fill="#6cb6ff")
-    y=90
-    d.text((25,y), "BhavPath Placement Predictor", font=get_font(16,True), fill="#0a1628"); y+=35
-    d.text((25,y), f"Where is your Placement Story..? - {name}'s Story", font=get_font(12,True), fill="#1565c0"); y+=30
-    d.text((25,y), f"Name: {name} | Branch: {branch} | Percentage: {perc}%", font=get_font(11,True), fill="black"); y+=28
-    d.text((25,y), f"Your Placement DNA for {perc}%:", font=get_font(12,True), fill="#2e7d32"); y+=25
+    d.rectangle([0,0,W,240], fill="#0a1628")
+    d.text((30,25), "BhavPath", font=get_font(28,True), fill="#42a5f5")
+    d.text((30,65), "What's Your Placement Story..? 🚀", font=get_font(20,True), fill="white")
+    d.text((30,100), f"{course} - Complete Guide for {name}", font=get_font(14,True), fill="#90caf9")
+    d.text((30,130), f"Name: {name} | Branch: {branch} | {perc}%", font=get_font(11), fill="white")
+    d.text((30,160), "9 Courses | 500+ Words Per Topic | For 58% Students", font=get_font(10,True), fill="#ffcc80")
+    y=260
+    d.text((25,y), f"What's Your Placement Story..? {name} - Let's Build It!", font=get_font(13,True), fill="#0a1628"); y+=30
+    d.text((25,y), f"Eligible Companies for {perc}%:", font=get_font(11,True), fill="#2e7d32"); y+=25
     for comp,cut in COMPANIES.items():
-        if int(perc)>=cut:
-            d.text((35,y), f"✅ {comp} ({cut}%) - ELIGIBLE", font=get_font(10), fill="black"); y+=20
+        ok=int(perc)>=cut
+        d.text((35,y), f"{'✅' if ok else '🔒'} {comp} ({cut}%) - {'ELIGIBLE' if ok else 'Need '+str(cut-int(perc))+'%'}", font=get_font(9), fill="#2e7d32" if ok else "#b71c1c"); y+=18
     pages.append(img)
-    for i in range(15):
-        title,theory,code,out = data[i % len(data)]
+
+    for topic in SKILLS[course]:
+        words=MEGA.split()
+        for part in range(3):
+            img=Image.new("RGB",(W,H),"white")
+            d=ImageDraw.Draw(img)
+            d.rectangle([0,0,W,55], fill="#0a1628")
+            d.text((15,18), f"BhavPath | What's Your Placement Story..? | {course} | {topic} | {name} {perc}%", font=get_font(8,True), fill="white")
+            y=70
+            d.rectangle([15,y,W-15,y+30], fill="#e3f2fd")
+            d.text((25,y+7), f"📖 {topic} - 500+ WORDS - Part {part+1}/3", font=get_font(11,True), fill="#0a1628"); y+=40
+            s=part*len(words)//3
+            e=s+len(words)//3 if part<2 else len(words)
+            draw_para(d,25,y," ".join(words[s:e]))
+            pages.append(img)
         img=Image.new("RGB",(W,H),"white")
         d=ImageDraw.Draw(img)
-        d.rectangle([0,0,W,60], fill="#0a1628")
-        d.text((20,18), f"BhavPath - {course} - Page {i+2} | {name} | {perc}%", font=get_font(10,True), fill="#6cb6ff")
-        d.rectangle([20,75,W-20,108], fill="#e3f2fd")
-        d.text((30,83), f"Topic {i+1}: {title}", font=get_font(11,True), fill="#0a1628")
-        y=125
-        d.text((25,y), "Theory:", font=get_font(10,True), fill="black"); y+=18
-        for t in theory[:4]:
-            d.text((30,y), f"• {t}", font=get_font(9), fill="#222"); y+=14
-        y+=6
-        d.rectangle([25,y,W-25,y+75], fill="#0a1628")
-        d.text((35,y+5), "CODE:", font=get_font(9,True), fill="#6cb6ff")
-        d.text((35,y+22), "\n".join(code)[:250], font=get_font(8), fill="white")
-        y+=85
-        d.rectangle([25,y,W-25,y+50], fill="#e8f5e9", outline="#4caf50")
-        d.text((35,y+5), "OUTPUT:", font=get_font(9,True), fill="#2e7d32")
-        d.text((35,y+22), "\n".join(out)[:200], font=get_font(8), fill="black")
-        d.text((25,H-18), f"{name} | {branch} | {perc}% | BhavPath | Page {i+2}", font=get_font(7), fill="#888")
+        d.rectangle([0,0,W,55], fill="#0a1628")
+        d.text((15,18), f"BhavPath | CODE | {name}", font=get_font(8,True), fill="white")
+        y=70
+        d.rectangle([15,y,W-15,y+30], fill="#0a1628")
+        d.text((25,y+7), f"💻 CODE - {topic}", font=get_font(11,True), fill="#42a5f5"); y+=40
+        d.rectangle([20,y,W-20,y+120], fill="#1e1e1e")
+        code=f"# {topic}\ndef solve():\n print('Hi {name} - {topic}')\n for i in [1,2,3,4,5]:\n if i%2==0: print(f'Even {{i}} {perc}%')\n return 'Ready'\nprint(solve())"
+        for i,line in enumerate(code.split("\n")): d.text((30,y+5+i*14), line, font=get_font(8), fill="#d4d4d4")
+        y+=140
+        d.rectangle([15,y,W-15,y+28], fill="#e8f5e9")
+        d.text((25,y+6), "🟢 OUTPUT: Even 2 Even 4 Ready", font=get_font(9,True), fill="#2e7d32"); y+=35
+        d.rectangle([15,y,W-15,y+28], fill="#fce4ec")
+        d.text((25,y+6), f"🎯 10 Interview Q for {topic}", font=get_font(10,True), fill="#b71c1c"); y+=35
+        for i in range(1,6): d.text((25,y), f"{i}. Explain {topic}? Example? Complexity? Project?", font=get_font(8), fill="black"); y+=18
         pages.append(img)
-    fname=f"{course}_{name}.pdf"
+
+    fname=f"{course}_WhatsYourPlacementStory_{name}.pdf"
     pages[0].save(fname, save_all=True, append_images=pages[1:])
     return fname
 
-# ===== UI =====
-st.markdown("<h1 style='text-align:center;color:#0a1628;'>BhavPath Placement Predictor</h1>", unsafe_allow_html=True)
-st.markdown("<h2 style='text-align:center;color:#1e88e5;'>Where is your Placement Story..? 🚀</h2>", unsafe_allow_html=True)
-st.markdown("<p style='text-align:center;color:gray;'>Enter your details and generate your Placement DNA + Full 15 Pages Notes</p>", unsafe_allow_html=True)
-st.write("")
+# UI - MOTHAM KALIPI
+st.markdown("<h1 style='text-align:center;color:#0a1628'>BhavPath</h1>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align:center;color:#1565c0'>What's Your Placement Story..? 🚀</h2>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center'>9 Courses | 500+ Words Per Topic | For 58% Students | MEGA BOOK</p>", unsafe_allow_html=True)
 
-c1,c2,c3 = st.columns(3)
-with c1:
-    name = st.text_input("Your Name", placeholder="Ex : Bhavya Ponduri")
-with c2:
-    perc = st.text_input("Your Percentage", placeholder="Ex : 58")
-with c3:
-    branch = st.text_input("Your Branch", placeholder="Ex : CSE / AIML")
+c1,c2,c3=st.columns(3)
+with c1: name=st.text_input("Your Name", "Bhavya Ponduri")
+with c2: perc=st.text_input("Your Percentage", "58")
+with c3: branch=st.text_input("Your Branch", "AIML")
 
-course = st.selectbox("Select Course", list(ALL_DATA.keys()))
+course=st.selectbox("Select Course - BhavPath 9 Courses", list(SKILLS.keys()))
+st.info(f"📚 {course} - {', '.join(SKILLS[course])} - Each 500+ words!")
 
-st.write("")
-if st.button("🧬 Generate Your Placement DNA", type="primary", use_container_width=True):
-    if not name or not perc:
-        st.error("Name & Percentage enter chey Bhavya!")
-    else:
-        pdf=make_pdf(course, ALL_DATA[course], name, int(perc) if perc.isdigit() else 58, branch or "CSE")
-        with open(pdf,"rb") as f:
-            st.download_button(f"📥 Download {course} PDF - Your Placement DNA - {name}", f, file_name=pdf, mime="application/pdf", use_container_width=True)
-        st.success(f"Your Placement DNA Generated Bhavya! {perc}% Eligible List inside PDF!")
-        st.balloons()
+if st.button("🧬 Generate - What's Your Placement Story..?", type="primary", use_container_width=True):
+    pdf=make_pdf(course, name, int(perc) if perc.isdigit() else 58, branch)
+    with open(pdf,"rb") as f:
+        st.download_button(f"📥 Download {course} - {name} - What's Your Placement Story..?", f, file_name=pdf, mime="application/pdf", use_container_width=True)
+    st.success(f"Done! {course} - 20 Pages - What's Your Placement Story..?"); st.balloons()
 
-if st.button("📦 Generate All 9 PDFs at Once", use_container_width=True):
-    if not name:
-        st.error("Name enter chey!")
-    else:
-        zbuf=io.BytesIO()
-        with zipfile.ZipFile(zbuf,"w") as z:
-            for c in ALL_DATA.keys():
-                f=make_pdf(c, ALL_DATA[c], name, int(perc) if perc and perc.isdigit() else 58, branch or "CSE")
-                z.write(f)
-        zbuf.seek(0)
-        st.download_button("📦 Download All 9 PDFs ZIP", zbuf, file_name=f"BhavPath_All_{name}.zip", mime="application/zip", use_container_width=True)
-
-st.divider()
-if perc and perc.isdigit():
-    st.subheader(f"🎯 {name or 'You'} ({perc}%) Your DNA Says Eligible For:")
-    cols=st.columns(2)
-    i=0
-    for comp,cut in COMPANIES.items():
-        if int(perc)>=cut:
-            cols[i%2].write(f"✅ {comp} ({cut}%)")
-            i+=1
+if st.button("📦 Generate All 9 PDFs - MOTHAM KALIPI", use_container_width=True):
+    zbuf=io.BytesIO()
+    with zipfile.ZipFile(zbuf,"w") as z:
+        for c in SKILLS.keys():
+            fp=make_pdf(c, name, int(perc) if perc.isdigit() else 58, branch)
+            z.write(fp)
+    zbuf.seek(0)
+    st.download_button("📦 Download All 9 PDFs ZIP - MOTHAM KALIPI - What's Your Placement Story..?", zbuf, file_name=f"BhavPath_MOTHAM_{name}.zip", mime="application/zip", use_container_width=True)
