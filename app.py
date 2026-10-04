@@ -158,13 +158,13 @@ for i, pdf_path in enumerate(all_pdfs):
 # ===== SECRET ADMIN - ONLY YOU =====
 # Students ki kanipinchadu! Nuvvu?admin=bhavya add chesthe ne vastundi
 query_params = st.query_params
-is_admin = query_params.get("admin") == "bhavya"
+is_admin = query_params.get("admin") == "Bhavya Ponduri"
 
 if is_admin:
     st.markdown("---")
     st.markdown("## 🔐 Bhavya's Private Dashboard - Only You Can See")
     pwd = st.text_input("Enter Secret Password", type="password", placeholder="Enter password")
-    if pwd == "bhavya@123":
+    if pwd == "1234Bhav":
         if os.path.exists(CSV_FILE):
             df = pd.read_csv(CSV_FILE)
             st.success(f"Total Leads Collected: {len(df)}")
