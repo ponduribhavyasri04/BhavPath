@@ -1,5 +1,5 @@
 import streamlit as st
-import io, zipfile, textwrap
+import io, zipfile, textwrap, os, glob
 from PIL import Image, ImageDraw, ImageFont
 
 st.set_page_config(page_title="BhavPath - What's Your Placement Story?", layout="wide", page_icon="🎯")
@@ -66,7 +66,7 @@ def make_pdf(course, name, perc, branch):
             img=Image.new("RGB",(W,H),"white")
             d=ImageDraw.Draw(img)
             d.rectangle([0,0,W,55], fill="#0a1628")
-            d.text((15,18), f"BhavPath | What's Your Placement Story..? | {course} | {topic} | {name} {perc}%", font=get_font(8,True), fill="white")
+            d.text((15,18), f"BhavPath | {course} | {topic} | {name} {perc}%", font=get_font(8,True), fill="white")
             y=70
             d.rectangle([15,y,W-15,y+30], fill="#e3f2fd")
             d.text((25,y+7), f"📖 {topic} - 500+ WORDS - Part {part+1}/3", font=get_font(11,True), fill="#0a1628"); y+=40
@@ -109,17 +109,60 @@ with c3: branch=st.text_input("Your Branch", "AIML")
 course=st.selectbox("Select Course - BhavPath 9 Courses", list(SKILLS.keys()))
 st.info(f"📚 {course} - {', '.join(SKILLS[course])} - Each 500+ words!")
 
-if st.button("🧬 Generate - What's Your Placement Story..?", type="primary", use_container_width=True):
-    pdf=make_pdf(course, name, int(perc) if perc.isdigit() else 58, branch)
-    with open(pdf,"rb") as f:
-        st.download_button(f"📥 Download {course} - {name} - What's Your Placement Story..?", f, file_name=pdf, mime="application/pdf", use_container_width=True)
-    st.success(f"Done! {course} - 20 Pages - What's Your Placement Story..?"); st.balloons()
+colA, colB = st.columns(2)
+with colA:
+    if st.button("🧬 Generate - What's Your Placement Story..?", type="primary", use_container_width=True):
+        pdf=make_pdf(course, name, int(perc) if perc.isdigit() else 58, branch)
+        with open(pdf,"rb") as f:
+            st.download_button(f"📥 Download {course} - {name}", f, file_name=pdf, mime="application/pdf", use_container_width=True)
+        st.success(f"Done! {course} - 20 Pages"); st.balloons()
 
-if st.button("📦 Generate All 9 PDFs - MOTHAM KALIPI", use_container_width=True):
-    zbuf=io.BytesIO()
-    with zipfile.ZipFile(zbuf,"w") as z:
-        for c in SKILLS.keys():
-            fp=make_pdf(c, name, int(perc) if perc.isdigit() else 58, branch)
-            z.write(fp)
-    zbuf.seek(0)
-    st.download_button("📦 Download All 9 PDFs ZIP - MOTHAM KALIPI - What's Your Placement Story..?", zbuf, file_name=f"BhavPath_MOTHAM_{name}.zip", mime="application/zip", use_container_width=True)
+with colB:
+    if st.button("📦 Generate All 9 PDFs - MOTHAM KALIPI", use_container_width=True):
+        zbuf=io.BytesIO()
+        with zipfile.ZipFile(zbuf,"w") as z:
+            for c in SKILLS.keys():
+                fp=make_pdf(c, name, int(perc) if perc.isdigit() else 58, branch)
+                z.write(fp)
+        zbuf.seek(0)
+        st.download_button("📦 Download All 9 PDFs ZIP - MOTHAM KALIPI", zbuf, file_name=f"BhavPath_MOTHAM_{name}.zip", mime="application/zip", use_container_width=True)
+
+st.divider()
+
+# --- ORIGINAL 7 PDFs SECTION ADDED ---
+st.subheader("📚 Your Original 7 PDFs - BhavPath Materials")
+st.write("GitHub lo ee 7 PDFs upload chesaka automatic ga kanipisthayi. Ikada nundi direct download chesukovachu.")
+
+# List your 7 original files
+original_pdfs = [
+    "BhavPath A&S material.pdf",
+    "BhavPath C material.pdf",
+    "BhavPath DE Material.pdf",
+    "BhavPath java Material.pdf",
+    "BhavPath Python Material.pdf",
+    "BhavPath SE Material.pdf",
+    "BhavPath SQL Matrial.pdf"
+]
+
+found = 0
+cols = st.columns(2)
+for idx, pdf_name in enumerate(original_pdfs):
+    if os.path.exists(pdf_name):
+        found += 1
+        with cols[idx % 2]:
+            with open(pdf_name, "rb") as f:
+                st.download_button(f"📥 {pdf_name}", f, file_name=pdf_name, mime="application/pdf", key=pdf_name)
+    else:
+        with cols[idx % 2]:
+            st.warning(f"⚠️ {pdf_name} - Upload pending")
+
+if found == 0:
+    st.info("👉 GitHub lo: Add file -> Upload files -> Nee D:\\Bhav Project lo unna 7 PDFs ni upload chey. Tarvata ikada download buttons automatic ga vasthayi!")
+
+# Also support any other PDFs in repo
+other_pdfs = glob.glob("*.pdf")
+extra = [p for p in other_pdfs if p not in original_pdfs and "WhatsYourPlacementStory" not in p and "BhavPath_MOTHAM" not in p]
+if extra:
+    st.write("Extra PDFs found in repo:")
+    for ep in extra:
+        st.write(f"- {ep}")
