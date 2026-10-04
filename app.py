@@ -2,7 +2,6 @@ import os
 import streamlit as st
 
 # ... nee form code same ...
-
 if st.session_state.get("show_skills", False):
     st.markdown("#### 📘 7 Skilled Materials")
     
