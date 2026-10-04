@@ -7,6 +7,7 @@ if "login" not in st.session_state:
     st.session_state.login = False
     st.session_state.btech = 70
 
+# ---------- LOGIN ----------
 if not st.session_state.login:
     st.title("🚀 BhavPath")
     st.write("Your Placement Journey Starts Here!")
@@ -14,7 +15,7 @@ if not st.session_state.login:
     full_name = st.text_input("Full Name", placeholder="Ex: Bhavya Ponduri")
     branch = st.selectbox("Branch", ["Data Science", "CSE", "ECE", "IT", "Other"], placeholder="Ex: Data Science")
     college = st.text_input("College Name", placeholder="Ex: Rise Krishna Sai Group Of Institutions")
-    btech = st.number_input("BTech Percentage %", 0, 100, 70)
+    btech = st.number_input("BTech Percentage %", min_value=0, max_value=100, value=70)
 
     if st.button("Submit & Get Access", use_container_width=True, type="primary"):
         if full_name and college:
@@ -23,49 +24,139 @@ if not st.session_state.login:
             st.session_state.btech = btech
             st.rerun()
         else:
-            st.error("Fill details")
+            st.error("Fill all details")
 
+# ---------- MAIN ----------
 else:
     st.title(f"Welcome {st.session_state.name} 🎉")
+    st.write(f"BTech: **{st.session_state.btech}%**")
     if st.button("Logout"):
-        st.session_state.login=False
+        st.session_state.login = False
         st.rerun()
 
     tab1, tab2, tab3 = st.tabs(["📚 Skilled Material", "💼 Interview Q&A", "📝 Weekly Tests"])
 
+    # TAB 1 - PDFs
     with tab1:
         st.subheader("📚 Your 7 PDFs")
         pdfs = [f for f in os.listdir(".") if f.lower().endswith(".pdf")]
+        if not pdfs:
+            st.warning("PDFs kanipinchaledu - root lo upload chey")
         for pdf in pdfs:
             with st.container(border=True):
                 st.write(f"📄 {pdf}")
-                with open(pdf,"rb") as f:
-                    st.download_button("Download", f, file_name=pdf, key=pdf, use_container_width=True)
+                with open(pdf, "rb") as f:
+                    st.download_button("View / Download", f, file_name=pdf, key=pdf, use_container_width=True)
 
+    # TAB 2 - Interview Q&A WITH ANSWERS
     with tab2:
-        st.subheader(f"💼 Interview Q&A - BTech {st.session_state.btech}%")
-        all_qs = {
-            "TCS NQT": ["Tell me about yourself?","What is OOPs?","C vs Java?","SDLC?","Reverse string?","DBMS?","Primary vs Foreign key?","Normalization?","Stack vs Queue?","Recursion?","Inheritance?","Polymorphism?","SQL Joins?","Exception handling?","Why TCS?"],
-            "Infosys": ["DBMS Normalization?","List vs Tuple?","Python decorator?","Exception handling?","OOPs?","3 bulbs puzzle?","SDLC?","Agile?","Cloud Computing?","Prime program?","Constructor?","Abstract vs Interface?","Indexing in SQL?","Your project?"],
+        st.subheader(f"💼 Interview Q&A With Answers")
+
+        all_qs_ans = {
+            "TCS NQT": [
+                ("Tell me about yourself?","I'm Bhavya from Data Science, Rise Krishna Sai Group. Strong in Python, SQL, DBMS. Did project on Student Management. Quick learner, looking to start career with TCS."),
+                ("What is OOPs? 4 Pillars?","OOPs = Object Oriented Programming. 4 Pillars: 1) Encapsulation - wrapping data in class, 2) Abstraction - hiding complex details, 3) Inheritance - child inherits parent, 4) Polymorphism - many forms like overloading/overriding."),
+                ("C vs Java?","C is procedural, manual memory (malloc), no OOPs. Java is OOPs, automatic GC, platform independent (JVM), secure."),
+                ("What is SDLC?","Software Development Life Cycle. Phases: Requirement, Design, Coding, Testing, Deployment, Maintenance. Models: Waterfall, Agile, Spiral."),
+                ("Reverse a string Python?","s='bhavya' => s[::-1] gives 'ayvahb'. Also ''.join(reversed(s)). Most used s[::-1]."),
+                ("What is DBMS?","DBMS is software to store/manage data. Eg MySQL. Features: ACID, avoids redundancy via Normalization."),
+                ("Primary vs Foreign Key?","Primary Key = unique+not null, identifies row. Foreign Key = refers to PK of other table, allows duplicate."),
+                ("What is Normalization?","To remove redundancy. 1NF atomic values, 2NF no partial dependency, 3NF no transitive dependency."),
+                ("Stack vs Queue?","Stack LIFO push/pop Undo. Queue FIFO enqueue/dequeue Printer queue, BFS."),
+                ("What is Recursion?","Function calling itself. Must have base case. Eg factorial: n*fact(n-1). Without base -> stack overflow."),
+                ("What is Inheritance?","Child gets parent properties. Types: Single, Multiple, Multilevel, Hierarchical."),
+                ("What is Polymorphism?","Many forms. Overloading same name diff params (compile time). Overriding child changes parent method (runtime)."),
+                ("SQL Joins?","INNER common rows, LEFT all left + common, RIGHT all right + common, FULL all both, CROSS cartesian."),
+                ("Exception Handling?","try: risky code, except: handle, finally: always runs. Eg try: 10/0 except: print error."),
+                ("Why TCS?","TCS No.1 IT company, great learning in TCS NQT, job security, my Data Science skills match TCS Digital."),
+            ],
+            "Infosys": [
+                ("DBMS & Normalization?","DBMS manages data. Normalization organizes tables to reduce redundancy using 1NF,2NF,3NF."),
+                ("List vs Tuple vs Set?","List [1,2] mutable ordered duplicate allowed. Tuple (1,2) immutable ordered duplicate allowed. Set {1,2} mutable unordered no duplicate."),
+                ("Python Decorator?","Adds extra functionality without modifying function. Uses @ symbol. Eg @login_required checks login."),
+                ("Exception Handling Python?","try/except/finally. try: a=10/0 except ZeroDivisionError: print Error finally: Done"),
+                ("What is OOPs?","Class blueprint, Object instance, Encapsulation wrapping, Abstraction hiding, Inheritance reusing, Polymorphism many forms."),
+                ("Puzzle 3 Bulbs?","Switch1 ON 5 mins OFF, Switch2 ON, go to room. ON=Switch2, OFF HOT=Switch1, OFF COLD=Switch3."),
+                ("What is SDLC?","Requirement, Design, Implementation, Testing, Deployment, Maintenance. Agile most used."),
+                ("Agile Methodology?","Iterative development in sprints 2 weeks. Daily standup, sprint planning, review, retrospective."),
+                ("Cloud Computing?","Services over internet storage, servers. Pay as you use. AWS, Azure, GCP. IaaS, PaaS, SaaS."),
+                ("Prime Number Program?","def is_prime(n): if n<2 return False; for i in range(2,int(n**0.5)+1): if n%i==0 return False; return True"),
+                ("Constructor?","Special method __init__ called when object created. def __init__(self,name): self.name=name"),
+                ("Abstract vs Interface?","Abstract 0-100% abstraction can have concrete methods. Interface 100% abstraction only abstract methods."),
+                ("Indexing in SQL?","Index speeds up SELECT. Like book index. Clustered physical order, Non-clustered separate. Slows INSERT."),
+                ("Tell about your project?","My project [Title] using Python/SQL. Problem [Problem]. Solution [Features]. Tech Python, MySQL. Outcome [Result]."),
+                ("Constructor Overloading?","Python no direct support, use default args: def __init__(self,a=None,b=None): handles multiple cases."),
+            ],
+            "Wipro": [
+                ("Stack vs Queue?","Stack LIFO undo, recursion. Queue FIFO BFS, printer queue. Both via list/linked list."),
+                ("SQL Joins?","INNER common, LEFT all left, RIGHT all right, FULL all both, CROSS cartesian."),
+                ("Agile Scrum?","Agile philosophy, Scrum framework. Roles PO, Scrum Master, Team. Events Sprint, Standup, Review, Retrospective."),
+                ("Why hire you?","Strong Python/SQL, projects, quick learner, good communication, adaptable, align with Wipro values."),
+                ("What is OS?","OS interface between hardware and user. Manages CPU, memory, files. Eg Windows, Linux."),
+                ("Process vs Thread?","Process independent program own memory. Thread lightweight subprocess shares memory. Multithreading faster."),
+                ("Data Structure?","Way to store data efficiently. Linear Array, List, Stack, Queue. Non-linear Tree, Graph, HashMap."),
+                ("Linked List vs Array?","Array fixed size contiguous fast random access. Linked List dynamic non-contiguous fast insert/delete slow access."),
+                ("What is API?","Application Programming Interface allows two softwares to communicate. Eg Google Maps API. REST, SOAP, JSON."),
+                ("What is Git?","Version control tracks code changes. Commands init, add, commit, push, pull, branch, merge. Platform GitHub."),
+                ("OOPs Concepts?","Class blueprint, Object instance, Encapsulation wrapping, Abstraction hiding, Inheritance reusing, Polymorphism many forms."),
+                ("Where 5 years?","See myself as skilled developer/tech lead in Wipro, leading projects, learning AI/Cloud, contributing to growth."),
+                ("Final Year Project?","Explain Title, Objective, Tech stack, Architecture, Challenges, How solved, Outcome, Your role, Future improvements."),
+            ],
+            "Accenture": [
+                ("Cloud Computing?","On-demand IT resources over internet. Benefits scalability, cost saving. AWS EC2, S3. IaaS, PaaS, SaaS."),
+                ("SDLC Models?","Waterfall sequential, Agile iterative, V-Model testing each phase, Spiral risk, Prototype. Agile most used."),
+                ("Pseudo-code Round?","Tests logic not syntax. Practice reverse string, prime, Fibonacci, palindrome, factorial, sorting, pattern."),
+                ("Email Writing Test?","Formal: Subject clear, Greeting Dear Sir, Purpose first line, Body crisp, Thank you, Regards name. No grammar mistakes."),
+                ("What is Networking?","Connecting computers to share data. IP, DNS, TCP/IP, HTTP, LAN/WAN, OSI 7 layers. TCP reliable, UDP fast."),
+                ("AI vs ML?","AI machine mimics human intelligence. ML subset of AI learns from data without explicit programming. DL subset of ML."),
+                ("Communication Test?","Tests spoken English, pronunciation. Tip Speak slowly clearly confident no MTI practice versant."),
+                ("What is DevOps?","Dev + Ops Development + Operations. Automates SDLC via CI/CD. Tools Git, Jenkins, Docker, Kubernetes, AWS."),
+                ("SQL Queries?","Practice SELECT, WHERE, GROUP BY, HAVING, ORDER BY, JOIN, Subquery, Window functions, Aggregate SUM AVG COUNT."),
+                ("Aptitude Time & Work?","If A m days, B n days, together mn/(m+n). Practice Time-Speed-Distance, Profit Loss, Percentages."),
+                ("Why Accenture?","Global leader consulting, innovation AI/Cloud, great learning, inclusive culture, my Data Science fits Applied Intelligence."),
+            ],
+            "Capgemini": [
+                ("Java vs Python?","Java compiled static typed verbose fast enterprise. Python interpreted dynamic simple best for AI/ML slower but fast dev."),
+                ("Inheritance Example?","class Animal: def sound(): print Sound; class Dog(Animal): def sound(): print Bark -> Dog inherits Animal but overrides."),
+                ("SQL Injection?","Hacker injects malicious SQL via input. Eg ' OR '1'='1. Prevention parameterized queries, prepared statements, validation."),
+                ("Encapsulation?","Wrapping data + methods in class, hiding via private __var. Access via getter/setter. Eg bank balance private."),
+                ("Abstraction?","Hiding complex implementation showing only essential. Via abstract class/interface. Eg car driving see steering not engine."),
+                ("Fibonacci Series?","def fib(n): a,b=0,1; for i in range(n): print(a); a,b=b,a+b. Series 0,1,1,2,3,5,8... sum of previous two."),
+                ("Testing?","Process to find bugs. Types Manual vs Automation, Unit, Integration, System, UAT. STLC requirement, planning, execution, closure."),
+                ("Manual vs Automation?","Manual human tests good exploratory slow. Automation Selenium/Python fast reusable good regression."),
+                ("HTML/CSS?","HTML structure tags, CSS styling color layout. HTML skeleton CSS makeup. Bootstrap responsive."),
+                ("Profit Loss Aptitude?","CP Cost Price, SP Selling Price. Profit=SP-CP Loss=CP-SP Profit%=Profit/CP*100 Discount on MP."),
+                ("Why Capgemini?","Leader tech services strong Cloud/Digital innovation great work-life my skills match Data & AI practice."),
+            ]
         }
-        sel = st.selectbox("Company", list(all_qs.keys()))
-        for i,q in enumerate(all_qs[sel],1):
+
+        sel = st.selectbox("Company Select", list(all_qs_ans.keys()))
+        need_map = {"TCS NQT":60, "Infosys":65, "Wipro":60, "Accenture":65, "Capgemini":60}
+        need = need_map[sel]
+        if st.session_state.btech >= need:
+            st.success(f"✅ Eligible for {sel} (Need {need}%, You {st.session_state.btech}%)")
+        else:
+            st.error(f"❌ Not Eligible for {sel} (Need {need}%)")
+
+        for i, (q, a) in enumerate(all_qs_ans[sel], 1):
             with st.container(border=True):
-                st.write(f"**Q{i}. {q}**")
-                st.text_area("Your Answer", key=f"{sel}_{i}", placeholder="Type here...")
+                st.markdown(f"**Q{i}. {q}**")
+                with st.expander("👁️ Answer Choopudu"):
+                    st.info(a)
+                st.text_area("Practice Your Answer", key=f"prac_{sel}_{i}", placeholder="Type your answer here...")
 
+    # TAB 3 - WEEKLY TESTS
     with tab3:
-        st.subheader("📝 Weekly Tests - Auto Changes Every Week (20 Qs)")
+        st.subheader("📝 Weekly Tests")
 
-        # --- 20 QUESTIONS PER WEEK ---
         weekly_bank = {
-            "Week 1 - Aptitude (20 Qs)": [
-                ("If A does work in 10 days, B in 15, together?", ["6 days","5 days","8 days"], 0),
+            "Week 1 - Aptitude": [
+                ("A does work in 10 days, B in 15 days, together?", ["6 days","5 days","8 days"], 0),
                 ("Profit 20% on 500?", ["100","120","80"], 0),
                 ("15% of 200?", ["30","25","40"], 0),
-                ("Ratio 2:3 sum 50, numbers?", ["20,30","10,40","25,25"], 0),
+                ("Ratio 2:3 sum 50?", ["20,30","10,40","25,25"], 0),
                 ("Speed 60kmph, time 2hr, distance?", ["120km","100km","60km"], 0),
-                ("Simple Interest 10% for 2y on 1000?", ["200","100","300"], 0),
+                ("SI 10% for 2y on 1000?", ["200","100","300"], 0),
                 ("Average of 10,20,30?", ["20","25","15"], 0),
                 ("2,4,8,16 next?", ["32","24","20"], 0),
                 ("If SP=600 Profit 20% CP?", ["500","400","550"], 0),
@@ -79,12 +170,12 @@ else:
                 ("10% discount on 1000?", ["900","800","950"], 0),
                 ("2:5 = x:20, x?", ["8","10","6"], 0),
                 ("Even number?", ["2","3","5"], 0),
-                ("Probability of head in coin?", ["0.5","1","0"], 0),
+                ("Probability of head?", ["0.5","1","0"], 0),
             ],
-            "Week 2 - Python + SQL (20 Qs)": [
+            "Week 2 - Python + SQL": [
                 ("List is mutable?", ["Yes","No"], 0),
                 ("Primary key allows null?", ["Yes","No"], 1),
-                ("Python tuple mutable?", ["Yes","No"], 1),
+                ("Tuple mutable?", ["Yes","No"], 1),
                 ("SQL full form?", ["Structured Query Language","Simple Query","None"], 0),
                 ("len([1,2,3])?", ["3","2","1"], 0),
                 ("SELECT * FROM table is?", ["DQL","DDL","DML"], 0),
@@ -103,8 +194,8 @@ else:
                 ("UNIQUE key allows null?", ["Yes","No"], 0),
                 ("print(type([]))?", ["list","array","tuple"], 0),
             ],
-            "Week 3 - OOPs + DBMS (20 Qs)": [
-                ("How many pillars OOPs?", ["4","3","5"], 0),
+            "Week 3 - OOPs + DBMS": [
+                ("How many pillars in OOPs?", ["4","3","5"], 0),
                 ("Encapsulation means?", ["Wrapping data","Inheritance","Both"], 0),
                 ("Inheritance example?", ["Child gets parent property","Opposite","None"], 0),
                 ("Polymorphism means?", ["Many forms","One form","No form"], 0),
@@ -125,10 +216,10 @@ else:
                 ("What is Super key?", ["Superset of candidate key","Subset","None"], 0),
                 ("Candidate key?", ["Minimal super key","Maximal","None"], 0),
             ],
-            "Week 4 - Mock Placement (20 Qs)": [
+            "Week 4 - Mock Placement": [
                 ("Tell me about yourself should have?", ["Project + Skills + Strength","Only name","Only college"], 0),
                 ("Why should we hire you?", ["Skills + Project + Attitude","Because I need job","Don't know"], 0),
-                ("Where 5 years?", ["Growth in company","No idea","Leave company"], 0),
+                ("Where do you see yourself in 5 years?", ["Growth in company","No idea","Leave company"], 0),
                 ("Strength?", ["Problem solving","Lazy","Angry"], 0),
                 ("What is SDLC?", ["Software Development Life Cycle","System...","None"], 0),
                 ("Agile is?", ["Iterative development","Waterfall","Both"], 0),
@@ -150,14 +241,12 @@ else:
         }
 
         week = st.selectbox("Select Week", list(weekly_bank.keys()))
-        st.info(f"📅 {week} - 20 Questions - Weekly maaruthundi!")
 
         score = 0
-        answers = {}
-        for i, (q, opts, correct) in enumerate(weekly_bank[week]):
+        for i, (q, opts, corr) in enumerate(weekly_bank[week]):
             st.write(f"**Q{i+1}. {q}**")
-            ans = st.radio(f"Select", opts, key=f"{week}_{i}", index=None)
-            if ans is not None and opts.index(ans) == correct:
+            ans = st.radio("Select", opts, key=f"{week}_{i}", index=None)
+            if ans and opts.index(ans) == corr:
                 score += 1
 
         if st.button("Submit Test", type="primary", use_container_width=True):
