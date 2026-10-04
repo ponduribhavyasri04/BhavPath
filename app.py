@@ -49,7 +49,7 @@ else:
         st.subheader(f"💼 Interview Q&A With Answers")
         all_qs_ans = {
             "TCS NQT": [
-                ("Tell me about yourself?","I'm Bhavya from Data Science, Rise Krishna Sai Group. Strong in Python, SQL, DBMS. Did project on Student Management. Quick learner, looking to start career with TCS."),
+                ("Tell me about yourself?","I'm Bhavya from Data Science, Rise Krishna Sai Group of Institutions. Strong in Python, SQL, DBMS. Did project on Student Management. Quick learner, looking to start career with TCS."),
                 ("What is OOPs? 4 Pillars?","OOPs = Object Oriented Programming. 4 Pillars: 1) Encapsulation - wrapping data in class, 2) Abstraction - hiding complex details, 3) Inheritance - child inherits parent, 4) Polymorphism - many forms."),
                 ("C vs Java?","C is procedural, manual memory, no OOPs. Java is OOPs, automatic GC, platform independent (JVM), secure."),
                 ("What is SDLC?","Software Development Life Cycle. Phases: Requirement, Design, Coding, Testing, Deployment, Maintenance. Models: Waterfall, Agile."),
