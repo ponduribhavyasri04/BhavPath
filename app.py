@@ -22,133 +22,108 @@ if st.button("GENERATE MY PLACEMENT DNA", use_container_width=True, type="primar
     if per_val>=75: st.write("🔥 Amazon, Microsoft, Google")
 
 st.markdown("---")
-st.markdown("### 📦 MEGA Interview Questions Bank - 100+ Q&A")
+st.markdown("### Interview Questions")
 
 company_qa = {
-    "TCS Ninja (20 Q&A)": [
-        ("What is OOPs? 4 Pillars?", "Encapsulation (data hiding), Abstraction (hide complexity), Inheritance (reuse), Polymorphism (many forms)"),
-        ("Difference C vs Java?", "C procedural, manual memory, no OOPs. Java OOPs, auto GC, platform independent via JVM"),
-        ("What is SDLC? Phases?", "Req Analysis -> Design -> Coding -> Testing -> Deployment -> Maintenance"),
-        ("Reverse string program?", "Python: s[::-1], C: loop from end, Java: StringBuilder reverse()"),
-        ("What is pointer?", "Variable storing address of another variable. * for value, & for address"),
-        ("Array vs Linked List?", "Array fixed, contiguous. LL dynamic, non-contiguous, extra memory for pointer"),
-        ("What is DBMS?", "Database Management System to store, retrieve, manage data. Ex: MySQL, Oracle"),
-        ("Final year project explanation?", "Tell Title, Tech stack, Your role, Challenges, Outcome in 2 mins STAR format"),
-        ("Are you willing to relocate/night shift?", "Yes, I am flexible and adaptable as per company needs and ready to learn"),
-        ("What is inheritance? Types?", "Acquiring properties of parent. Types: Single, Multiple, Multilevel, Hierarchical, Hybrid"),
-        ("What is polymorphism? Example?", "Same function different behavior. Compile-time (overloading), Runtime (overriding)"),
-        ("Explain Agile?", "Iterative development, sprints 2-4 weeks, daily standups, customer feedback"),
-        ("What is testing? Types?", "Manual, Automation. Unit, Integration, System, UAT. Black box, White box"),
-        ("Palindrome program?", "Check if string == reverse. Python: s==s[::-1]"),
-        ("Prime number logic?", "Check divisibility from 2 to sqrt(n). If no divisor -> prime"),
-        ("Fibonacci series?", "0,1,1,2,3,5... next = sum of previous two. Use loop or recursion"),
-        ("What is OS? Types?", "Manages hardware. Types: Batch, Time-sharing, Distributed, Real-time"),
-        ("What is deadlock? How to avoid?", "2 processes waiting forever. Avoid by breaking any of 4 necessary conditions"),
-        ("Tell me about yourself?", "Name, College, Branch, %, Skills, Projects, Internship, Strength, Why TCS"),
-        ("Why should we hire you?", "I have required technical skills + communication + quick learner + adaptable")
+    "TCS Ninja": [
+        ("What is OOPs?", "4 pillars: Encapsulation, Abstraction, Inheritance, Polymorphism"),
+        ("Difference C vs Java?", "C procedural, manual memory. Java OOPs, auto GC, platform independent"),
+        ("What is SDLC?", "Requirement, Design, Coding, Testing, Deployment, Maintenance"),
+        ("Reverse a string?", "Python s[::-1], C loop from end"),
+        ("What is pointer?", "Variable storing address. * value, & address"),
+        ("Array vs Linked List?", "Array fixed contiguous, LL dynamic non-contiguous"),
+        ("What is DBMS?", "Database Management System - MySQL, Oracle"),
+        ("Explain your project?", "Title, Tech stack, Role, Challenges, Outcome - 2 mins"),
+        ("Ready to relocate?", "Yes, flexible as per company needs"),
+        ("What is inheritance?", "Acquiring parent properties. Single, Multiple, Multilevel etc"),
+        ("Polymorphism example?", "Same function different behavior - overloading, overriding"),
+        ("Agile methodology?", "Iterative, sprints 2-4 weeks, daily standup"),
+        ("Palindrome program?", "Check s == s[::-1]"),
+        ("What is OS?", "Manages hardware - Batch, Time-sharing, Distributed"),
+        ("Deadlock?", "2 processes waiting forever - 4 conditions"),
+        ("Tell me about yourself?", "Name, College, Branch, Skills, Project, Why TCS"),
+        ("Why hire you?", "Required skills + quick learner + adaptable")
     ],
-    "Infosys (15 Q&A)": [
-        ("List vs Tuple vs Set vs Dict?", "List mutable [], Tuple immutable (), Set unique {}, Dict key:value {}"),
-        ("Explain Joins with example?", "INNER: common, LEFT: all left + common right, RIGHT opposite, FULL all"),
-        ("Primary vs Foreign vs Unique key?", "Primary unique+not null, Foreign references primary of other table, Unique can be null but unique"),
-        ("What is normalization?", "Reduce redundancy. 1NF atomic, 2NF no partial dependency, 3NF no transitive"),
-        ("Python decorators?", "Function wrapping another function to extend behavior without modifying - @decorator"),
-        ("What is exception handling?", "try, except, finally. To handle runtime errors gracefully"),
-        ("Puzzle - 3L and 5L jug 4L?", "Fill 5L, pour to 3L -> 2L left in 5L, empty 3L, pour 2L to 3L, fill 5L, pour 1L to 3L -> 4L in 5L"),
-        ("What is API?", "Application Programming Interface - way for 2 apps to communicate. REST, SOAP"),
-        ("OOPs real life example?", "Car - Class, my Car - Object, Engine - Encapsulation, Different cars - Inheritance"),
-        ("SQL 2nd highest salary?", "SELECT MAX(sal) FROM emp WHERE sal < (SELECT MAX(sal) FROM emp)"),
-        ("What is indexing in DB?", "Speeds up retrieval. Creates data structure for fast search, but slows insert"),
-        ("Swap 2 numbers without 3rd variable?", "a=a+b, b=a-b, a=a-b OR a,b=b,a in Python"),
-        ("What is SDLC vs STLC?", "SDLC dev lifecycle, STLC testing lifecycle - planning, designing, execution, closure"),
-        ("Explain your project challenges?", "Use STAR - what problem, how solved, what learned"),
-        ("Where do you see yourself in 5 years?", "In a responsible role, leading team, expert in tech, contributing to Infosys growth")
+    "Infosys": [
+        ("List vs Tuple?", "List mutable [], Tuple immutable () faster"),
+        ("What are Joins?", "INNER common, LEFT all left, RIGHT all right, FULL all"),
+        ("Primary vs Foreign Key?", "Primary unique identifier, Foreign links to other table primary"),
+        ("What is normalization?", "Reduce redundancy - 1NF atomic, 2NF, 3NF"),
+        ("Python decorators?", "Wrapping function to extend behavior - @decorator"),
+        ("Exception handling?", "try, except, finally to handle errors gracefully"),
+        ("3L 5L jug puzzle 4L?", "Fill 5L pour to 3L leave 2L, empty 3L, pour 2L to 3L, fill 5L pour 1L -> 4L left"),
+        ("What is API?", "Interface for 2 apps to communicate - REST, SOAP"),
+        ("SQL 2nd highest salary?", "SELECT MAX(sal) WHERE sal < (SELECT MAX(sal) FROM emp)"),
+        ("What is indexing?", "Speeds retrieval, slows insert"),
+        ("Swap without 3rd var?", "a,b=b,a in Python"),
+        ("SDLC vs STLC?", "SDLC development, STLC testing lifecycle"),
+        ("5 years goal?", "Responsible role, expert, contributing to Infosys growth")
     ],
-    "Amazon SDE (25 Q&A) - TOP": [
-        ("Two Sum - LeetCode 1", "HashMap O(n): dict={}; for i,num in enumerate: if target-num in dict: return"),
-        ("Reverse Linked List", "Iterative: prev=None, curr=head, while curr: next=curr.next, curr.next=prev, prev=curr, curr=next"),
-        ("LRU Cache Design", "HashMap + Doubly LL. O(1) get/put. Remove LRU when capacity full"),
-        ("Valid Parentheses", "Use Stack: push opening, if closing check top matches, else false"),
-        ("Merge Two Sorted Lists", "Dummy node, compare and attach smaller, move pointer"),
-        ("What is AWS? Services?", "Amazon Web Services. EC2 compute, S3 storage, RDS database, Lambda serverless, VPC network"),
-        ("EC2 vs S3 vs Lambda?", "EC2 server you manage, S3 file storage, Lambda run code without server"),
-        ("What is System Design? URL shortener?", "Requirements, Capacity, API, DB design (base62), Scaling, Caching"),
-        ("Explain CAP Theorem?", "Consistency, Availability, Partition Tolerance - can have only 2 of 3 in distributed system"),
-        ("What is load balancer?", "Distributes traffic across servers. Types: ALB, NLB, Round robin, Least connections"),
-        ("Leadership Principle - Ownership?", "Never say that's not my job. Take initiative, show example when you took responsibility beyond role"),
-        ("Tell me time you failed?", "STAR: Project deadline missed due to underestimation, took ownership, fixed by extra hours, learned estimation"),
-        ("What is microservices vs monolith?", "Monolith single codebase, Microservices small independent services communicating via API"),
-        ("SQL vs NoSQL?", "SQL relational, structured, ACID. NoSQL non-relational, flexible, scalable - MongoDB, DynamoDB"),
-        ("What is Docker? Kubernetes?", "Docker containerizes app + dependencies. K8s orchestrates containers - scaling, deployment"),
-        ("Binary Search logic?", "Sorted array, low=0 high=n-1, mid=(low+high)//2, compare, adjust low/high. O(log n)"),
-        ("What is BST?", "Binary Search Tree - left < root < right. Search O(log n) average, O(n) worst"),
-        ("Explain OOPs with Amazon example?", "Order class, Payment inheritance, Encapsulation for price, Polymorphism for payment methods"),
-        ("What is multithreading?", "Multiple threads in same process sharing memory. Need synchronization to avoid race condition"),
-        ("Star pattern programs?", "Practice nested loops: *, triangle, pyramid, diamond patterns"),
-        ("What is deadlock in DB?", "Two transactions waiting for lock. Solution: timeout, deadlock detection graph"),
-        ("How to optimize slow query?", "Check EXPLAIN, add index, avoid SELECT *, optimize joins, caching"),
-        ("Tell me time you disagreed with teammate?", "Show respect, data-driven discussion, focused on customer, agreed and committed"),
-        ("Why Amazon?", "Customer obsession, innovation, leadership principles align with my ownership and learn & be curious"),
-        ("Where do you see yourself?", "SDE 2, owning critical service, mentoring juniors, impacting millions of customers")
+    "Amazon": [
+        ("Two Sum problem?", "Use HashMap O(n) - check target-num in dict"),
+        ("Reverse Linked List?", "prev=None, curr=head, next=curr.next, curr.next=prev, prev=curr, curr=next"),
+        ("LRU Cache?", "HashMap + Doubly LL O(1) get/put"),
+        ("Valid Parentheses?", "Stack - push opening, check closing matches"),
+        ("What is AWS?", "EC2 compute, S3 storage, RDS DB, Lambda serverless"),
+        ("EC2 vs S3 vs Lambda?", "EC2 virtual server, S3 file storage, Lambda run code without server"),
+        ("System Design - URL shortener?", "Base62 encoding, DB, caching, scaling"),
+        ("CAP Theorem?", "Consistency, Availability, Partition - only 2 possible"),
+        ("Load balancer?", "Distributes traffic - Round robin, Least connections"),
+        ("Ownership principle?", "Never say not my job - show example you took extra responsibility"),
+        ("Time you failed?", "STAR - Situation Task Action Result - show learning"),
+        ("Microservices vs Monolith?", "Monolith single, Microservices independent services via API"),
+        ("SQL vs NoSQL?", "SQL relational ACID, NoSQL flexible scalable MongoDB"),
+        ("Docker Kubernetes?", "Docker containerizes, K8s orchestrates containers"),
+        ("Binary Search?", "Sorted array, mid compare, adjust low/high O(log n)"),
+        ("Multithreading?", "Multiple threads sharing memory - need synchronization"),
+        ("Why Amazon?", "Customer obsession, innovation aligns with my values"),
+        ("Any question?", "Ask growth path, tech stack, team culture")
     ],
-    "Wipro + Accenture + Others (40 Q&A)": [
-        ("Cloud Computing types?", "IaaS (EC2), PaaS (Heroku), SaaS (Gmail). Public, Private, Hybrid"),
-        ("What is Agile? Scrum?", "Iterative, Sprint 2 weeks, Roles: PO, Scrum Master, Team. Ceremonies: Planning, Daily, Review, Retro"),
-        ("What is pseudo code?", "Informal description of program logic - no syntax, only logic for output questions"),
-        ("Time & Work aptitude?", "If A does in x days, 1 day work =1/x. Together = 1/x+1/y. Practice formulas"),
-        ("What is CN? OSI layers?", "7 layers: Physical, Data Link, Network, Transport, Session, Presentation, Application"),
-        ("TCP vs UDP?", "TCP reliable, connection oriented, 3-way handshake. UDP fast, unreliable, no connection - video streaming"),
-        ("What is HTTP vs HTTPS?", "HTTP port 80 plain text, HTTPS port 443 encrypted via SSL/TLS"),
-        ("What is DNS?", "Domain Name System - converts domain name to IP - like phonebook"),
-        ("C program - factorial recursion?", "int fact(int n){ if(n<=1) return 1; return n*fact(n-1);}"),
-        ("Java String vs StringBuilder?", "String immutable, StringBuilder mutable faster for modifications"),
-        ("What is final, finally, finalize?", "final constant/class can't inherit, finally block always executes, finalize GC method"),
-        ("What is SQL injection?", "Security attack by injecting SQL via input. Prevent by prepared statements"),
-        ("Aptitude - Profit Loss?", "CP cost, SP selling, Profit=SP-CP, % = Profit/CP*100"),
-        ("Logical - Blood relation?", "Practice family tree, coded relations"),
-        ("Communication - Essay tips?", "Intro, Body 3 points with examples, Conclusion. Use simple sentences, no grammar mistake"),
-        ("Group Discussion tips?", "Initiate if confident, listen, give chance, add data points, summarize, don't dominate"),
-        ("HR - Strength Weakness?", "Strength: quick learner, adaptable. Weakness: perfectionist but learning to prioritize (show improvement)"),
-        ("Why our company?", "Mention company values, projects, learning opportunities, your skills align - be specific not generic"),
-        ("What is data structure?", "Way to organize data - Array, LL, Stack, Queue, Tree, Graph, HashMap"),
-        ("Stack vs Queue?", "Stack LIFO - push/pop. Queue FIFO - enqueue/dequeue. Stack: undo, Queue: scheduling"),
-        # 20 more quick
-        ("What is Big O?", "Time complexity - O(1), O(n), O(n^2), O(log n)"),
-        ("What is AI vs ML vs DL?", "AI mimics human, ML learns from data, DL uses neural networks"),
-        ("Python - lambda?", "Anonymous function: lambda x: x*2"),
-        ("What is Git?", "Version control - git add, commit, push, pull, branch, merge"),
-        ("What is SDLC models?", "Waterfall, Agile, Spiral, V-model, Iterative"),
-        ("Test case vs Test scenario?", "Scenario what to test, Case how to test with steps, data, expected"),
-        ("What is bug life cycle?", "New -> Assigned -> Open -> Fixed -> Retest -> Verified -> Closed"),
-        ("Difference Verification Validation?", "Verification are we building right product? Validation are we building product right?"),
-        ("What is resume? Tips?", "1 page, Skills top, Projects with outcome, No spelling mistakes, ATS friendly"),
-        ("Email writing format?", "Subject clear, Greeting, Purpose in 2 lines, Action needed, Thank you, Signature"),
-        ("Explain Internet of Things?", "Devices connected via internet - sensors, data, automation. Ex: Smart home"),
-        ("What is blockchain?", "Decentralized ledger, blocks chained via hash, immutable, used in crypto"),
-        ("Aptitude - Speed Distance?", "Speed=Distance/Time, Convert kmph to m/s *5/18"),
-        ("Number series - next?", "Practice patterns: difference, ratio, squares, primes, alternate"),
-        ("Syllogism logic?", "All A are B, Some B are C conclusions - use Venn diagram"),
-        ("What is 5G?", "5th gen mobile network - high speed, low latency, mmWave"),
-        ("Latest tech - ChatGPT?", "LLM, Transformer architecture, trained on huge data, generative AI"),
-        ("Group Task - Leadership?", "Show initiative, distribute work, motivate, take responsibility"),
-        ("Salary negotiation?", "Don't ask early, research market, give range, focus on learning first"),
-        ("Any questions for us?", "Always ask: Growth path, Tech stack, Team culture, Learning opportunities - never say no")
+    "Wipro": [
+        ("Recursion example?", "Function calling itself with base condition - factorial"),
+        ("Array vs Linked List?", "Array fixed, LL dynamic extra pointer memory"),
+        ("What is OS Deadlock?", "Mutual exclusion, Hold wait, No preemption, Circular wait"),
+        ("Prime number program?", "Check divisibility 2 to sqrt(n)"),
+        ("Fibonacci?", "0,1,1,2,3,5 sum of previous two"),
+        ("What is Cloud?", "IaaS, PaaS, SaaS - AWS, Azure"),
+        ("TCP vs UDP?", "TCP reliable handshake, UDP fast unreliable"),
+        ("HTTP vs HTTPS?", "HTTP 80 plain, HTTPS 443 encrypted SSL"),
+        ("Java String vs StringBuilder?", "String immutable, Builder mutable faster"),
+        ("Final finally finalize?", "final constant, finally always executes, finalize GC"),
+        ("Testing types?", "Unit, Integration, System, UAT - Manual, Automation")
+    ],
+    "Accenture": [
+        ("Cloud Computing?", "On-demand IT resources - IaaS PaaS SaaS"),
+        ("Agile Scrum?", "Sprint 2 weeks, PO, Scrum Master, Planning Daily Review Retro"),
+        ("Pseudo code output?", "Practice loops, conditions, operators"),
+        ("CN OSI layers?", "Physical, Data Link, Network, Transport, Session, Presentation, Application"),
+        ("What is DNS?", "Converts domain to IP - phonebook"),
+        ("Git commands?", "add, commit, push, pull, branch, merge"),
+        ("Big O?", "Time complexity O(1), O(n), O(n2), O(log n)"),
+        ("AI ML DL?", "AI mimics human, ML learns data, DL neural networks")
+    ],
+    "Capgemini": [
+        ("2nd Highest Salary SQL?", "SELECT MAX(salary) WHERE salary < (SELECT MAX(salary))"),
+        ("Inheritance types?", "Single, Multiple, Multilevel, Hierarchical, Hybrid"),
+        ("Aptitude Time Work?", "1 day work = 1/x, together = 1/x+1/y"),
+        ("Stack vs Queue?", "Stack LIFO push/pop, Queue FIFO enqueue/dequeue"),
+        ("Group Discussion tips?", "Initiate, listen, give chance, add data, summarize")
     ]
 }
 
-choice = st.selectbox("👉 Select Company Bank", ["--Choose--"] + list(company_qa.keys()))
+selected = st.selectbox("Select Company", ["--Choose Company--"] + list(company_qa.keys()))
 
-if choice!= "--Choose--":
-    st.markdown(f"### 🔥 {choice} - Full Q&A Bank")
-    for idx, (q, a) in enumerate(company_qa[choice], 1):
-        with st.expander(f"{idx}. Q: {q}"):
-            st.success(f"Ans: {a}")
+if selected!= "--Choose Company--":
+    st.markdown(f"#### {selected} - Interview Questions")
+    for q, a in company_qa[selected]:
+        with st.expander(f"Q: {q}"):
+            st.write(f"Ans: {a}")
 
 st.markdown("---")
-st.markdown("### 📚 BhavPath Materials")
+st.markdown("### Study Materials")
 all_pdfs = sorted(list(set(glob.glob("*.pdf") + glob.glob("*.PDF"))))
 st.write(f"Total Found: {len(all_pdfs)} PDFs")
 for i, pdf_path in enumerate(all_pdfs):
     fname = os.path.basename(pdf_path)
     with open(pdf_path, "rb") as f:
-        st.download_button(f"📥 {fname}", f, file_name=fname, key=f"mega_{i}", use_container_width=True)
+        st.download_button(f"📥 {fname}", f, file_name=fname, key=f"clean_{i}", use_container_width=True)
