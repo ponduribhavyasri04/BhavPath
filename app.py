@@ -1,77 +1,87 @@
 import streamlit as st
 import os
 
-st.set_page_config(page_title="BhavPath", layout="wide")
-st.title("🚀 BhavPath")
-st.write("Your Placement Journey Starts Here!")
+st.set_page_config(page_title="BhavPath", layout="centered")
 
-# Session to keep login
-if "logged" not in st.session_state:
-    st.session_state.logged = False
+if "login" not in st.session_state:
+    st.session_state.login = False
+    st.session_state.btech = 70
 
-# --- 1. LOGIN FORM (Nee Old Screen) ---
-if not st.session_state.logged:
-    st.subheader("Student Details")
-    full_name = st.text_input("Full Name", value="bhavya ponduri")
+# ---------- LOGIN PAGE (Nee Photo lo unna Same Page) ----------
+if not st.session_state.login:
+    st.title("🚀 BhavPath")
+    st.write("Your Placement Journey Starts Here!")
+    
+    full_name = st.text_input("Full Name", placeholder="Ex: Bhavya Ponduri")
     branch = st.selectbox("Branch", ["Data Science", "CSE", "ECE", "IT", "Other"])
-    college = st.text_input("College Name", value="Rise")
-    phone = st.text_input("Phone Number", value="987654321")
-    btech_per = st.number_input("BTech Percentage %", 0, 100, 70, help="Idi kotta add chesa Bhavya!")
+    college = st.text_input("College Name", placeholder="Ex: Rise Krishna Sai Group Of Institutions")
+    phone = st.text_input("Phone Number", placeholder="Ex: 9876543210")
+    # KOTHA ADDED - BTECH %
+    btech = st.number_input("BTech Percentage %", min_value=0, max_value=100, value=70)
 
-    if st.button("Submit & Get Access", use_container_width=True, type="primary"):
+    if st.button("Submit & Get Access", use_container_width=True):
         if full_name and college and phone:
-            st.session_state.logged = True
+            st.session_state.login = True
             st.session_state.name = full_name
-            st.session_state.btech = btech_per
+            st.session_state.btech = btech
             st.rerun()
         else:
             st.error("Fill all details")
 
-# --- 2. AFTER LOGIN - MAIN APP ---
+# ---------- AFTER SUBMIT ----------
 else:
-    st.success(f"Welcome {st.session_state.name}! BTech: {st.session_state.btech}%")
+    st.title(f"Welcome {st.session_state.name} 🎉")
+    st.write(f"Your BTech: **{st.session_state.btech}%**")
+    
     if st.button("Logout"):
-        st.session_state.logged = False
+        st.session_state.login = False
         st.rerun()
 
     tab1, tab2 = st.tabs(["📚 Skilled Material", "💼 Interview Questions"])
 
     with tab1:
-        st.header("📚 Your Skilled Materials - 7 PDFs")
+        st.subheader("📚 Your 7 PDFs")
         pdfs = [f for f in os.listdir(".") if f.lower().endswith(".pdf")]
         if pdfs:
             for pdf in pdfs:
                 with st.container(border=True):
-                    col1, col2 = st.columns([3,1])
-                    col1.write(f"📄 **{pdf}**")
+                    st.write(f"📄 {pdf}")
                     with open(pdf, "rb") as f:
-                        col2.download_button("View / Download", f, file_name=pdf, key=pdf, use_container_width=True)
+                        st.download_button("View / Download", f, file_name=pdf, key=f"pdf_{pdf}", use_container_width=True)
         else:
-            st.warning("PDFs not found in GitHub root")
+            st.error("PDFs kanipinchaledu - GitHub lo root lo pettu")
 
     with tab2:
-        st.header("💼 Company-wise Interview Questions")
+        st.subheader("💼 Company Eligibility + Questions")
+        
+        b = st.session_state.btech
+        st.info(f"Nee BTech {b}% tho eligible companies:")
 
         companies = {
-            "TCS NQT": {"btech": 60, "cgpa": 6.0, "qs": ["Tell me about yourself?", "What is OOPs? 4 pillars?", "C vs Java?", "What is SDLC?", "Reverse string program"]},
-            "Infosys": {"btech": 65, "cgpa": 6.5, "qs": ["What is DBMS? Normalization?", "List vs Tuple?", "Exception handling?", "Puzzle: 3 bulbs"]},
-            "Wipro": {"btech": 60, "cgpa": 6.0, "qs": ["Stack vs Queue?", "SQL Joins?", "Agile & Scrum?", "Why hire you?"]},
-            "Accenture": {"btech": 65, "cgpa": 6.5, "qs": ["What is Cloud Computing?", "SE Models?", "Pseudo-code?", "Email writing"]},
-            "Capgemini": {"btech": 60, "cgpa": 6.0, "qs": ["Java vs Python?", "Inheritance example?", "SQL Injection?"]}
+            "TCS NQT": 60,
+            "Wipro": 60,
+            "Capgemini": 60,
+            "Infosys": 65,
+            "Accenture": 65,
         }
-
-        # Auto check with entered BTech %
-        my_btech = st.session_state.btech
-        st.info(f"Your BTech % = {my_btech}% - Check eligible companies below")
-
-        eligible = [c for c, d in companies.items() if my_btech >= d["btech"]]
-        st.success(f"✅ You are eligible for: {', '.join(eligible) if eligible else 'None - Improve %'}")
+        
+        for comp, need in companies.items():
+            if b >= need:
+                st.success(f"✅ {comp} - Eligible (Need {need}%)")
+            else:
+                st.error(f"❌ {comp} - Not Eligible (Need {need}%, You have {b}%)")
 
         st.divider()
-        selected = st.selectbox("Select Company for Questions", list(companies.keys()))
-        data = companies[selected]
-        st.write(f"**Eligibility for {selected}:** BTech {data['btech']}%+, CGPA {data['cgpa']}")
-        st.write(f"**Your Status:** {'✅ Eligible' if my_btech >= data['btech'] else '❌ Not Eligible'}")
-        st.subheader("Practice Questions:")
-        for i, q in enumerate(data["qs"], 1):
+        st.subheader("Interview Questions")
+        comp_sel = st.selectbox("Company Select chey", ["TCS NQT", "Infosys", "Wipro", "Accenture", "Capgemini"])
+        
+        qs = {
+            "TCS NQT": ["Tell me about yourself?", "What is OOPs?", "C vs Java?", "SDLC?", "Reverse a string?"],
+            "Infosys": ["DBMS? Normalization?", "List vs Tuple?", "Exception handling?", "3 bulbs puzzle"],
+            "Wipro": ["Stack vs Queue?", "SQL Joins?", "Agile? Scrum?", "Why hire you?"],
+            "Accenture": ["Cloud Computing?", "SE Models?", "Pseudo code?", "Email writing"],
+            "Capgemini": ["Java vs Python?", "Inheritance?", "SQL Injection?"]
+        }
+        for i, q in enumerate(qs[comp_sel], 1):
             st.write(f"{i}. {q}")
+         
