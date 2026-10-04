@@ -1,34 +1,57 @@
-import os
 import streamlit as st
+import pandas as pd
+import os
+from datetime import datetime
 
-# ... nee form code same ...
-if st.session_state.get("show_skills", False):
-    st.markdown("#### 📘 7 Skilled Materials")
-    
-    # Folder lo PDFs unte chupistundi, lekapote info isthundi
-    pdf_folder = "materials"  # GitHub lo ee folder create chey
-    if not os.path.exists(pdf_folder):
-        os.makedirs(pdf_folder, exist_ok=True)
-    
-    pdf_files = [f for f in os.listdir(pdf_folder) if f.endswith(".pdf")] if os.path.exists(pdf_folder) else []
+st.set_page_config(page_title="BhavPath", layout="centered")
+st.title("🚀 BhavPath")
+st.caption("Your Placement Journey Starts Here!")
 
-    if len(pdf_files) == 0:
-        st.warning("⚠️ Nuvvu inka PDFs upload cheledu Bhavya!")
-        st.info("""
-        **PDF ela add cheyali:**
-        1. GitHub -> Add file -> Upload files
-        2. `materials` ane folder lo 7 PDFs petu
-        3. Reboot kottu - automatic ga vastayi
-        """)
-        # Demo ki fake list
-        for m in ["Communication", "Resume", "Interview", "Aptitude", "GD", "Body Language", "Placement"]:
-            with st.container(border=True):
-                st.write(f"📄 {m}.pdf - (Upload pending)")
+# FORM WITH GREY EXAMPLE
+name = st.text_input("Full Name", placeholder="Ex: Bhavya Ponduri")
+branch = st.selectbox("Branch", ["Data Science","CSE","ECE","EEE","MECH","CIVIL"])
+college = st.text_input("College Name", placeholder="Ex: Rise Krishna Sai Group Of Institutions")
+percentage = st.text_input("Percentage", placeholder="Ex: 85% or 8.5 CGPA")
+phone = st.text_input("Phone Number", placeholder="Ex: 9876543210")
+
+if st.button("Submit & Get Access", type="primary", use_container_width=True):
+    if name and phone:
+        is_new = not os.path.isfile("leads.csv")
+        pd.DataFrame([{
+            "Date": datetime.now().strftime("%d-%m-%Y"),
+            "Name": name, "Branch": branch,
+            "College": college, "Per": percentage, "Phone": phone
+        }]).to_csv("leads.csv", mode='a', header=is_new, index=False)
+        st.success(f"Saved {name}! ✅")
+        st.balloons()
     else:
-        for pdf in pdf_files:
-            with st.container(border=True):
-                c1,c2 = st.columns([3,1])
-                with c1: st.write(f"📄 **{pdf}**")
-                with c2: 
-                    with open(os.path.join(pdf_folder, pdf), "rb") as f:
-                        st.download_button("View", f, file_name=pdf, key=pdf, use_container_width=True)
+        st.error("Name & Phone pettu Bhavya!")
+
+st.divider()
+
+# SKILLED MATERIAL
+with st.container(border=True):
+    st.markdown("### 📚 Click here to view all your skilled materials")
+    if st.button("Skilled Material", use_container_width=True, type="primary"):
+        st.session_state.show = not st.session_state.get("show", False)
+
+if st.session_state.get("show"):
+    folder = "materials"
+    if os.path.exists(folder):
+        for f in os.listdir(folder):
+            if f.endswith(".pdf"):
+                with st.container(border=True):
+                    c1,c2 = st.columns([3,1])
+                    c1.write(f"📄 {f}")
+                    with open(os.path.join(folder, f), "rb") as file:
+                        c2.download_button("View", file, file_name=f, key=f, use_container_width=True)
+    else:
+        st.info("7 PDFs kosam GitHub lo 'materials' folder create chesi upload chey!")
+
+# ADMIN - bhavpath.streamlit.app/?admin=bhavya
+if st.query_params.get("admin") == "bhavya":
+    pwd = st.text_input("Admin Password", type="password")
+    if pwd == "bhavya" and os.path.isfile("leads.csv"):
+        df = pd.read_csv("leads.csv")
+        st.dataframe(df, use_container_width=True)
+        st.download_button("Download CSV", df.to_csv(index=False), "leads.csv")
