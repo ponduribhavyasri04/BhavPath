@@ -58,4 +58,3 @@ for i, pdf_path in enumerate(all_pdfs):
     st.markdown(f"**{i+1}. {fname}**")
     with open(pdf_path, "rb") as f:
         st.download_button(f"📥 Download {fname}", f, file_name=fname, key=f"comp_{i}", use_container_width=True)
- 
