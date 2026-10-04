@@ -4,7 +4,6 @@ import os
 st.set_page_config(page_title="BhavPath", layout="centered")
 st.title("🚀 BhavPath")
 st.write("Your Placement Journey Starts Here!")
-
 # FORM
 name = st.text_input("Full Name", placeholder="Ex: Bhavya Ponduri")
 branch = st.selectbox("Branch", ["Data Science","CSE","ECE","EEE","MECH","CIVIL"])
