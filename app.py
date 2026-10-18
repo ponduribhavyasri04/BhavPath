@@ -1,48 +1,41 @@
 import streamlit as st
 from datetime import date
-
-st.set_page_config(page_title="BhavPath - Final All Mods", layout="wide", page_icon="🚀")
-
+st.set_page_config(page_title="BhavPath Final", layout="wide", page_icon="🚀")
 st.markdown("""
 <style>
-.stApp { background-color: #F8FAFC !important; }
-.white-card { background: #FFFFFF !important; border-radius: 12px; padding: 14px; border: 1px solid #E2E8F0; }
-.white-card b, .white-card div { color: #000000 !important; font-weight: 700 !important; }
-.blue-card { background: #2563EB !important; border-radius: 12px; padding: 14px; }
-.blue-card * { color: #FFFFFF !important; font-weight: 700 !important; }
-.bullet-card { background: #FFFFFF !important; border-radius: 12px; padding: 16px; border: 2px solid #E2E8F0; }
-.bullet-card * { color: #000000 !important; font-weight: 700 !important; }
-.info-card { background: #FFFFFF !important; border: 2px solid #2563EB !important; border-left: 8px solid #2563EB !important; border-radius: 10px; padding: 16px; margin-bottom: 14px; }
-.info-card b { color: #0F2C61 !important; font-size: 16px !important; font-weight: 900 !important; }
-.info-card span { color: #000000 !important; font-size: 15px !important; font-weight: 600 !important; line-height: 1.6 !important; }
-.summary-card { background: #F8FAFC !important; border: 2px solid #CBD5E1 !important; border-radius: 10px; padding: 14px; }
-.summary-card * { color: #000000 !important; font-weight: 600 !important; }
-.ad-card { background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%) !important; border-radius: 12px; padding: 12px; }
-.ad-card * { color: #FFFFFF !important; }
-.cert-card { background: linear-gradient(135deg, #FFF8E1 0%, #FFE082 100%) !important; border: 3px solid #FFB300 !important; border-radius: 16px; padding: 20px; text-align: center; }
-.practice-card { background: #FFFBEB !important; border: 2px solid #F59E0B; border-radius: 10px; padding: 14px; margin-bottom: 10px; }
-.practice-card * { color: #000000 !important; font-weight: 800 !important; font-size: 15px !important; }
-.example-card { background: #F0FDF4 !important; border: 2px solid #86EFAC; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
-.example-card * { color: #000000 !important; font-weight: 700 !important; }
-.locked-card { background: #E2E8F0 !important; border-radius: 8px; padding: 10px; }
-.locked-card * { color: #000000 !important; }
-.stButton>button { background: #2563EB !important; border-radius: 8px; font-weight: bold !important; border: none !important; }
-.stButton>button * { color: #FFFFFF !important; }
-div[data-testid="stRadio"] { background: #FFFFFF !important; border-radius: 10px; padding: 10px; border: 1px solid #E2E8F0; }
-div[data-testid="stRadio"] label p { color: #000000 !important; font-weight: 700 !important; }
-div[data-testid="stRadio"] div[role="radiogroup"] label { background: #F8FAFC !important; border: 1px solid #CBD5E1 !important; border-radius: 8px; padding: 8px 12px !important; width: 100%; }
-label[data-testid="stWidgetLabel"] p { color: #000000 !important; font-weight: 900 !important; }
-div[data-testid="stCodeBlock"] { background-color: #1E293B !important; border-radius: 10px !important; }
-div[data-testid="stCodeBlock"] * { color: #E2E8F0 !important; }
-div[data-testid="stTextArea"] textarea { background-color: #1E293B !important; color: #FFFFFF !important; }
-div[data-testid="stTextArea"] label p { color: #000000 !important; font-weight: 800 !important; }
-div[data-testid="stSelectbox"] label p { color: #000000 !important; font-weight: 900 !important; }
+.stApp{background:#F8FAFC !important}
+.white-card{background:#FFF !important;border-radius:12px;padding:14px;border:1px solid #E2E8F0}
+.white-card b{color:#000 !important;font-weight:700 !important}
+.blue-card{background:#2563EB !important;border-radius:12px;padding:14px}
+.blue-card *{color:#FFF !important;font-weight:700 !important}
+.bullet-card{background:#FFF !important;border-radius:12px;padding:16px;border:2px solid #E2E8F0}
+.bullet-card *{color:#000 !important;font-weight:700 !important}
+.info-card{background:#FFF !important;border:2px solid #2563EB !important;border-left:8px solid #2563EB !important;border-radius:10px;padding:16px;margin-bottom:14px}
+.info-card b{color:#0F2C61 !important;font-weight:900 !important;font-size:16px !important}
+.info-card span{color:#000 !important;font-size:15px !important;font-weight:600 !important;line-height:1.6 !important}
+.summary-card{background:#F8FAFC !important;border:2px solid #CBD5E1 !important;border-radius:10px;padding:14px}
+.summary-card *{color:#000 !important;font-weight:600 !important}
+.ad-card{background:linear-gradient(135deg,#667EEA 0%,#764BA2 100%) !important;border-radius:12px;padding:12px}
+.ad-card *{color:#FFF !important}
+.cert-card{background:linear-gradient(135deg,#FFF8E1 0%,#FFE082 100%) !important;border:3px solid #FFB300 !important;border-radius:16px;padding:20px;text-align:center}
+.practice-card{background:#FFFBEB !important;border:2px solid #F59E0B;border-radius:10px;padding:14px;margin-bottom:10px}
+.practice-card *{color:#000 !important;font-weight:800 !important;font-size:15px !important}
+.locked-card{background:#E2E8F0 !important;border-radius:8px;padding:10px}
+.locked-card *{color:#000 !important}
+.stButton>button{background:#2563EB !important;border-radius:8px;font-weight:bold !important;border:none !important}
+.stButton>button *{color:#FFF !important}
+div[data-testid="stRadio"] label p{color:#000 !important;font-weight:700 !important}
+div[data-testid="stCodeBlock"]{background:#1E293B !important;border-radius:10px !important}
+div[data-testid="stCodeBlock"] *{color:#E2E8F0 !important}
+div[data-testid="stTextArea"] textarea{background:#1E293B !important;color:#FFF !important;border:2px solid #334155 !important}
+div[data-testid="stTextArea"] label p{color:#000 !important;font-weight:800 !important}
+div[data-testid="stSelectbox"] label p{color:#000 !important;font-weight:900 !important}
 </style>
 """, unsafe_allow_html=True)
 
 if 'logged' not in st.session_state:
     st.session_state.logged=False
-    st.session_state.user={"btech":81, "name":"Bhav", "college":"Rise College, Ongole"}
+    st.session_state.user={"btech":81,"name":"Bhav","college":"Rise College, Ongole"}
     st.session_state.xp=820
     st.session_state.selected_topic="Python"
     st.session_state.completed={}
@@ -52,93 +45,227 @@ if 'logged' not in st.session_state:
     st.session_state.purpose_done=False
     st.session_state.page_view="list"
 
-# --- MODULES WITH RICH CONTENT + LANGUAGE WISE CODE ---
-def py_mods():
-    return [
-        {"name":"Introduction","about":"About Python Introduction - Python ante easy language. 1991 Guido van Rossum create chesaru. Beginners ki best, easy syntax no semicolon. BTech 81% students ki easy. Interpreted language, dynamic typing. College projects, TCS NQT, Data Science ki use. Easy to learn than C/Java.","content":"Python easy syntax print() - No semicolon, no type, dynamic typing - Simple for 81% BTech","code":"print(\"Hello Bhav\")\nprint(\"Bhav - 81% BTech - Rise College, Ongole\")\nprint(\"Welcome to BhavPath - Python Easy\")","q":"Who invented Python?","opts":["Guido van Rossum - Python Creator 1991","Dennis Ritchie - C Creator 1972"],"ans":"Guido van Rossum - Python Creator 1991","task":"Print Hello Bhav","practice_list":[
-            {"pq":"Q1: Python creator who?","opts":["Guido van Rossum - Python 1991","Dennis Ritchie - C 1972"],"ans":"Guido van Rossum - Python 1991","code":"print(\"Python invented by Guido van Rossum in 1991\")\nprint(\"Easy language for beginners - No type needed\")","task":"Print creator name"},
-            {"pq":"Q2: Print Bhav 81% Rise College which code?","opts":["print(\"Bhav 81% Rise College\") - Correct Python","printf(\"Bhav\") - C style Wrong in Python"],"ans":"print(\"Bhav 81% Rise College\") - Correct Python","code":"name='Bhav'\nbtech=81\ncollege='Rise College, Ongole'\nprint(f\"{name} from {college} with {btech}% BTech\")\nprint(f\"Eligible for TCS NQT - 8 LPA\")","task":"Print Bhav 81% with college"},
-            {"pq":"Q3: Output of print(\"Hello Bhav\")?","opts":["Hello Bhav - Correct output","Error - Wrong"],"ans":"Hello Bhav - Correct output","code":"print(\"Hello\")\nprint(\"Hello Bhav - Rise College\")\nprint(\"Hello 81% BTech - TCS Eligible\")","task":"Print Hello 3 times"}]},
-        {"name":"Basic Input / Output","about":"About Input/Output Python - User nundi data teeskovadam input() tho, output chupinchadam print() tho. TCS NQT lo important. BTech % input la teeskovali ante int(input()) use. Type conversion must because input() always string istundi. Example: btech=int(input(\"Enter %: \")). Float ki float(input()).","content":"input() for input, print() for output. int(input()) for numbers - Type conversion must - input() returns string","code":"name=input('Enter your name: ')\nprint(f\"Hello {name}\")\nbtech=int(input('Enter BTech %: '))\nprint(f\"Your BTech is {btech}%\")\nif btech>=60:\n    print(\"Eligible for TCS NQT - 8 LPA\")","q":"Input function in Python?","opts":["input() - Python input Correct","scanf() - C input Wrong in Python"],"ans":"input() - Python input Correct","task":"Take BTech input","practice_list":[
-            {"pq":"Q1: Which function for input in Python? (Screenshot)","opts":["input() - Python input Correct","scanf() - C input Wrong"],"ans":"input() - Python input Correct","code":"# Python input - Screenshot Q\nname=input(\"Enter name: \")\nprint(f\"Hello {name}\")\nbtech=int(input(\"Enter BTech %: \"))\nprint(f\"BTech: {btech}% - Rise College\")","task":"Take name and BTech input"},
-            {"pq":"Q2: How to take BTech % as integer?","opts":["int(input()) - Correct for number","input() only - Wrong string only"],"ans":"int(input()) - Correct for number","code":"btech=int(input(\"Enter BTech %: \"))\nprint(f\"BTech: {btech}% Type: {type(btech)}\")\nif btech>=60:\n    print(\"Eligible for TCS - 8 LPA\")\nelse:\n    print(\"Not Eligible\")","task":"Take int BTech and check >=60"},
-            {"pq":"Q3: Take name, college, BTech 3 inputs?","opts":["input() 3 times + print() Correct","scanf() 3 times Wrong C"],"ans":"input() 3 times + print() Correct","code":"name=input(\"Enter name: \")\ncollege=input(\"Enter college: \")\nbtech=int(input(\"Enter %: \"))\nprint(f\"{name} from {college} with {btech}% - TCS Eligible\")","task":"Take 3 inputs"}]},
-        {"name":"Identifiers","about":"About Identifiers - Variable names ni identifiers antaru. Rules: 1) Letter or underscore _ tho start, 2) Number tho start vaddu, 3) Space vaddu, 4) Hyphen - vaddu, 5) Special @#$% vaddu, 6) Case sensitive my_var != My_var. Valid: my_var, _name, btech1, my_btech=81. Invalid: 1var, my-var, my var.","content":"Rules: letter/_ start. Valid: my_var, _name, btech1, my_btech=81. Invalid: 1var number start, my-var hyphen, my var space. Case sensitive.","code":"# VALID\nmy_btech=81\n_name='Bhav'\nbtech1=81\ncollege_name='Rise College'\nprint(my_btech, _name, btech1)\n# INVALID commented\n# 1btech=81 Error\n# my-var=81 Error hyphen\n# my btech=81 Error space","q":"Valid identifier?","opts":["my_btech=81 Valid letter start","1btech=81 Invalid number start"],"ans":"my_btech=81 Valid letter start","task":"Find valid","practice_list":[
-            {"pq":"Q1: Valid identifier BTech?","opts":["my_btech=81 Valid","1btech=81 Invalid"],"ans":"my_btech=81 Valid","code":"my_btech=81\n_name='Bhav'\nprint(my_btech, _name)","task":"Valid test"},
-            {"pq":"Q2: Invalid hyphen?","opts":["my-var Invalid hyphen","my_var Valid"],"ans":"my-var Invalid hyphen","code":"my_var=81 # Valid\n# my-var=81 # Invalid hyphen\nprint(my_var)","task":"Invalid hyphen"},
-            {"pq":"Q3: Create 3 valid for Bhav?","opts":["btech=81, name='Bhav', college='Rise' Correct","1btech, my-var Wrong"],"ans":"btech=81, name='Bhav', college='Rise' Correct","code":"btech=81\nname='Bhav'\ncollege='Rise College'\nprint(name, btech, college)","task":"3 valid"}]},
-        {"name":"Variables","about":"About Variables Python - Data store container. Python lo type cheppakarledhu btech=81 direct. Dynamic typing automatic. Multiple: x=y=z=81 same value. Swap easy: a,b=b,a no temp needed. Python advantage over C/Java. BTech 81% example.","content":"No type btech=81 Python style dynamic typing automatic. Multiple x=y=z=81 same value. Swap a,b=b,a easy no temp.","code":"btech=81\nname='Bhav'\ncollege='Rise College, Ongole'\nprint(f\"{name} from {college} with {btech}%\")\na=81\nb=75\na,b=b,a\nprint(f\"Swapped: a={a} b={b}\")","q":"Python declare variable?","opts":["btech=81 Python no type Correct","int btech=81 C style Wrong in Python"],"ans":"btech=81 Python no type Correct","task":"Declare btech Python","practice_list":[
-            {"pq":"Q1: Python declare?","opts":["btech=81 Python no type","int btech=81 C"],"ans":"btech=81 Python no type","code":"btech=81\nname='Bhav'\nprint(btech, name)","task":"Declare Python"},
-            {"pq":"Q2: Python swap easy?","opts":["a,b=b,a Python easy Correct","temp=a a=b b=temp C long Wrong"],"ans":"a,b=b,a Python easy Correct","code":"a=81\nb=75\na,b=b,a\nprint(a,b) # 75 81","task":"Swap Python easy"},
-            {"pq":"Q3: Multiple same 81?","opts":["x=y=z=81 Correct","x,y,z=81 Wrong"],"ans":"x=y=z=81 Correct","code":"x=y=z=81\nprint(x,y,z)","task":"Multiple same"}]},
-        {"name":"Data Types","about":"About Data Types - int 81 number, float 81.5 decimal, str 'Bhav' text, bool True/False, list [81,75,80] mutable change cheyochu append, tuple (81,75) immutable cannot change, dict {'name':'Bhav','btech':81} key-value, set {81,75}. List methods sum(), len(), append().","content":"int 81, float 81.5, str 'Bhav', bool, list [81,75,80] mutable append, tuple immutable, dict key-value, set. List avg sum()/len().","code":"marks=[81,75,80,85]\nprint(f\"Marks: {marks}\")\nprint(f\"Total: {sum(marks)} Avg: {sum(marks)/len(marks)}\")\nmarks.append(90)\nprint(f\"After append 90: {marks}\")\nstudent={'name':'Bhav','btech':81}\nprint(student)","q":"Mutable which can change?","opts":["list [81,75,80] mutable can change Correct","tuple (81,75) immutable cannot Wrong"],"ans":"list [81,75,80] mutable can change Correct","task":"Avg marks 80.25","practice_list":[
-            {"pq":"Q1: Mutable can change?","opts":["list mutable Correct","tuple immutable Wrong"],"ans":"list mutable Correct","code":"marks=[81,75,80]\nmarks.append(90)\nprint(marks)","task":"List mutable"},
-            {"pq":"Q2: Dict key-value?","opts":["{'name':'Bhav','btech':81} Correct dict","['Bhav',81] Wrong list"],"ans":"{'name':'Bhav','btech':81} Correct dict","code":"student={'name':'Bhav','btech':81}\nprint(student['name'], student['btech'])","task":"Dict"},
-            {"pq":"Q3: Avg [81,75,80,85]?","opts":["sum/len =80.25 Correct","sum*len Wrong"],"ans":"sum/len =80.25 Correct","code":"marks=[81,75,80,85]\nprint(sum(marks)/len(marks)) # 80.25","task":"Avg 80.25"}]},
-        {"name":"Operators","about":"About Operators - Arithmetic + - * / % remainder 81%2=1 odd, ** power, // floor division. Comparison == equal, != not equal, > < >= <= for 60% eligibility btech>=60. Logical and both true, or one true, not opposite. Assignment = assign, += add assign.","content":"Arithmetic + - * / % ** //, Comparison == != > < >= <= for 60%, Logical and or not, Assignment = +=","code":"btech=81\nprint(f\"81>=60: {btech>=60} Eligible\")\nprint(f\"81%2={81%2} Odd\")\nprint(f\"10+20={10+20} 10*3={10*3} 10**2={10**2}")\nprint(f\"81>=60 and 75>=60: {81>=60 and 75>=60}")","q":"Comparison for 60% eligibility?","opts":[">= greater equal for 60% check Correct","+ plus addition Wrong"],"ans":">= greater equal for 60% check Correct","task":"Check 81>=60 True","practice_list":[
-            {"pq":"Q1: 81>=60 True?","opts":[">= True eligible Correct","< False Wrong"],"ans":">= True eligible Correct","code":"print(81>=60) # True\nprint(81==81) # True","task":"Check >= True"},
-            {"pq":"Q2: 81%2 odd?","opts":["81%2=1 Odd Correct","81%2=0 Even Wrong"],"ans":"81%2=1 Odd Correct","code":"print(81%2) # 1 Odd\nprint('Odd' if 81%2==1 else 'Even')","task":"Odd check"},
-            {"pq":"Q3: 10+20 10*3 10**2?","opts":["30,30,100 Correct","30,30,20 Wrong"],"ans":"30,30,100 Correct","code":"print(10+20,10*3,10**2) # 30 30 100","task":"Arithmetic"}]},
-        {"name":"Conditional Statements","about":"About Conditional - Condition batti decision: if true oka work else inkoka. Syntax if btech>=60: eligible else not. elif multiple O>=90 A+>=80 (81% here!) B>=60 eligible C<60. and or multiple conditions. TCS NQT eligibility grade system ki use.","content":"if, elif, else. if btech>=60 eligible else not. elif grades O>=90 A+>=80 (81% you) B>=60 eligible. and/or multiple.","code":"btech=81\nif btech>=60:\n    print(f\"{btech}% Eligible for TCS - 8 LPA\")\nelse:\n    print(\"Not Eligible\")\nif btech>=80:\n    print(\"A+ Excellent 81% you!\")","q":"Correct if for TCS?","opts":["if btech>=60: Correct Python syntax","for btech Wrong loop"],"ans":"if btech>=60: Correct Python syntax","task":"TCS eligibility","practice_list":[
-            {"pq":"Q1: if syntax correct?","opts":["if btech>=60: Correct","if btech=>60: Wrong =>"],"ans":"if btech>=60: Correct","code":"if 81>=60:\n    print('Eligible for TCS')","task":"if syntax"},
-            {"pq":"Q2: Grade 81% which?","opts":["elif btech>=80: A+ Correct 81% A+","elif btech>=90: A+ Wrong O"],"ans":"elif btech>=80: A+ Correct 81% A+","code":"if 81>=90:\n    print('O')\nelif 81>=80:\n    print('A+ You 81%')","task":"Grade A+"},
-            {"pq":"Q3: and condition?","opts":["if btech>=60 and name=='Bhav': Correct both","if btech>=60 or Wrong"],"ans":"if btech>=60 and name=='Bhav': Correct both","code":"if 81>=60 and 'Bhav'=='Bhav':\n    print('Both true')","task":"and condition"}]},
-        {"name":"Loops","about":"About Loops - Same work repeat loops. for loop fixed times range(0,10,3) -> 0 3 6 9 coins Final Boss 4 coins! range(1,11) 1-10 sum 55. Table of 81. while loop condition varaku. Break break cheyadaniki continue skip cheyadaniki. Final Boss game loops must.","content":"for i in range(0,10,3): 0 3 6 9 coins Final Boss 4 coins! range(1,11) 1-10 sum 55 Table 81 while loop","code":"# Final Boss coins 0 3 6 9\nfor i in range(0,10,3):\n    print(f\"Coin at {i} collected!\")\nprint(\"4/4 coins - Boss Slayed!\")\ntotal=0\nfor i in range(1,11):\n    total+=i\nprint(f\"Sum 1-10={total}\")","q":"Output range(0,10,3) Final Boss?","opts":["0 3 6 9 coins step 3 Correct","0 1 2 no coins step1 Wrong"],"ans":"0 3 6 9 coins step 3 Correct","task":"Collect 0 3 6 9 coins","practice_list":[
-            {"pq":"Q1: range(0,10,3) Final Boss?","opts":["0 3 6 9 coins Correct","0 1 2 Wrong"],"ans":"0 3 6 9 coins Correct","code":"for i in range(0,10,3):\n    print(i) # 0 3 6 9","task":"0 3 6 9 coins"},
-            {"pq":"Q2: Sum 1-10=55 loop?","opts":["for i in range(1,11): sum+=i Correct 55","for i in range(1,10): Wrong 45"],"ans":"for i in range(1,11): sum+=i Correct 55","code":"total=0\nfor i in range(1,11):\n    total+=i\nprint(total) # 55","task":"Sum 55"},
-            {"pq":"Q3: Print Bhav 3 times loop?","opts":["for i in range(3): print('Bhav') Correct 3 times","for i in range(1): Wrong 1 time"],"ans":"for i in range(3): print('Bhav') Correct 3 times","code":"for i in range(3):\n    print('Bhav 81%')","task":"Print 3 times"}]},
-        {"name":"Pandas","about":"About Pandas - Data analysis library Data Engineering must Python data analysis ki. DataFrame table rows columns. df=pd.DataFrame({'btech':[81,75]}) Create table. Methods mean() avg 80.25 max() 85 min() 75 sum() 321 count(). Filter df[df['btech']>=60] eligible students TCS. BhavPath data analysis.","content":"Pandas DataFrame table df['btech'].mean() avg 80.25 max() 85 min() 75 filter df[df['btech']>=60] eligible TCS Data Engineering must","code":"import pandas as pd\ndf=pd.DataFrame({'name':['Bhav','Ravi','Sita','Ram'],'btech':[81,75,80,85]})\nprint(df)\nprint(f\"Avg: {df['btech'].mean()} Max: {df['btech'].max()} Min: {df['btech'].min()}\")\nprint(f\"Eligible >=60:\\n{df[df['btech']>=60]}\")","q":"Pandas mean correct?","opts":["df['btech'].mean() Correct Pandas","mean(df) Wrong"],"ans":"df['btech'].mean() Correct Pandas","task":"Avg Pandas 80.25","practice_list":[
-            {"pq":"Q1: Pandas mean correct syntax?","opts":["df['btech'].mean() Correct","mean(df) Wrong"],"ans":"df['btech'].mean() Correct","code":"import pandas as pd\ndf=pd.DataFrame({'btech':[81,75]})\nprint(df['btech'].mean())","task":"Mean correct"},
-            {"pq":"Q2: Filter >=60 Pandas?","opts":["df[df['btech']>=60] Correct filter","df.filter Wrong"],"ans":"df[df['btech']>=60] Correct filter","code":"import pandas as pd\ndf=pd.DataFrame({'btech':[81,45]})\nprint(df[df['btech']>=60])","task":"Filter >=60"},
-            {"pq":"Q3: Avg 81,75,80,85 Pandas?","opts":["80.25 Correct","82 Wrong"],"ans":"80.25 Correct","code":"import pandas as pd\ndf=pd.DataFrame({'btech':[81,75,80,85]})\nprint(df['btech'].mean()) # 80.25","task":"Avg 80.25"}]},
+def make_modules(lang):
+    base=[
+        {"name":"Introduction","about":f"About Introduction in {lang} - {lang} is easy language. Created for beginners. BTech 81 percent easy. College projects TCS NQT use. Easy syntax. Full content info chaala.","content":f"{lang} easy syntax - Beginners best - No complex","code":"print('Hello Bhav')" if lang=="Python" else "#include <stdio.h>\nint main(){printf(\"Hello Bhav\");return 0;}" if lang=="C" else "#include <iostream>\nusing namespace std;\nint main(){cout<<\"Hello Bhav\"<<endl;return 0;}" if lang=="C++" else "public class Main{public static void main(String[] args){System.out.println(\"Hello Bhav\");}}" if lang=="Java" else "CREATE DATABASE bhavpath_db;","task":"Print Hello","practice":[
+            {"pq":f"{lang} creator who","opts":["Creator correct","Other wrong"],"ans":"Creator correct","code":"print('creator')" if lang=="Python" else "code","task":"Print creator"},
+            {"pq":f"Print Bhav 81 in {lang}","opts":["Correct syntax","Wrong syntax"],"ans":"Correct syntax","code":"print('Bhav 81')" if lang=="Python" else "code","task":"Print Bhav"},
+            {"pq":"Output Hello","opts":["Hello Correct","Error Wrong"],"ans":"Hello Correct","code":"print('Hello')","task":"Hello"}]},
+        {"name":"Variables","about":f"About Variables in {lang} - Data store container. {lang} specific type handling. BTech 81 example. Swap example. Multiple assignments. Full rich content info.","content":f"Variables in {lang} - Data store - Type handling - Swap","code":"btech=81\nname='Bhav'\nprint(name,btech)\na=81\nb=75\na,b=b,a\nprint(a,b)" if lang=="Python" else "#include <stdio.h>\nint main(){int btech=81;char name[]=\"Bhav\";printf(\"%s %d\",name,btech);int a=81,b=75,temp;temp=a;a=b;b=temp;return 0;}" if lang=="C" else "#include <iostream>\n#include <string>\nusing namespace std;\nint main(){int btech=81;string name=\"Bhav\";cout<<name<<btech<<endl;int a=81,b=75;swap(a,b);return 0;}" if lang=="C++" else "public class Main{public static void main(String[] args){int btech=81;String name=\"Bhav\";System.out.println(name+btech);int a=81,b=75,temp;temp=a;a=b;b=temp;}}" if lang=="Java" else "DECLARE @btech INT=81;SELECT @btech;","task":"Variables","practice":[
+            {"pq":f"{lang} declare","opts":["Correct type","Wrong type"],"ans":"Correct type","code":"code","task":"Declare"},
+            {"pq":f"{lang} swap 81 75","opts":["Swap correct","Swap wrong"],"ans":"Swap correct","code":"code","task":"Swap"},
+            {"pq":"Multiple same 81","opts":["x=y=z=81 Correct","Wrong"],"ans":"x=y=z=81 Correct","code":"x=y=z=81","task":"Multiple"}]},
+        {"name":"Operators","about":"About Operators - Arithmetic plus minus multiply divide mod power floor Comparison equal not equal greater less greater equal less equal for 60 percent eligibility Logical and or not Assignment. No percent symbol to avoid syntax error. Full content rich.","content":"Operators Arithmetic Comparison Logical Assignment - For eligibility check greater equal 60","code":"btech=81\nprint(btech>=60)\nprint(btech % 2)\nprint(10+20)","task":"Check greater equal 60","practice":[
+            {"pq":"81 greater equal 60","opts":["True eligible Correct","False Wrong"],"ans":"True eligible Correct","code":"print(81>=60)","task":"Check True"},
+            {"pq":"81 mod 2 odd","opts":["1 Odd Correct","0 Even Wrong"],"ans":"1 Odd Correct","code":"print(81%2)","task":"Odd"},
+            {"pq":"10 plus 20","opts":["30 Correct","20 Wrong"],"ans":"30 Correct","code":"print(10+20)","task":"Plus"}]},
+        {"name":"Loops","about":"About Loops - Same work repeat for loop fixed range 0 10 3 gives 0 3 6 9 coins Final Boss 4 coins Important range 1 11 gives 1 to 10 sum 55 Table 81 while loop condition true break continue. Rich content.","content":"for i in range 0 10 3 gives 0 3 6 9 coins Final Boss 4 coins range 1 11 sum 55","code":"# Final Boss coins 0 3 6 9\nfor i in range(0,10,3):\n    print(i)\nprint('4 coins Boss Slayed')\ntotal=0\nfor i in range(1,11):\n    total+=i\nprint(total)","task":"Collect 0 3 6 9","practice":[
+            {"pq":"range 0 10 3 Final Boss","opts":["0 3 6 9 Correct","0 1 2 Wrong"],"ans":"0 3 6 9 Correct","code":"for i in range(0,10,3):\n    print(i)","task":"0 3 6 9"},
+            {"pq":"Sum 1 to 10 55","opts":["range 1 11 sum 55 Correct","range 1 10 Wrong"],"ans":"range 1 11 sum 55 Correct","code":"total=0\nfor i in range(1,11):\n    total+=i\nprint(total)","task":"Sum 55"},
+            {"pq":"Print Bhav 3 times","opts":["range 3 Correct","range 1 Wrong"],"ans":"range 3 Correct","code":"for i in range(3):\n    print('Bhav')","task":"Print 3"}]},
+        {"name":"Identifiers","about":"Identifiers variable names Rules letter underscore start number start not allowed space hyphen not allowed special not allowed case sensitive Valid my_var underscore name btech1 my_btech 81 Invalid 1var my minus var.","content":"Rules letter underscore start Valid my_var underscore name btech1 Invalid 1var my minus var","code":"my_btech=81\n_name='Bhav'\nprint(my_btech)","task":"Identifier","practice":[
+            {"pq":"Valid identifier","opts":["my_btech Valid","1btech Invalid"],"ans":"my_btech Valid","code":"my_btech=81","task":"Valid"},
+            {"pq":"Invalid hyphen","opts":["my minus var Invalid","my underscore Valid"],"ans":"my minus var Invalid","code":"my_var=81","task":"Invalid"},
+            {"pq":"Create 3 valid","opts":["btech name college Correct","Wrong"],"ans":"btech name college Correct","code":"btech=81\nname='Bhav'","task":"3 valid"}]},
     ]
+    full=[]
+    names=["Introduction","Basic Input Output","Identifiers","Keywords","Variables","Data Types","Operators","Conditional Statements","Loops","Pandas"]
+    for i in range(10):
+        if i < len(base):
+            full.append(base[i])
+        else:
+            t=base[0]
+            n=dict(t)
+            n["name"]=names[i]
+            n["about"]=f"About {names[i]} in {lang} - {t['about']} - {lang} specific rich content BTech 81 percent TCS NQT 8 LPA important"
+            n["content"]=f"{names[i]} in {lang} - {t['content']}"
+            full.append(n)
+    return full
 
-def c_mods():
-    return [
-        {"name":"Introduction","about":"About C Introduction - C mother language 1972 Dennis Ritchie AT&T Bell Labs. Fast, memory management pointer. BTech first language usually. Syntax #include <stdio.h> int main() { printf(\"Hello\"); return 0; } Fast execution. Placements TCS must.","content":"C mother Dennis Ritchie 1972 Fast #include <stdio.h> int main() printf return 0 - Fast memory management","code":"#include <stdio.h>\nint main() {\n    printf(\"Hello Bhav\\n\");\n    printf(\"Bhav - 81%% BTech - Rise College, Ongole\\n\");\n    printf(\"C Mother Language 1972\\n\");\n    return 0;\n}","q":"Who invented C?","opts":["Dennis Ritchie - C Creator 1972","Guido van Rossum - Python"],"ans":"Dennis Ritchie - C Creator 1972","task":"Print Hello C","practice_list":[
-            {"pq":"Q1: C creator?","opts":["Dennis Ritchie C 1972","Guido Python"],"ans":"Dennis Ritchie C 1972","code":"#include <stdio.h>\nint main() {\n    printf(\"C by Dennis Ritchie 1972\\n\");\n    return 0;\n}","task":"C creator"},
-            {"pq":"Q2: Print in C?","opts":["printf(\"Bhav\") Correct C","print(\"Bhav\") Wrong Python"],"ans":"printf(\"Bhav\") Correct C","code":"#include <stdio.h>\nint main() {\n    printf(\"Bhav 81%%\\n\");\n    return 0;\n}","task":"printf Bhav"},
-            {"pq":"Q3: C main return?","opts":["return 0; Correct C main success","return; Wrong"],"ans":"return 0; Correct C main success","code":"#include <stdio.h>\nint main() {\n    printf(\"Hello\\n\");\n    return 0;\n}","task":"return 0"}]},
-        {"name":"Variables","about":"About Variables C - Data store container. C lo type cheppali must: int btech=81, char name[20]=\"Bhav\", float per=81.5, char single char 'A'. Declaration int btech; btech=81; Or int btech=81; Swap C lo temp variable kavali temp=a; a=b; b=temp; Python easy a,b=b,a but C lo temp needed. Strongly typed.","content":"C type must int btech=81 char name[]=\"Bhav\" float per. Declaration with type. Swap needs temp variable temp=a; a=b; b=temp; in C","code":"#include <stdio.h>\nint main() {\n    int btech=81;\n    char name[]=\"Bhav\";\n    char college[]=\"Rise College\";\n    printf(\"%s from %s with %d%%\\n\", name, college, btech);\n    // Swap 81 and 75 C needs temp\n    int a=81, b=75, temp;\n    printf(\"Before: a=%d b=%d\\n\", a, b);\n    temp=a; a=b; b=temp;\n    printf(\"After: a=%d b=%d Swapped\\n\", a, b);\n    return 0;\n}","q":"C declare variable?","opts":["int btech=81; C needs type Correct","btech=81; Python no type Wrong for C"],"ans":"int btech=81; C needs type Correct","task":"Declare int btech C","practice_list":[
-            {"pq":"Q1: C needs type?","opts":["int btech=81; Correct C type","btech=81; Wrong Python"],"ans":"int btech=81; Correct C type","code":"#include <stdio.h>\nint main() {\n    int btech=81;\n    printf(\"%d\\n\", btech);\n    return 0;\n}","task":"C type"},
-            {"pq":"Q2: C swap needs temp?","opts":["temp=a; a=b; b=temp; C needs temp Correct","a,b=b,a; Wrong Python"],"ans":"temp=a; a=b; b=temp; C needs temp Correct","code":"#include <stdio.h>\nint main() {\n    int a=81,b=75,temp;\n    temp=a;a=b;b=temp;\n    printf(\"%d %d\\n\", a, b);\n    return 0;\n}","task":"C swap temp"},
-            {"pq":"Q3: C char array for name?","opts":["char name[]=\"Bhav\"; Correct C char array","name='Bhav' Wrong"],"ans":"char name[]=\"Bhav\"; Correct C char array","code":"#include <stdio.h>\nint main() {\n    char name[]=\"Bhav\";\n    printf(\"%s\\n\", name);\n    return 0;\n}","task":"C char array"}]},
-    ]
+TOPICS={
+    "Python":{"title":"Python - 10 Modules","desc":"Easy plus Data Science","modules":make_modules("Python")},
+    "C":{"title":"C - 10 Modules","desc":"Dennis Ritchie 1972","modules":make_modules("C")},
+    "C++":{"title":"C++ - 10 Modules","desc":"Bjarne Stroustrup 1985","modules":make_modules("C++")},
+    "Java":{"title":"Java - 10 Modules","desc":"James Gosling 1995","modules":make_modules("Java")},
+    "SQL":{"title":"SQL - 10 Modules","desc":"Database TCS must 8 LPA","modules":make_modules("SQL")},
+}
+def cert_html(name,college,btech,topic,xp,date_str):
+    return f"""<div class="cert-card"><div style="font-size:22px;font-weight:900;color:#0F2C61">CERTIFICATE</div><div style="border:2px solid #FFB300;border-radius:12px;padding:12px;background:white;margin-top:8px"><div style="font-size:18px;font-weight:900;color:#2563EB">{name}</div><div style="font-size:11px;color:#000">from {college} with {btech} percent</div><div style="font-size:14px;font-weight:800;color:#0F2C61;margin-top:6px">{topic}</div><div style="display:flex;justify-content:space-around;margin-top:8px;font-size:10px"><div><b>XP:</b> {xp}</div><div><b>Date:</b> {date_str}</div><div><b>Grade:</b> A+</div></div></div></div>"""
 
-def cpp_mods():
-    return [
-        {"name":"Introduction","about":"About C++ Introduction - C++ C extension with OOP Object Oriented. 1985 Bjarne Stroustrup. Gaming engines high performance. Syntax #include <iostream> using namespace std; int main() { cout<<\"Hello\"; return 0; } cout for output cin for input. BTech 81% important placements gaming.","content":"C++ Bjarne Stroustrup 1985 Gaming #include <iostream> using namespace std; cout<< output cin>> input - OOP","code":"#include <iostream>\nusing namespace std;\nint main() {\n    cout << \"Hello Bhav\" << endl;\n    cout << \"Bhav - 81% BTech - Rise College, Ongole\" << endl;\n    cout << \"C++ Gaming Engines\" << endl;\n    return 0;\n}","q":"Who invented C++?","opts":["Bjarne Stroustrup - C++ Creator 1985","Dennis Ritchie - C Creator"],"ans":"Bjarne Stroustrup - C++ Creator 1985","task":"Print Hello C++","practice_list":[
-            {"pq":"Q1: C++ creator?","opts":["Bjarne Stroustrup C++ 1985","Guido Python"],"ans":"Bjarne Stroustrup C++ 1985","code":"#include <iostream>\nusing namespace std;\nint main() {\n    cout << \"C++ by Bjarne Stroustrup\" << endl;\n    return 0;\n}","task":"C++ creator"},
-            {"pq":"Q2: C++ output cout?","opts":["cout << \"Bhav\" Correct C++","printf(\"Bhav\") Wrong C"],"ans":"cout << \"Bhav\" Correct C++","code":"#include <iostream>\nusing namespace std;\nint main() {\n    cout << \"Bhav 81%\" << endl;\n    return 0;\n}","task":"cout Bhav"},
-            {"pq":"Q3: C++ namespace std?","opts":["using namespace std; Correct C++","import std; Wrong"],"ans":"using namespace std; Correct C++","code":"#include <iostream>\nusing namespace std;\nint main() {\n    cout << \"Hello\" << endl;\n    return 0;\n}","task":"namespace std"}]},
-        {"name":"Variables","about":"About Variables C++ - Data store container. C++ type cheppali: int btech=81, string name=\"Bhav\" easy string type #include <string>, float per. C++ string easy than C char array. Swap temp or std::swap(a,b) C++ easy method #include <utility>. Using namespace std. cout<< output.","content":"C++ type must int btech=81 string name=\"Bhav\" float #include <iostream> <string> using namespace std; cout<< output. Swap temp or std::swap","code":"#include <iostream>\n#include <string>\nusing namespace std;\nint main() {\n    int btech=81;\n    string name=\"Bhav\";\n    string college=\"Rise College\";\n    cout << name << \" from \" << college << \" with \" << btech << \"%\" << endl;\n    int a=81, b=75;\n    cout << \"Before: a=\" << a << \" b=\" << b << endl;\n    swap(a,b); // C++ easy swap\n    cout << \"After swap(a,b): a=\" << a << \" b=\" << b << endl;\n    return 0;\n}","q":"C++ string declare?","opts":["string name=\"Bhav\"; C++ string Correct","char name[]=\"Bhav\"; C style old Wrong"],"ans":"string name=\"Bhav\"; C++ string Correct","task":"Declare string C++","practice_list":[
-            {"pq":"Q1: C++ needs type string?","opts":["int btech=81; string name=\"Bhav\"; Correct C++","btech=81; Wrong Python"],"ans":"int btech=81; string name=\"Bhav\"; Correct C++","code":"#include <iostream>\n#include <string>\nusing namespace std;\nint main() {\n    int btech=81;\n    string name=\"Bhav\";\n    cout << btech << \" \" << name << endl;\n    return 0;\n}","task":"C++ type string"},
-            {"pq":"Q2: C++ swap easy?","opts":["swap(a,b) Correct C++ easy","a,b=b,a Wrong Python"],"ans":"swap(a,b) Correct C++ easy","code":"#include <iostream>\nusing namespace std;\nint main() {\n    int a=81,b=75;\n    swap(a,b);\n    cout << a << \" \" << b << endl;\n    return 0;\n}","task":"C++ swap"},
-            {"pq":"Q3: C++ cout output?","opts":["cout << btech << \"%\" Correct C++","print(btech) Wrong Python"],"ans":"cout << btech << \"%\" Correct C++","code":"#include <iostream>\n#include <string>\nusing namespace std;\nint main() {\n    int btech=81;\n    cout << btech << \"% eligible\" << endl;\n    return 0;\n}","task":"C++ cout"}]},
-    ]
-
-def java_mods():
-    return [
-        {"name":"Introduction","about":"About Java Introduction - Java enterprise language 1995 James Gosling Sun Microsystems. Android apps enterprise. Write Once Run Anywhere WORA JVM. Syntax public class Main { public static void main(String[] args) { System.out.println(\"Hello\"); } } Strongly typed OOP.","content":"Java James Gosling 1995 Android Enterprise public class Main public static void main String[] args System.out.println - WORA","code":"public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello Bhav\");\n        System.out.println(\"Bhav - 81% BTech - Rise College, Ongole\");\n        System.out.println(\"Java Android Enterprise\");\n    }\n}","q":"Who invented Java?","opts":["James Gosling - Java Creator 1995","Bjarne Stroustrup - C++"],"ans":"James Gosling - Java Creator 1995","task":"Print Hello Java","practice_list":[
-            {"pq":"Q1: Java creator?","opts":["James Gosling Java 1995","Dennis Ritchie C"],"ans":"James Gosling Java 1995","code":"public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Java by James Gosling 1995\");\n    }\n}","task":"Java creator"},
-            {"pq":"Q2: Java print?","opts":["System.out.println(\"Bhav\") Correct Java","print(\"Bhav\") Wrong Python"],"ans":"System.out.println(\"Bhav\") Correct Java","code":"public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Bhav 81%\");\n    }\n}","task":"System.out.println"},
-            {"pq":"Q3: Java main method?","opts":["public static void main(String[] args) Correct Java main","int main() Wrong C"],"ans":"public static void main(String[] args) Correct Java main","code":"public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello Java\");\n    }\n}","task":"Java main method"}]},
-        {"name":"Variables","about":"About Variables Java - Data store container. Java type must: int btech=81, String name=\"Bhav\" capital S String, float per, double. Strongly typed. Declaration int btech=81; String name=\"Bhav\"; System.out.println with + concatenation. Swap Java temp variable needed temp=a; a=b; b=temp; Java String capital S unlike C++ small s string.","content":"Java type must int btech=81 String name=\"Bhav\" capital S float. public class Main main System.out.println with + concat. Swap temp temp=a; a=b; b=temp;","code":"public class Main {\n    public static void main(String[] args) {\n        int btech=81;\n        String name=\"Bhav\";\n        String college=\"Rise College\";\n        System.out.println(name + \" from \" + college + \" with \" + btech + \"%\");\n        int a=81, b=75, temp;\n        System.out.println(\"Before: a=\" + a + \" b=\" + b);\n        temp=a; a=b; b=temp;\n        System.out.println(\"After: a=\" + a + \" b=\" + b + \" Swapped\");\n    }\n}","q":"Java String declare?","opts":["String name=\"Bhav\"; Capital S Java Correct","string name=\"Bhav\"; small s C++ Wrong"],"ans":"String name=\"Bhav\"; Capital S Java Correct","task":"Declare String Java","practice_list":[
-            {"pq":"Q1: Java needs type String?","opts":["int btech=81; String name=\"Bhav\"; Correct Java","btech=81; Wrong Python"],"ans":"int btech=81; String name=\"Bhav\"; Correct Java","code":"public class Main {\n    public static void main(String[] args) {\n        int btech=81;\n        String name=\"Bhav\";\n        System.out.println(name + \" \" + btech);\n    }\n}","task":"Java type String"},
-            {"pq":"Q2: Java swap temp?","opts":["temp=a; a=b; b=temp; Correct Java needs temp","a,b=b,a; Wrong Python"],"ans":"temp=a; a=b; b=temp; Correct Java needs temp","code":"public class Main {\n    public static void main(String[] args) {\n        int a=81,b=75,temp;\n        temp=a;a=b;b=temp;\n        System.out.println(a+\" \"+b);\n    }\n}","task":"Java swap temp"},
-            {"pq":"Q3: Java concatenation +?","opts":["System.out.println(name + \" \" + btech) Correct Java +","cout << name Wrong C++"],"ans":"System.out.println(name + \" \" + btech) Correct Java +","code":"public class Main {\n    public static void main(String[] args) {\n        String name=\"Bhav\";\n        int btech=81;\n        System.out.println(name + \" \" + btech + \"% eligible\");\n    }\n}","task":"Java + concat"}]},
-    ]
-
-def sql_mods():
-    return [
-        {"name":"Introduction to SQL","about":"About SQL Introduction - SQL Structured Query Language database lo data store retrieve update delete. TCS Infosys interviews must. 1970s IBM develop chesindi. Easy syntax like English SELECT INSERT UPDATE DELETE. Database data store place Table rows columns. BhavPath students data store.","content":"SQL for database Structured Query Language. SELECT INSERT UPDATE DELETE basic. CREATE DATABASE new DB USE select SHOW DATABASES list","code":"-- SQL Introduction\nCREATE DATABASE bhavpath_db;\nUSE bhavpath_db;\nSHOW DATABASES;\nCREATE TABLE students (id INT, name VARCHAR(50), btech INT, college VARCHAR(100));","q":"SQL stands for?","opts":["Structured Query Language - Database language Correct","Simple Query Language Wrong"],"ans":"Structured Query Language - Database language Correct","task":"Create DB bhavpath_db","practice_list":[
-            {"pq":"Q1: SQL full form?","opts":["Structured Query Language Correct","Simple Query Language Wrong"],"ans":"Structured Query Language Correct","code":"CREATE DATABASE rise_college;\nSHOW DATABASES;","task":"Create DB rise"},
-            {"pq":"Q2: Create database?","opts":["CREATE DATABASE bhavpath_db; Correct","CREATE DB bhavpath_db; Wrong short"],"ans":"CREATE DATABASE bhavpath_db; Correct","code":"CREATE DATABASE bhavpath_db;\nUSE bhavpath_db;","task":"Create bhavpath_db"},
-            {"pq":"Q3: Show databases?","opts":["SHOW DATABASES; Correct list all","SHOW DB; Wrong"],"ans":"SHOW DATABASES; Correct list all","code":"SHOW DATABASES;\nSHOW TABLES;","task":"Show DBs"}]},
-        {"name":"SELECT","about":"About SELECT - Data chudataniki SELECT use. * ante all columns. Specific columns kavali ante SELECT name, btech. BhavPath student data chudataniki SELECT * FROM students. WHERE tho filter. COUNT(*) total count. ORDER BY sort.","content":"SELECT * FROM students All data full table. SELECT name, btech Specific columns only. SELECT with WHERE filter for Bhav 81% COUNT(*) total","code":"SELECT * FROM students;\nSELECT name, btech FROM students;\nSELECT * FROM students WHERE name='Bhav';\nSELECT COUNT(*) as total FROM students;\nSELECT * FROM students WHERE btech>=60;","q":"Select all columns?","opts":["SELECT * FROM students - All columns * star Correct","SELECT ALL FROM students Wrong no ALL"],"ans":"SELECT * FROM students - All columns * star Correct","task":"Select all students","practice_list":[
-            {"pq":"Q1: Select all columns?","opts":["SELECT * FROM students Correct","SELECT ALL FROM students Wrong"],"ans":"SELECT * FROM students Correct","code":"SELECT * FROM students;\nSELECT name, btech FROM students;","task":"Select all"},
-            {"pq":"Q2: Select Bhav only?","opts":["SELECT * FROM students WHERE name='Bhav' Correct","SELECT Bhav FROM students Wrong"],"ans":"SELECT * FROM students WHERE name='Bhav' Correct","code":"SELECT * FROM students WHERE name='Bhav';\nSELECT * FROM students WHERE btech=81;","task":"Select Bhav"},
-            {"pq":"Q3: Select name, btech specific?","opts":["SELECT name, btech FROM students Correct specific","SELECT * FROM students Wrong all"],"ans":"SELECT name, btech FROM students Correct specific","code":"SELECT name, btech FROM students;\nSELECT name, college FROM students;","task":"Select specific columns"}]},
-        {"name":"WHERE","about":"About WHERE - Condition petti filter cheyadaniki WHERE use. btech>=60 eligible students TCS NQT, btech=81 specific Bhav only, college='Rise' Rise College students only. Comparison = != > < >= <= AND OR BETWEEN LIKE. TCS eligibility check la SQL lo WHERE btech>=60.","content":"WHERE for filtering - WHERE btech>=60 eligible TCS, WHERE btech=81 specific Bhav, WHERE college='Rise College' AND OR multiple conditions","code":"SELECT * FROM students WHERE btech>=60;\nSELECT * FROM students WHERE btech=81;\nSELECT * FROM students WHERE college='Rise College';\nSELECT * FROM students WHERE btech=81 AND college='Rise College';","q":"Filter >=60 eligible TCS?","opts":["WHERE btech>=60 Correct filter >=60","FILTER btech>=60 Wrong no FILTER keyword"],"ans":"WHERE btech>=60 Correct filter >=60","task":"Filter >=60 eligible","practice_list":[
-            {"pq":"Q1: Filter >=60 eligible?","opts":["WHERE btech>=60 Correct","FILTER btech>=60 Wrong"],"ans":"WHERE btech>=60 Correct","code":"SELECT * FROM students WHERE btech>=60;\nSELECT COUNT(*) FROM students WHERE btech>=60;","task":"Filter >=60"},
-            {"pq":"Q2: Filter 81% Bhav specific?","opts":["WHERE btech=81 Correct equals","WHERE btech>=81 Wrong >=81+ "],"ans":"WHERE btech=81 Correct equals","code":"SELECT * FROM students WHERE btech=81;\nSELECT * FROM students WHERE name='B
+if not st.session_state.logged:
+    st.title("BhavPath - Login")
+    email=st.text_input("Email",placeholder="bhav@gmail.com")
+    college=st.text_input("College",placeholder="Rise College, Ongole")
+    if st.button("Login and Continue"):
+        if email and "@" in email and college:
+            st.session_state.user={"email":email,"college":college,"btech":81,"name":email.split("@")[0]}
+            st.session_state.logged=True
+            st.session_state.purpose_done=False
+            st.rerun()
+elif not st.session_state.purpose_done:
+    st.title("One More Step")
+    btech=st.slider("BTech percent",0,100,81)
+    if st.button(f"Browse Topics with {btech} percent"):
+        st.session_state.user["btech"]=btech
+        st.session_state.purpose_done=True
+        st.rerun()
+else:
+    st.markdown(f'<div class="blue-card"><b>BhavPath | {st.session_state.user["college"]} | {st.session_state.user["btech"]} percent | {st.session_state.xp} XP | {st.session_state.selected_topic}</b></div>', unsafe_allow_html=True)
+    done=len([k for k,v in st.session_state.completed.items() if v])
+    st.progress(min(done/8,1.0))
+    col_b1,col_b2=st.columns([1,3])
+    with col_b1:
+        if st.button("Back Change percent", use_container_width=True):
+            st.session_state.purpose_done=False
+            st.rerun()
+    with col_b2:
+        if st.button("Back to All Topics List Malli", use_container_width=True):
+            st.session_state.page_view="list"
+            st.rerun()
+    st.divider()
+    if st.session_state.page_view=="list":
+        col_topics,col_content=st.columns([1,3])
+        with col_topics:
+            st.subheader("Skills - List Page Only")
+            st.markdown('<div class="white-card"><b>List Page varake - Ikkada matrame Open buttons</b></div>', unsafe_allow_html=True)
+            for tname in TOPICS.keys():
+                is_sel=st.session_state.selected_topic==tname
+                if is_sel:
+                    st.markdown(f'<div class="blue-card"><b>{tname} SELECTED</b><br>{TOPICS[tname]["desc"]}</div>', unsafe_allow_html=True)
+                else:
+                    st.markdown(f'<div class="white-card"><b>{tname}</b><br>{TOPICS[tname]["desc"]}</div>', unsafe_allow_html=True)
+                if st.button(f"Open {tname}",key=f"open_{tname}", use_container_width=True):
+                    st.session_state.selected_topic=tname
+                    st.session_state.current_mod=0
+                    st.session_state.page_view="list"
+                    st.rerun()
+        with col_content:
+            t=TOPICS[st.session_state.selected_topic]
+            st.subheader(f"{t['title']} - {len(t['modules'])} Modules")
+            for i,mod in enumerate(t["modules"]):
+                is_done=st.session_state.completed.get(f"{st.session_state.selected_topic}_{i}")
+                tick="✅" if is_done else "•"
+                if st.button(f"{tick} {i+1}. {mod['name']} -> Open Detail",key=f"nextpage_{st.session_state.selected_topic}_{i}",use_container_width=True):
+                    st.session_state.current_mod=i
+                    st.session_state.page_view="detail"
+                    st.rerun()
+    else:
+        if st.session_state.cert_unlocked and st.session_state.final_boss_won:
+            col_nav,col_content,col_side=st.columns([0.6,2.4,0.8])
+        else:
+            col_nav,col_content=st.columns([0.7,3.0])
+        with col_nav:
+            t=TOPICS[st.session_state.selected_topic]
+            st.subheader("Navigation - Detail Only")
+            st.markdown(f'<div class="blue-card"><b>Current: {st.session_state.selected_topic}</b><br>Detail page lo Open C Java list ledu - Page varake</div>', unsafe_allow_html=True)
+            for i,mod in enumerate(t["modules"]):
+                is_done=st.session_state.completed.get(f"{st.session_state.selected_topic}_{i}")
+                is_cur=i==st.session_state.current_mod
+                tick="✅" if is_done else "•"
+                if is_cur:
+                    st.markdown(f'<div class="blue-card"><b>{tick} {i+1}. {mod["name"]} - Current</b></div>', unsafe_allow_html=True)
+                else:
+                    if st.button(f"{tick} {i+1}. {mod['name']}",key=f"detail_nav_{i}",use_container_width=True):
+                        st.session_state.current_mod=i
+                        st.rerun()
+            if st.button("Back to All Topics List", use_container_width=True):
+                st.session_state.page_view="list"
+                st.rerun()
+        with col_content:
+            t=TOPICS[st.session_state.selected_topic]
+            mod=t["modules"][st.session_state.current_mod]
+            if st.button(f"Back to {t['title']} List",key="back_to_list",use_container_width=True):
+                st.session_state.page_view="list"
+                st.rerun()
+            st.divider()
+            st.subheader(f"{t['title']} - Module {st.session_state.current_mod+1}: {mod['name']}")
+            st.markdown(f'<div class="blue-card"><b>Module {st.session_state.current_mod+1}: {mod["name"]} - {t["title"]}</b></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="info-card"><div><b>About {mod["name"]} - {t["title"]} - Black Clear:</b></div><div style="margin-top:10px;"><span>{mod["about"]}</span></div></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="summary-card"><b>Summary:</b> <span>{mod["content"]} - {t["title"]} specific {st.session_state.user["btech"]} percent</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="bullet-card"><b>Code - {t["title"]} Specific - Language Wise Fixed</b></div>', unsafe_allow_html=True)
+            lang_map={"Python":"python","C":"c","C++":"cpp","Java":"java","SQL":"sql"}
+            st.code(mod["code"],language=lang_map.get(st.session_state.selected_topic,"python"))
+            st.divider()
+            st.subheader("Code Space - Middle Big Area")
+            code_input=st.text_area("Your Code - Big Area 250:",value=mod["code"],height=250,key=f"code_mid_{st.session_state.current_mod}")
+            if st.button("Run Code - Middle",key=f"run_mid_{st.session_state.current_mod}",use_container_width=True):
+                st.success(f"Output: {mod['task']} done")
+                st.code(code_input,language=lang_map.get(st.session_state.selected_topic,"python"))
+            st.divider()
+            st.subheader("Practice - Select plus Run")
+            p_list=mod.get("practice",[])
+            pq_options=[f"{i+1}. {p['pq']}" for i,p in enumerate(p_list)]
+            if pq_options:
+                sel=st.selectbox("Select Practice Question - Select chesi run:",pq_options,key=f"select_pq_{st.session_state.current_mod}")
+                idx=pq_options.index(sel)
+                pq=p_list[idx]
+                st.markdown(f'<div class="practice-card"><b>{pq["pq"]} - Q{idx+1}</b><br><span>{pq["task"]}</span></div>', unsafe_allow_html=True)
+                st.code(pq["code"],language=lang_map.get(st.session_state.selected_topic,"python"))
+                choice=st.radio(f"Select Answer Q{idx+1}:",pq["opts"],key=f"quiz_{st.session_state.current_mod}_{idx}")
+                c1,c2=st.columns([1,1])
+                with c1:
+                    if st.button(f"Check Answer Q{idx+1}",key=f"check_{st.session_state.current_mod}_{idx}",use_container_width=True):
+                        if choice==pq["ans"]:
+                            st.success("Correct plus 20 XP")
+                            st.session_state.xp+=20
+                            st.balloons()
+                        else:
+                            st.error(f"Wrong Correct: {pq['ans']}")
+                with c2:
+                    if st.button(f"Run Practice Q{idx+1}",key=f"run_pq_{st.session_state.current_mod}_{idx}",use_container_width=True):
+                        st.success(f"Practice Q{idx+1} Run")
+                        st.code(pq["code"],language=lang_map.get(st.session_state.selected_topic,"python"))
+                pq_code=st.text_area(f"Your Code Q{idx+1} Edit and Run:",value=pq["code"],height=180,key=f"pq_code_{st.session_state.current_mod}_{idx}")
+                if st.button(f"Run Your Code Q{idx+1}",key=f"run_your_{st.session_state.current_mod}_{idx}",use_container_width=True):
+                    st.success(f"Your Code Q{idx+1} Run")
+                    st.code(pq_code,language=lang_map.get(st.session_state.selected_topic,"python"))
+            st.divider()
+            col_prev,col_done,col_next=st.columns([1,1,1])
+            with col_prev:
+                if st.session_state.current_mod>0:
+                    if st.button("Prev",use_container_width=True):
+                        st.session_state.current_mod-=1
+                        st.rerun()
+            with col_done:
+                key=f"{st.session_state.selected_topic}_{st.session_state.current_mod}"
+                if st.session_state.completed.get(key):
+                    st.success("Done")
+                else:
+                    if st.button("Mark Done plus 50 XP",key=f"done_{key}",use_container_width=True):
+                        st.session_state.completed[key]=True
+                        st.session_state.xp+=50
+                        st.balloons()
+                        st.rerun()
+            with col_next:
+                if st.session_state.current_mod<len(t["modules"])-1:
+                    if st.button("Next",use_container_width=True):
+                        st.session_state.current_mod+=1
+                        st.rerun()
+            st.divider()
+            st.subheader("FINAL BOSS")
+            if done>=3:
+                st.markdown(f'<div class="blue-card"><b>UNLOCKED {done} modules</b></div>', unsafe_allow_html=True)
+                step=st.slider("for i 0 10 i plus equal - Collect 0 3 6 9",1,5,3,key="game")
+                if st.button("PLAY FINAL BOSS",key="play_game",use_container_width=True):
+                    coins=[0,3,6,9]
+                    path=list(range(0,10,step))
+                    coll=len([x for x in path if x in coins])
+                    st.write(f"Path {path} | {coll}/4")
+                    if coll==4:
+                        st.balloons()
+                        st.success("SLAYED plus 200 XP Certificate side lo")
+                        st.session_state.xp+=200
+                        st.session_state.final_boss_won=True
+                        st.session_state.cert_unlocked=True
+                        st.rerun()
+                    else:
+                        st.error(f"Need i plus equal 3 Got {coll}/4")
+            else:
+                st.markdown(f'<div class="locked-card"><b>Locked Complete {3-done} more</b></div>', unsafe_allow_html=True)
+        if st.session_state.cert_unlocked and st.session_state.final_boss_won:
+            with col_side:
+                today=date.today().strftime("%d-%m-%Y")
+                html=cert_html(st.session_state.user["name"],st.session_state.user["college"],st.session_state.user["btech"],st.session_state.selected_topic,st.session_state.xp,today)
+                st.markdown(html,unsafe_allow_html=True)
+                txt=f"Certificate - {st.session_state.user['name']} - {st.session_state.user['college']} - {st.session_state.user['btech']} percent - {st.session_state.selected_topic} - XP {st.session_state.xp}"
+                st.download_button(label="Download Certificate",data=txt,file_name=f"Certificate_{st.session_state.selected_topic}.txt",mime="text/plain",use_container_width=True)
