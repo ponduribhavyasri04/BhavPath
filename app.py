@@ -78,7 +78,6 @@ def generate_certificate(name, college, btech, topic, xp, date_str):
     </div>
     """
 
-# --- PAGE 1: LOGIN - ONLY EMAIL + COLLEGE - NO PERCENTAGE HERE ---
 if not st.session_state.logged:
     st.title("🚀 BhavPath - Login")
     st.markdown('<div class="white-card"><b>Welcome! Login with Email + College only - Percentage next page lo!</b><br>✅ Simple - No percentage here - Next page lo adugutham</div>', unsafe_allow_html=True)
@@ -98,15 +97,11 @@ if not st.session_state.logged:
     with col2:
         st.markdown('<div class="white-card"><b>🔥 Flow:</b><br>1. Login - Email + College only (This page)<br>2. Next page - Percentage + Purpose - BTech % ikkada adugutham!<br>3. Main App - Topics, Tutorial, Practice, Run, Game, Certificate<br>Only 3 steps - No confusion!</div>', unsafe_allow_html=True)
 
-# --- PAGE 2: PURPOSE + PERCENTAGE - PERCENTAGE IKADA! ---
 elif not st.session_state.purpose_done:
     st.title("📊 One More Step! - Your Stats")
     st.markdown(f'<div class="white-card">Yo <b>{st.session_state.user["name"]}</b>! Welcome to the squad 🚀<br>🏫 {st.session_state.user["college"]}<br>Let\'s lock in your stats - Percentage ikkada!</div>', unsafe_allow_html=True)
-    
-    # PERCENTAGE SLIDER IKADA - NEXT PAGE LO!
     btech = st.slider("What's your BTech flex? Drop your % - Percentage here!", 0, 100, st.session_state.user.get("btech", 81))
     st.markdown(f'<div class="blue-card"><b>Bet! Locked in: {btech}% 🔥</b><br>We\'re about to cook a custom prep just for you - No cap, this gonna be fire</div>', unsafe_allow_html=True)
-    
     st.divider()
     st.subheader("What you want? - Select one")
     c1, c2 = st.columns(2)
@@ -134,13 +129,33 @@ elif not st.session_state.purpose_done:
         else:
             st.markdown(f'<div class="white-card"><b>Game unlocks after 3 modules<br>Current: {done}/3</b></div>', unsafe_allow_html=True)
 
-# --- PAGE 3: MAIN APP - EVERYTHING ---
 else:
     st.markdown(f'<div class="blue-card"><b>BhavPath | {st.session_state.user["college"]} | {st.session_state.user["btech"]}% | {st.session_state.xp} XP | {st.session_state.selected_topic}</b></div>', unsafe_allow_html=True)
     done = len([k for k,v in st.session_state.completed.items() if v])
     st.write(f"Progress: {done} modules | Game unlocks at 3 | Certificate after Final Boss win")
     st.progress(min(done/8, 1.0))
-    
+
+    # ===== ONLY THIS ONE MODIFICATION - TOPICS LIST PAINA - KINDA CHOOSE =====
+    st.subheader("📚 Topics List - First Chudu - Tarwata Kinda Choose Chey")
+    list_cols = st.columns(3)
+    for idx, (tname, tdata) in enumerate(TOPICS.items()):
+        col = list_cols[idx % 3]
+        with col:
+            if st.session_state.selected_topic == tname:
+                st.markdown(f'<div class="blue-card"><b>📖 {tname} ✅</b><br>{tdata["title"]}<br>{tdata["desc"]}</div>', unsafe_allow_html=True)
+            else:
+                st.markdown(f'<div class="white-card"><b>{tname}</b><br>{tdata["title"]}<br>{tdata["desc"]}</div>', unsafe_allow_html=True)
+    st.divider()
+    st.subheader("👇 Kinda Choose Chesuko - Select Topic")
+    topic_names = list(TOPICS.keys())
+    sel_topic = st.selectbox("Topic choose chesuko:", topic_names, index=topic_names.index(st.session_state.selected_topic), key="choose_bottom")
+    if sel_topic != st.session_state.selected_topic:
+        st.session_state.selected_topic = sel_topic
+        st.session_state.current_mod = 0
+        st.rerun()
+    st.divider()
+    # ===== MODIFICATION END =====
+
     col_logout, col_perc = st.columns([1,3])
     with col_logout:
         if st.button("← Back - Change %"):
@@ -151,7 +166,6 @@ else:
             st.session_state.purpose_done = False
             st.rerun()
     with col_perc:
-        # Percentage change option here also
         new_btech = st.slider(f"Change BTech % if needed - Current {st.session_state.user['btech']}%", 0, 100, st.session_state.user["btech"], key="change_btech")
         if new_btech != st.session_state.user["btech"]:
             st.session_state.user["btech"] = new_btech
@@ -184,10 +198,8 @@ else:
         selected_idx = st.selectbox(f"Module ({len(mod_names)} total):", range(len(mod_names)), format_func=lambda x: f"{x+1}. {mod_names[x]}", index=st.session_state.current_mod)
         st.session_state.current_mod = selected_idx
         mod = t["modules"][selected_idx]
-        
         st.markdown(f'<div class="white-card"><b>Module {selected_idx+1}: {mod["name"]}</b><br><br>{mod["content"]}<br><br>For {st.session_state.user["btech"]}% profile - Helps in TCS NQT!</div>', unsafe_allow_html=True)
         st.code(mod["code"], language="python" if st.session_state.selected_topic in ["Python","Data Engineering"] else "cpp")
-        
         col_prev, col_done, col_next = st.columns([1,1,1])
         with col_prev:
             if selected_idx > 0:
@@ -201,11 +213,9 @@ else:
         with col_next:
             if selected_idx < len(mod_names)-1:
                 if st.button("Next →"): st.session_state.current_mod+=1; st.rerun()
-        
         st.divider()
         ad = ADS[1]
         st.markdown(f'<div class="ad-card" style="background: {ad["color"]} !important;"><b>📢 AD - For {st.session_state.user["btech"]}% profile</b><br><b>{ad["title"]}</b><br>{ad["desc"]}</div>', unsafe_allow_html=True)
-
         st.divider()
         st.subheader("🎮 FINAL BOSS - Game + Certificate")
         if done >= 3:
@@ -218,7 +228,6 @@ else:
                     st.balloons(); st.success(f"SLAYED! +200 XP"); st.session_state.xp+=200; st.session_state.final_boss_won=True; st.session_state.cert_unlocked=True; st.snow()
                 else:
                     st.error(f"Need i+=3 - Got {coll}/4")
-            
             if st.session_state.cert_unlocked and st.session_state.final_boss_won:
                 st.divider()
                 st.subheader("🏆 Certificate Unlocked!")
