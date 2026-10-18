@@ -1,4 +1,4 @@
-  import streamlit as st
+import streamlit as st
 from datetime import date
 
 st.set_page_config(page_title="BhavPath - Next Page + Example Sums", layout="wide", page_icon="🚀")
