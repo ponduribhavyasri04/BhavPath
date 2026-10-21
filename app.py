@@ -2,108 +2,83 @@ import streamlit as st
 
 st.set_page_config(page_title="BhavPath", layout="wide", page_icon="🔥")
 
-# --- FIXED CSS - NO WHITE ON WHITE ---
 st.markdown("""
 <style>
-    .main { background: #f0f2f5; }
     .top-bar {
         background: #1d4ed8;
         color: white !important;
-        padding: 16px 20px;
+        padding: 14px 20px;
         border-radius: 10px;
         font-weight: 800;
         font-size: 18px;
-        letter-spacing: 0.5px;
     }
-    .black-line { height: 5px; background: black; margin: 12px 0; border-radius: 2px; }
+    .black-line { height: 4px; background: black; margin: 10px 0; }
+    .hero-main {
+        background: linear-gradient(135deg, #1d4ed8, #2563eb);
+        color: white !important;
+        padding: 25px;
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    .hero-main h1 { color: white !important; margin: 0; font-size: 40px; }
+    .hero-main p { color: #dbeafe !important; margin: 5px 0 0 0; font-size: 16px; }
     div.stButton > button {
         background: #2563eb !important;
         color: white !important;
         border: none !important;
-        padding: 14px !important;
-        border-radius: 8px !important;
         font-weight: 600 !important;
     }
-    .info-card {
+    .card-white {
         background: white;
         color: black !important;
-        padding: 16px;
+        padding: 15px;
         border-radius: 10px;
         border: 1px solid #ddd;
         font-weight: 600;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
     }
-    .topic-card {
+    .card-blue {
         background: #2563eb;
-        color: white;
-        padding: 14px 18px;
-        border-radius: 8px;
-        margin-bottom: 8px;
-        font-weight: 500;
-    }
-    .hero {
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        border: 1px solid #e5e7eb;
-        margin-bottom: 15px;
+        color: white !important;
+        padding: 15px;
+        border-radius: 10px;
+        font-weight: 600;
     }
 </style>
 """, unsafe_allow_html=True)
 
-if "page" not in st.session_state:
-    st.session_state.page = "list"
-if "selected_topic" not in st.session_state:
-    st.session_state.selected_topic = None
-
-# TOP BAR - ALWAYS VISIBLE
+# 1. TOP BAR
 st.markdown('<div class="top-bar">BhavPath | Rise | 81 percent | 820 XP | Python</div>', unsafe_allow_html=True)
 st.markdown('<div class="black-line"></div>', unsafe_allow_html=True)
 
-# TOP BUTTONS
-c1, c2 = st.columns(2)
+# 2. BHAVPATH HERO - STARTING PAGE LO BIG GA
+st.markdown("""
+<div class="hero-main">
+    <h1>BhavPath</h1>
+    <p>Rise • Learn Python • Build Your Future | 81% Completed | 820 XP</p>
+</div>
+""", unsafe_allow_html=True)
+
+# 3. TOP BUTTONS - NO GAP
+c1, c2 = st.columns(2, gap="small")
 with c1:
-    if st.button("Back Change percent"):
-        st.session_state.page = "list"
+    st.button("Back Change percent", use_container_width=True)
 with c2:
-    if st.button("Back to All Topics List Malli"):
-        st.session_state.page = "list"
+    st.button("Back to All Topics List Malli", use_container_width=True)
 
-# LIST PAGE
-if st.session_state.page == "list":
-    left, right = st.columns([1, 2.5])
+# 4. MAIN - NO WHITE SPACE
+left, right = st.columns([1, 2.5], gap="small")
 
-    with left:
-        st.markdown('<div class="hero"><h3 style="margin:0; color:#1d4ed8;">BhavPath 🚀</h3><p style="margin:5px 0 0 0; color:black;">Learn Python with XP & Rise</p><p style="margin:10px 0 0 0;">Progress: <b>81%</b> | XP: <b>820</b></p></div>', unsafe_allow_html=True)
-        st.markdown('<div class="info-card">List Page varake -<br>Ikkada matrame<br>Open buttons</div>', unsafe_allow_html=True)
-        st.write("")
-        st.markdown('<div style="background:#2563eb; color:white; padding:15px; border-radius:10px;"><b>Python SELECTED</b><br><span style="color:#dbeafe;">Easy plus Data Science</span></div>', unsafe_allow_html=True)
-        if st.button("Open Python", key="open_py_main"):
-            st.session_state.page = "list"
+with left:
+    st.markdown('<div class="card-white">List Page varake -<br>Ikkada matrame Open buttons</div>', unsafe_allow_html=True)
+    st.write("")
+    st.markdown('<div class="card-blue">Python SELECTED<br><small>Easy plus Data Science</small></div>', unsafe_allow_html=True)
+    st.button("Open Python", use_container_width=True, key="open_py")
 
-    with right:
-        st.markdown('<h4 style="color:black;">Python Topics</h4>', unsafe_allow_html=True)
-        topics = {
-            "1. Introduction": "Python ante enti, ela start cheyyali, BhavPath lo first step.",
-            "2. Variables": "Variables ante boxes lantivi, data store cheyyadaniki.",
-            "3. Operators": "+ - * / logic, calculations cheyyadaniki.",
-            "4. Loops": "For, While loops - same pani repeat cheyyadaniki.",
-            "5. Identifiers": "Names ivvadam - variable, function names rules."
-        }
-        for title, desc in topics.items():
-            if st.button(f"• {title}  →  Open Detail", key=title):
-                st.session_state.selected_topic = title
-                st.session_state.page = "detail"
-                st.rerun()
-
-# DETAIL PAGE
-else:
-    topic = st.session_state.selected_topic
-    st.markdown(f'<div class="hero"><h2 style="color:#1d4ed8; margin:0;">{topic}</h2><p style="color:black;">Detailed explanation in Telugu + English</p></div>', unsafe_allow_html=True)
-    
-    if st.button("← Back to List"):
-        st.session_state.page = "list"
-        st.rerun()
-
-    st.info(f"Here you can add full content for {topic} - examples, code, practice.")
-    st.code(f"# Example for {topic}\nprint('BhavPath - {topic}')", language="python")
+with right:
+    st.markdown('<p style="color:black; font-weight:700; margin:0 0 10px 0;">Python Topics - Click to Open Detail</p>', unsafe_allow_html=True)
+    topics = ["1. Introduction", "2. Variables", "3. Operators", "4. Loops", "5. Identifiers"]
+    for t in topics:
+        if st.button(f"• {t}  →  Open Detail", key=t, use_container_width=True):
+            st.success(f"{t} Opened!")
+            st.code(f"# {t}\nprint('Welcome to {t} in BhavPath')", language="python")
