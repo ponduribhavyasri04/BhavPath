@@ -1,226 +1,196 @@
 import streamlit as st
 
-st.set_page_config(page_title="BhavPath - Topic Wise", layout="wide", page_icon="🚀")
+st.set_page_config(page_title="BhavPath - Super Cool Orbit", layout="wide", page_icon="🚀")
 
 st.markdown("""
 <style>
-    .stApp { background: #0a0e1a; }
-    .top-bar { background: linear-gradient(90deg, #1e3a8a, #0ea5e9); color: white !important; padding: 16px 22px; border-radius: 14px; font-weight: 900; display:flex; justify-content:space-between; }
-    .glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 16px; color: white !important; }
-    .content-dark { background: #111827; border: 1px solid #1f2937; padding: 20px; border-radius: 14px; color: #e5e7eb !important; }
-    .topic-item { background: rgba(255,255,255,0.05); border-left: 3px solid #0ea5e9; padding: 10px 12px; margin-bottom: 8px; border-radius: 8px; font-size: 13px; color: #e5e7eb; cursor: pointer; }
-    .topic-item:hover { background: rgba(56,189,248,0.15); border-left-color: #22c55e; }
-    div.stButton > button { background: linear-gradient(90deg, #2563eb, #0ea5e9) !important; color: white !important; border: none !important; border-radius: 10px !important; font-weight: 800 !important; height: 46px; }
-    .gfg-box { background: white; color: black !important; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; }
-    .gfg-box h2, .gfg-box h3, .gfg-box p, .gfg-box li { color: black !important; }
-    .gfg-box pre { background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; }
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&display=swap');
+.stApp { background: radial-gradient(1200px at 10% 10%, #1e1b4b 0%, #0f172a 40%, #020617 100%); overflow-x: hidden; }
+.top-bar { background: linear-gradient(90deg, #6366f1, #06b6d4, #22c55e); padding: 14px 22px; border-radius: 16px; font-family: 'Space Grotesk'; font-weight: 800; display:flex; justify-content:space-between; color: white; box-shadow: 0 0 30px rgba(99,102,241,0.6); animation: glow 3s infinite; }
+@keyframes glow { 0% { box-shadow: 0 0 20px rgba(99,102,241,0.4);} 50% { box-shadow: 0 0 40px rgba(6,182,214,0.7);} 100% { box-shadow: 0 0 20px rgba(99,102,241,0.4);} }
+.glass { background: rgba(255,255,255,0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 16px; color: white; box-shadow: 0 8px 40px rgba(0,0,0,0.5); transition: 0.4s; }
+.glass:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 16px 50px rgba(99,102,241,0.4); }
+.gfg-card { background: linear-gradient(145deg, #ffffff, #f1f5f9); border-radius: 16px; padding: 14px; color: #0f172a; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+.gfg-topic-active { background: linear-gradient(90deg, #6366f1, #06b6d4) !important; color: white !important; }
+.code-neon { background: #020617; border: 1px solid #334155; border-left: 4px solid #22c55e; border-radius: 12px; padding: 14px; color: #7dd3fc; font-family: monospace; box-shadow: inset 0 0 20px rgba(34,197,94,0.1); }
+.ad-card { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%); border-radius: 16px; padding: 16px; color: white; text-align: center; animation: float 4s ease-in-out infinite; position: relative; overflow: hidden; }
+.ad-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent); transform: rotate(45deg); animation: shine 3s infinite; }
+@keyframes float { 0%,100% { transform: translateY(0px);} 50% { transform: translateY(-8px);} }
+@keyframes shine { 0% { transform: translateX(-100%) rotate(45deg);} 100% { transform: translateX(100%) rotate(45deg);} }
+.xp-badge { background: linear-gradient(90deg, #22c55e, #16a34a); padding: 6px 14px; border-radius: 20px; font-weight: 900; color: white; box-shadow: 0 0 15px rgba(34,197,94,0.6); }
+.boss-card { background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px dashed #22c55e; border-radius: 16px; padding: 16px; color: #e2e7eb; }
+div.stButton > button { background: linear-gradient(90deg, #6366f1, #06b6d4) !important; color: white !important; border: none !important; border-radius: 12px !important; font-weight: 800 !important; height: 44px; box-shadow: 0 0 20px rgba(99,102,241,0.5); }
 </style>
 """, unsafe_allow_html=True)
 
-# ===== TOPIC-WISE DETAILED CONTENT - GEEKSFORGEEKS STYLE =====
-TOPIC_DETAILS = {
-    "C": {
-        "10. File Handling": {
-            "title": "C File Handling - GeeksforGeeks Style",
-            "content": """
-**File Handling in C - Last Updated 26 Aug 2026**
-
-File handling is used to store data permanently.
-
-**Why File Handling?**
-- Data loss avoid cheyyadaniki
-- Real projects lo must
-
-**Functions:**
-- fopen() - open file
-- fclose() - close
-- fprintf() - write
-- fscanf() - read
-
-**Example:**
-            """,
-            "code": '#include <stdio.h>\nint main(){\n FILE *fp = fopen("bhavpath.txt", "w");\n fprintf(fp, "BhavPath 82%% Power");\n fclose(fp);\n printf("File Written!");\n return 0;\n}',
-            "interview": "**Q:** fopen modes? -> r, w, a, r+, w+, a+"
-        },
-        "11. Dynamic Memory - malloc, calloc": {
-            "title": "Dynamic Memory Allocation in C - malloc, calloc, free",
-            "content": """
-**Dynamic Memory - Last Updated**
-
-C lo memory runtime lo allocate cheyyadam.
-
-**malloc():**
-- Single block: malloc(100)
-- Garbage value untundi
-
-**calloc():**
-- Multiple blocks: calloc(5, sizeof(int))
-- Zero tho fill chestundi
-
-**free():**
-- Memory free cheyyali - lekapothe memory leak
-
-**TCS NQT Pattern:** malloc use chesi array create cheyyamantaru.
-            """,
-            "code": '#include <stdio.h>\n#include <stdlib.h>\nint main(){\n int *p = (int*)malloc(5 * sizeof(int));\n for(int i=0;i<5;i++) p[i]=i+1;\n for(int i=0;i<5;i++) printf("%d ", p[i]);\n free(p);\n return 0;\n}',
-            "interview": "**Q:** malloc vs calloc? **Q:** What is memory leak? **Q:** Why free() needed?"
-        },
-        "12. TCS NQT Coding Patterns": {
-            "title": "TCS NQT Coding Patterns in C - BhavPath Original",
-            "content": """
-**TCS NQT lo adige C Patterns**
-
-1. **Reverse String**
-2. **Factorial, Prime Check**
-3. **Array Duplicates Remove**
-4. **File Handling + malloc combine**
-
-**BhavPath Tip:** 82% power unna neeku TCS NQT easy - daily 2 patterns practice cheyyi.
-
-**Pattern List:**
-- Reverse, Palindrome
-- Factorial, Fibonacci
-- File Handling
-            """,
-            "code": '#include <stdio.h>\n// TCS Pattern: Reverse + Factorial\nint main(){\n char s[]="BhavPath";\n for(int i=5;i>=0;i--) printf("%c", s[i]);\n return 0;\n}',
-            "interview": "**TCS Coding Round:** 1 coding Q - File handling or malloc based vastundi - 30 mins"
-        }
-    },
-    "Python": {
-        "12. TCS/Infosys Patterns - Reverse, Duplicates": {
-            "title": "Python TCS/Infosys Patterns",
-            "content": "Python lo TCS patterns - Reverse, Duplicates remove, etc.",
-            "code": 's="BhavPath"\nprint(s[::-1])\nprint(list(set([1,1,2])))',
-            "interview": "Q: How to remove duplicates? -> set()"
-        }
-    }
+# ===== SUPER COOL DATA =====
+GFG_FULL = {
+    "Python": [
+        {"id": "01", "title": "Introduction - What is Python?", "icon": "🐍", "what": "Python by Guido van Rossum 1991. Super easy syntax like English. Instagram, YouTube, Netflix backend is Python. For 81% profile - Helps in TCS NQT! Best for Data Science.", "why": "Why Python? Easy to learn, huge jobs, AI/ML future, 9 LPA packages", "code1": 'print("Hello Python")\nprint("BhavPath 81% Power - Super Cool")', "code2": '# Real Use: Take BTech %\nbtech = int(input("Enter BTech %: "))\nif btech >= 81:\n print("Eligible for TCS NQT - 7 LPA!")', "quiz": ("Who invented Python?", ["Guido van Rossum", "Dennis Ritchie"], "Guido van Rossum"), "practice": 's="BhavPath"\nprint(s[::-1]) # Reverse - TCS Pattern', "ad": "🔥 PYTHON MASTERY - 50% OFF! For 81% Students - Crack TCS NQT in 30 Days!"},
+        {"id": "02", "title": "Variables & Data Types", "icon": "📦", "what": "Variables store data. list=mutable [1,2,3], tuple=immutable (1,2,3), dict=key-value {\"percent\":81}", "why": "Data types important for DSA and interviews", "code1": 'x=81\nname="BhavPath"\nmy_list=[81,82,85]\nprint(f"{name} - {x}%")', "code2": '# Example: Add two numbers\na=int(input())\nb=int(input())\nprint(f"Sum: {a+b}")', "quiz": ("list mutable?", ["Yes", "No"], "Yes"), "practice": 'nums=[1,1,2,3,2]\nprint(list(set(nums))) # Remove duplicates', "ad": "💎 DATA SCIENCE WITH PYTHON - 81% Students Special Offer!"},
+        {"id": "06", "title": "File Handling", "icon": "📁", "what": "File handling - store data permanently. open(), read(), write(), close() - Real projects use this daily. TCS asks this!", "why": "Permanent storage - Without this data lost on close", "code1": 'f=open("bhavpath.txt","w")\nf.write("BhavPath 81% Power")\nf.close()\nprint("File Written - Cool!")', "code2": '# Read file\nf=open("bhavpath.txt","r")\nprint(f.read())', "quiz": ("File handling for permanent storage?", ["Yes", "No"], "Yes"), "practice": '# Write your % to file\nf=open("percent.txt","w")\nf.write("81")\nf.close()', "ad": "🚀 FILE HANDLING MASTERCLASS - Free for 81% Profile!"},
+        {"id": "08", "title": "TCS NQT Patterns - FINAL BOSS", "icon": "👑", "what": "TCS NQT Patterns - Reverse string, Remove duplicates, Factorial, Prime - 81% profile final level - 7 LPA ready!", "why": "TCS NQT has 1 coding Q - 30 mins - This clears it", "code1": 's="BhavPath"\nprint(s[::-1]) # Reverse\nlst=[1,1,2,3,2]\nprint(list(set(lst))) # Duplicates', "code2": '# Factorial - TCS Q\ndef fact(n): return 1 if n==0 else n*fact(n-1)\nprint(fact(5))', "quiz": ("DSA needed for TCS?", ["Yes", "No"], "Yes"), "practice": '# FINAL MOCK\ns="TCS NQT 81%"\nprint("".join(reversed(s)))', "ad": "🏆 TCS NQT CRACKER - 81% Students Get 7 LPA - Join Now!"},
+    ],
+    "C": [
+        {"id": "01", "title": "Introduction - Dennis Ritchie 1972", "icon": "🔵", "what": "C by Dennis Ritchie 1972 at Bell Labs for UNIX. Mother of all languages - C++, Java, Python borrowed from C", "why": "C strong = Any language easy - TCS NQT must", "code1": '#include <stdio.h>\nint main(){\n printf("Hello C - BhavPath 81%% Super Cool");\n return 0;\n}', "code2": 'int percent=81;\nprintf("Your %%: %d - Eligible", percent);', "quiz": ("Who invented C?", ["Dennis Ritchie", "Guido"], "Dennis Ritchie"), "practice": 'printf("82%% Power");', "ad": "⚡ C MASTERY - Foundation of All Languages!"},
+        {"id": "06", "title": "Pointers - HIGH PRIORITY", "icon": "🎯", "what": "Pointers store address. &a=address, *p=value at address. TCS NQT 100% asks this - Most important topic!", "why": "Without pointers no TCS interview clear", "code1": '#include <stdio.h>\nint main(){\n int a=81;\n int *p=&a;\n printf("a=%d, *p=%d, addr=%p", a, *p, p);\n}', "code2": 'void swap(int *x, int *y){int t=*x; *x=*y; *y=t;}', "quiz": ("Pointer stores address?", ["Yes", "No"], "Yes"), "practice": 'int percent=81;\nprintf("Addr: %p", &percent);', "ad": "🎯 POINTERS UNLOCKED - TCS NQT Secret Weapon!"},
+    ],
+    "C++": [{"id": f"0{i+1}", "title": f"C++ Topic {i+1}", "icon": "💜", "what": "C++ content", "why": "Why C++", "code1": 'cout<<"C++ Super Cool";', "code2": 'vector<int> v={1,2,3};', "quiz": ("C++ has OOPs?", ["Yes","No"], "Yes"), "practice": '// Practice C++', "ad": "💜 C++ POWER - Game Dev & CP!"} for i in range(4)],
+    "Java": [{"id": f"0{i+1}", "title": f"Java Topic {i+1}", "icon": "☕", "what": "Java content", "why": "Why Java", "code1": 'System.out.println("Java Cool");', "code2": 'System.out.println("81%");', "quiz": ("Java platform independent?", ["Yes","No"], "Yes"), "practice": '// Practice Java', "ad": "☕ JAVA ENTERPRISE - 9 LPA Jobs!"} for i in range(4)],
 }
 
-FULL_TOPICS = {
-    "C": ["01. C Basics - History & Setup", "02. Data Types, Variables", "03. Input/Output - printf, scanf", "04. Operators", "05. If-Else, Loops", "06. Functions", "07. Arrays & Strings", "08. Pointers - TCS Important", "09. Structures & Unions", "10. File Handling", "11. Dynamic Memory - malloc, calloc", "12. TCS NQT Coding Patterns"],
-    "Python": ["01. Python Basics", "02. Data Types - list, tuple, dict", "03. Loops", "04. Functions", "05. OOPs", "06. File Handling", "07. Libraries", "08. Exception", "09. Decorators", "10. Django", "11. AI/ML Intro", "12. TCS/Infosys Patterns - Reverse, Duplicates"],
-    "C++": ["01. C++ Basics", "02. Data Types", "03. Loops", "04. Class, Object", "05. Inheritance", "06. Encapsulation", "07. STL - vector, map - MUST", "08. Pointers", "09. Exception", "10. File", "11. CP Tricks", "12. Wipro Patterns"],
-    "Java": ["01. Java Basics JVM", "02. Data Types", "03. Loops", "04. Class Object", "05. Inheritance", "06. Abstraction", "07. String", "08. Collections", "09. Exception", "10. Multithreading", "11. Spring", "12. Accenture Patterns"],
-    "SQL": ["01. SQL Basics", "02. SELECT", "03. INSERT", "04. Constraints", "05. Keys", "06. JOINs - MUST", "07. GROUP BY", "08. Aggregate", "09. Subqueries", "10. Indexes", "11. Views", "12. TCS SQL Qs"],
-    "DSA": ["01. What is DSA?", "02. Complexity", "03. Arrays", "04. Linked List", "05. Stack Queue", "06. Sorting", "07. Searching", "08. Strings", "09. Recursion", "10. Trees", "11. Graphs", "12. DP Basics"]
-}
+if "skill" not in st.session_state: st.session_state.skill="Python"
+if "idx" not in st.session_state: st.session_state.idx=0
+if "xp" not in st.session_state: st.session_state.xp=820
+if "done" not in st.session_state: st.session_state.done=[]
 
-COMPANIES = [
-    {"name":"TCS NQT", "min":60, "pkg":"7 LPA", "color":"#22c55e"},
-    {"name":"Infosys SP", "min":65, "pkg":"9 LPA", "color":"#a855f7"},
-    {"name":"Wipro", "min":60, "pkg":"3.5 LPA", "color":"#f59e0b"},
-]
+# Top bar
+st.markdown(f'<div class="top-bar"><span>🚀 BHAVPATH • SUPER COOL ORBIT • {st.session_state.skill.upper()} • 81% POWER</span><span class="xp-badge">{st.session_state.xp} XP • LVL 3</span></div>', unsafe_allow_html=True)
 
-if "page" not in st.session_state: st.session_state.page="login"
-if "skill" not in st.session_state: st.session_state.skill="C"
-if "mode" not in st.session_state: st.session_state.mode="Learn"
-if "selected_topic" not in st.session_state: st.session_state.selected_topic=None
+# Ad Banner Top
+st.markdown(f"""
+<div class="ad-card" style="margin-top:12px;">
+    <h3 style="margin:0;">🌟 {GFG_FULL[st.session_state.skill][st.session_state.idx]["ad"]} 🌟</h3>
+    <p style="margin:4px 0 0 0; font-size:12px;">For 81% Profile Students Only - Limited Time - 50% OFF - Graphics Enabled</p>
+</div>
+""", unsafe_allow_html=True)
 
-# 1. LOGIN
-if st.session_state.page=="login":
-    st.markdown('<div class="top-bar"><span>BHAVPATH • ADVANCED</span><span>820 XP</span></div>', unsafe_allow_html=True)
-    st.markdown('<div class="glass" style="max-width:420px; margin:30px auto; text-align:center;"><h3>Login</h3>', unsafe_allow_html=True)
-    mail = st.text_input("Mail")
-    college = st.text_input("College")
-    if st.button("Launch →", use_container_width=True):
-        st.session_state.mail=mail; st.session_state.college=college; st.session_state.page="profile"; st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
-    st.stop()
+left, mid, right = st.columns([1.1, 2.2, 1.1])
 
-# 2. PROFILE
-if st.session_state.page=="profile":
-    st.markdown(f'<div class="top-bar"><span>BHAVPATH | {st.session_state.college}</span></div>', unsafe_allow_html=True)
-    st.markdown('<div class="glass" style="max-width:700px; margin:20px auto;">', unsafe_allow_html=True)
-    percent = st.slider("Your Power %", 40, 100, 82)
-    skills = st.multiselect("Select Skills", list(FULL_TOPICS.keys()), default=["C","Python"])
-    if st.button("Show Companies →", use_container_width=True):
-        st.session_state.percent=percent; st.session_state.skills=skills; st.session_state.page="companies"; st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
-    st.stop()
-
-# 3. COMPANIES
-if st.session_state.page=="companies":
-    p = st.session_state.percent
-    st.markdown(f'<div class="top-bar"><span>BHAVPATH • {p}% POWER</span><span>{", ".join(st.session_state.skills)}</span></div>', unsafe_allow_html=True)
-    cols = st.columns(3)
-    for i, comp in enumerate(COMPANIES):
-        if p >= comp["min"]:
-            with cols[i%3]:
-                st.markdown(f'<div class="glass" style="text-align:center;"><h4>{comp["name"]}</h4><p>{comp["pkg"]}</p></div>', unsafe_allow_html=True)
-                if st.button(f"Enter {comp['name']}", key=comp["name"], use_container_width=True):
-                    st.session_state.company=comp; st.session_state.page="detail"; st.session_state.skill=st.session_state.skills[0]; st.session_state.selected_topic=None; st.rerun()
-    st.stop()
-
-# 4. SKILL PAGE WITH TOPIC CLICK -> TOPIC PAGE
-if st.session_state.page=="detail":
-    comp = st.session_state.company
-    st.markdown(f'<div class="top-bar"><span>BHAVPATH X {comp["name"]} • ORBIT ACTIVE</span><span>{st.session_state.percent}% MATCH</span></div>', unsafe_allow_html=True)
-
-    # Skill select
-    scols = st.columns(len(st.session_state.skills))
-    for i, s in enumerate(st.session_state.skills):
-        if scols[i].button(s, key=f"sk_{s}", type="primary" if st.session_state.skill==s else "secondary", use_container_width=True):
-            st.session_state.skill=s; st.session_state.selected_topic=None; st.session_state.mode="Learn"; st.rerun()
-
-    curr = st.session_state.skill
-
-    # IF TOPIC SELECTED -> SHOW GEEKSFORGEEKS STYLE TOPIC PAGE
-    if st.session_state.selected_topic:
-        topic = st.session_state.selected_topic
-        detail = TOPIC_DETAILS.get(curr, {}).get(topic, None)
-        # If no specific detail, create generic
-        if not detail:
-            detail = {
-                "title": f"{topic} - {curr} - BhavPath",
-                "content": f"**{topic}**\n\nFull tutorial for {curr} - {topic}. This is like GeeksforGeeks page but BhavPath original.\n\n- What is {topic}?\n- Why important for {comp['name']}?\n- How to use?\n\n**BhavPath Tip:** {curr} lo {topic} TCS NQT lo 100% adugutaru.",
-                "code": f'// {curr} - {topic}\n// Practice code for {topic}\nprintf("{curr} {topic} - 82%% Power");',
-                "interview": f"Q: What is {topic}? Q: Explain {topic} in {curr}?"
-            }
-        
-        st.markdown(f'<div class="gfg-box"><h2>{detail["title"]}</h2><p style="color:gray; font-size:12px;">Last Updated: 26 Aug 2026 | {curr} | {comp["name"]} | BhavPath Original</p><hr>', unsafe_allow_html=True)
-        st.markdown(f'<div class="gfg-box">{detail["content"]}</div>', unsafe_allow_html=True)
-        st.markdown('<div class="gfg-box">', unsafe_allow_html=True)
-        st.markdown("**Example Code:**")
-        st.code(detail["code"])
-        st.markdown("**Interview Qs:**")
-        st.markdown(detail["interview"])
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        if st.button("← Back to Topic List"): 
-            st.session_state.selected_topic=None
+# LEFT - SUPER COOL TOPICS - GFG STYLE WITH GRAPHICS
+with left:
+    st.markdown('<div class="glass"><h3 style="margin:0;">📚 Topics - GFG Super Cool</h3><p style="font-size:11px; color:#94a3b8; margin:4px 0 12px 0;">Click to open full GFG article with graphics</p>', unsafe_allow_html=True)
+    for skill_name in GFG_FULL.keys():
+        is_sk = st.session_state.skill==skill_name
+        if st.button(f"{'🚀' if is_sk else '💫'} {skill_name} - {len(GFG_FULL[skill_name])} Modules", key=f"sk_{skill_name}", use_container_width=True, type="primary" if is_sk else "secondary"):
+            st.session_state.skill=skill_name
+            st.session_state.idx=0
             st.rerun()
-        st.stop()
-
-    # NORMAL - TOPIC LIST
-    m1, m2, m3 = st.columns(3)
-    with m1:
-        if st.button("📖 Learn Story", use_container_width=True, type="primary" if st.session_state.mode=="Learn" else "secondary"): st.session_state.mode="Learn"; st.rerun()
-    with m2:
-        if st.button("💻 Code Lab", use_container_width=True, type="primary" if st.session_state.mode=="Code" else "secondary"): st.session_state.mode="Code"; st.rerun()
-    with m3:
-        if st.button("🎯 Interview", use_container_width=True, type="primary" if st.session_state.mode=="Crack" else "secondary"): st.session_state.mode="Crack"; st.rerun()
-
-    left, right = st.columns([1.6, 1])
-    with left:
-        st.markdown('<div class="content-dark">', unsafe_allow_html=True)
-        if st.session_state.mode=="Learn":
-            st.markdown(f"### {curr} - Click any Topic to Open Full Page (like GFG)")
-            topics = FULL_TOPICS[curr]
-            for topic in topics:
-                if st.button(topic, key=f"topic_{topic}", use_container_width=True):
-                    st.session_state.selected_topic=topic
+        if is_sk:
+            for i, mod in enumerate(GFG_FULL[skill_name]):
+                active = st.session_state.idx==i
+                tick = "✅" if f"{skill_name}_{i}" in st.session_state.done else mod["icon"]
+                label = f"{tick} {mod['id']}. {mod['title'][:30]}"
+                if st.button(label, key=f"mod_{skill_name}_{i}", use_container_width=True, type="primary" if active else "secondary"):
+                    st.session_state.idx=i
                     st.rerun()
-            st.markdown("---")
-            st.markdown(f"**C - The Foundation - Story Mode**\n\n1972 - Dennis Ritchie - Bell Labs.\n\nWhy Mother? Java, PHP, JS, C++ anni C nundi vachayi.")
-        elif st.session_state.mode=="Code":
-            st.markdown(f"### {curr} - Practice Code")
-            st.code(f'// {curr} Practice\nprintf("BhavPath {curr} - 82% Power");')
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Mini Ad
+    st.markdown("""
+    <div class="ad-card" style="margin-top:12px; padding:12px;">
+        <b>🎮 FINAL BOSS GAME</b><br>
+        <span style="font-size:11px;">Play + Get Certificate + 200 XP</span><br>
+        <span style="font-size:10px; background: white; color: #6366f1; padding: 4px 8px; border-radius: 12px; font-weight:800;">FREE FOR 81%</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+# MIDDLE - FULL GFG PAGE WITH GRAPHICS
+with mid:
+    mod = GFG_FULL[st.session_state.skill][st.session_state.idx]
+    st.markdown(f"""
+    <div class="gfg-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h2 style="margin:0; color:#0f172a;">{mod['icon']} {mod['title']} | GFG Style | BhavPath Super Cool</h2>
+            <span class="xp-badge">81% SPECIAL</span>
+        </div>
+        <p style="color: gray; font-size:11px; margin:6px 0 0 0;">Last Updated: 26 Aug 2026 | {st.session_state.skill} | TCS NQT | Graphics Enabled | Super Cool UI</p>
+        <hr style="margin:12px 0;">
+        <h3 style="color:#6366f1;">📖 What is {mod['title']}?</h3>
+        <p style="color:#334155; line-height:1.6;">{mod['what']}</p>
+        <h3 style="color:#06b6d4;">🎯 Why Important for 81% Profile?</h3>
+        <p style="color:#334155;">{mod['why']}</p>
+        <div style="background: linear-gradient(90deg, #dbeafe, #e0e7ff); padding:10px; border-radius:10px; border-left:4px solid #6366f1;">
+            <b style="color:#1e40af;">💡 BhavPath Tip for 81%:</b><br>
+            <span style="color:#334155; font-size:13px;">This topic asked in TCS NQT 2024, 2025 - Must for 7 LPA - Practice daily!</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown('<div class="glass" style="margin-top:12px;">', unsafe_allow_html=True)
+    st.markdown(f'<h3 style="margin:0;">💻 Example 1 - Basic - {mod["title"]}</h3>', unsafe_allow_html=True)
+    st.markdown(f'<div class="code-neon">{mod["code1"]}</div>', unsafe_allow_html=True)
+    st.code(mod["code1"], language="python" if st.session_state.skill=="Python" else "c")
+    
+    st.markdown(f'<h3 style="margin:16px 0 0 0;">📝 Example 2 - Real Use (For 81% Profile - TCS NQT)</h3>', unsafe_allow_html=True)
+    st.code(mod["code2"], language="python" if st.session_state.skill=="Python" else "c")
+    
+    # Ad in middle
+    st.markdown(f"""
+    <div class="ad-card" style="margin-top:14px;">
+        <b>🔥 {mod["ad"]}</b><br>
+        <span style="font-size:11px;">Click Below to Unlock Full Course with Graphics + Certificate</span>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Navigation + XP
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        if st.button("← Prev", use_container_width=True, disabled=st.session_state.idx==0):
+            st.session_state.idx-=1; st.rerun()
+    with c2:
+        if st.button(f"✅ Mark Done +50 XP", use_container_width=True, type="primary"):
+            key = f"{st.session_state.skill}_{st.session_state.idx}"
+            if key not in st.session_state.done:
+                st.session_state.done.append(key)
+                st.session_state.xp+=50
+                st.balloons()
+                st.success(f"+50 XP! {mod['title']} Completed - Super Cool!")
+            else:
+                st.info("Already done!")
+    with c3:
+        if st.button("Next →", use_container_width=True, disabled=st.session_state.idx==len(GFG_FULL[st.session_state.skill])-1):
+            st.session_state.idx+=1; st.rerun()
+
+# RIGHT - PRACTICE + RUN CODE + GRAPHICS ADS
+with right:
+    st.markdown('<div class="glass"><h3 style="margin:0;">🎯 Practice - Super Cool</h3>', unsafe_allow_html=True)
+    st.markdown(f'<div class="gfg-card" style="margin-top:10px;"><b>Q: {mod["quiz"][0]}</b><br><span style="font-size:11px; color:gray;">For 81% - TCS NQT Style</span></div>', unsafe_allow_html=True)
+    choice = st.radio("Choose:", mod["quiz"][1], key=f"q_{st.session_state.idx}")
+    if st.button("Check Answer", use_container_width=True, key=f"chk_{st.session_state.idx}"):
+        if choice==mod["quiz"][2]:
+            st.success(f"✅ Correct! {choice} +20 XP")
+            st.session_state.xp+=20
+            st.balloons()
         else:
-            st.markdown(f"### {curr} - Interview Qs for {comp['name']}")
-            st.markdown("TCS Qs: pointer? malloc vs calloc?")
-        st.markdown('</div>', unsafe_allow_html=True)
+            st.error(f"❌ Wrong! Correct: {mod['quiz'][2]}")
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    st.markdown('<div class="glass" style="margin-top:12px;"><h3>▶️ Run Code - Live Graphics</h3>', unsafe_allow_html=True)
+    st.markdown(f'<div class="gfg-card" style="background: linear-gradient(90deg, #f0fdf4, #dcfce7);"><b>💡 Practice Code - {mod["title"]}</b><br><span style="font-size:11px;">TCS Pattern - Edit & Run - Graphics Enabled</span></div>', unsafe_allow_html=True)
+    st.code(mod["practice"], language="python" if st.session_state.skill=="Python" else "c")
+    edit = st.text_area("Edit & Run Your Code:", value=mod["practice"], height=90, key=f"edit_{st.session_state.idx}")
+    if st.button(f"▶️ Run {mod['title']} - Super Cool Output", use_container_width=True, type="primary"):
+        st.markdown(f'<div class="code-neon">Running...<br>{edit}<br><br>Output: BhavPath 81% Power - Executed! Super Cool! +10 XP</div>', unsafe_allow_html=True)
+        st.session_state.xp+=10
+        st.balloons()
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="ad-card" style="margin-top:12px;">
+        <h4 style="margin:0;">📢 AD - Data Engineering Course</h4>
+        <p style="font-size:11px; margin:6px 0;">50% OFF for 81% Profile Students - With Super Cool Graphics!</p>
+        <div style="background: white; color: #6366f1; padding: 6px; border-radius: 8px; font-weight: 800; font-size:12px;">GET OFFER - 2 Days Left!</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Final Boss
+    done_cnt = len([k for k in st.session_state.done if k.startswith(st.session_state.skill)])
+    st.markdown(f'<div class="boss-card" style="margin-top:12px;"><h3 style="margin:0; color:#22c55e;">🎮 FINAL BOSS - Game + Certificate</h3><p style="font-size:12px; margin:6px 0;">Progress: {done_cnt}/{len(GFG_FULL[st.session_state.skill])} Modules</p></div>', unsafe_allow_html=True)
+    if done_cnt >= 2:
+        st.success(f"🏆 UNLOCKED! {st.session_state.skill} Final Boss Ready!")
+        if st.button("🎮 Play Game + Get Certificate +200 XP", use_container_width=True, type="primary"):
+            st.balloons()
+            st.success(f"Certificate Unlocked! Super Cool Graphics Certificate for {st.session_state.skill}!")
+            st.session_state.xp+=200
+    else:
+        st.info(f"🔒 Locked - Complete {2-done_cnt} more to unlock")
 
-    with right:
-        st.markdown(f'<div class="glass"><h4>{comp["name"]} Mission</h4><p>Package: {comp["pkg"]} | You: {st.session_state.percent}%</p><p style="color:#7dd3fc;">Skill: {curr}<br>Click topic to open like GeeksforGeeks</p></div>', unsafe_allow_html=True)
-
-    if st.button("← Back to Companies"): st.session_state.page="companies"; st.rerun()
+st.markdown("""
+<div class="ad-card" style="margin-top:20px;">
+    <h2 style="margin:0;">🚀 BHAVPATH SUPER COOL ORBIT - FOR 81% STUDENTS - NO PERCENTAGE PACKAGE 🚀</h2>
+    <p style="margin:6px 0 0 0;">Python | C | C++ | Java | SQL | DSA | Data Engineering | All with Graphics + Ads + Games + Certificates | 81% → 85% → 90% Rise!</p>
+</div>
+""", unsafe_allow_html=True)
