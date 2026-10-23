@@ -1,7 +1,6 @@
 import streamlit as st
 import random
 import streamlit.components.v1 as components
-
 st.set_page_config(page_title="BhavPath", page_icon="🚀", layout="wide")
 
 # --- CSS ---
