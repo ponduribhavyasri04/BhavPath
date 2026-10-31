@@ -3,7 +3,6 @@ import pandas as pd
 import io
 import traceback
 
-# ===== SAFE IMPORTS - ERROR RAKUNDA =====
 try:
     import matplotlib.pyplot as plt
     import matplotlib.patches as patches
@@ -17,7 +16,6 @@ try:
     SKLEARN_AVAILABLE = True
 except ModuleNotFoundError:
     SKLEARN_AVAILABLE = False
-    import random
 
 st.set_page_config(page_title="BhavPath", layout="wide", initial_sidebar_state="collapsed")
 if 'page' not in st.session_state: 
@@ -41,7 +39,6 @@ st.markdown("""
 <div class="bg-blue"></div><div class="bg-pink"></div>
 """, unsafe_allow_html=True)
 
-# ================= ML MODEL - SAFE =================
 @st.cache_resource
 def get_placement_model():
     if not SKLEARN_AVAILABLE:
@@ -61,7 +58,6 @@ def get_placement_model():
 
 model = get_placement_model()
 
-# ================= PIC DIAGRAMS - 2 TYPES (MATPLOTLIB OR HTML) =================
 def fig_to_buffer(fig):
     buf = io.BytesIO()
     plt.savefig(buf, format='png', bbox_inches='tight', dpi=200, facecolor=fig.get_facecolor())
@@ -69,11 +65,9 @@ def fig_to_buffer(fig):
     return buf
 
 def get_diagrams_for_topic(skill, topic):
-    # If matplotlib available - real images, else HTML fallback - NO ERROR
     diagrams = []
     if MATPLOTLIB_AVAILABLE:
         try:
-            # Memory Diagram Image
             fig, ax = plt.subplots(figsize=(8, 2.5))
             fig.patch.set_facecolor('#05000a'); ax.set_facecolor('#05000a'); ax.axis('off')
             for i in range(4):
@@ -82,11 +76,10 @@ def get_diagrams_for_topic(skill, topic):
                 ax.add_patch(rect)
                 ax.text(x+1, 2.1, f"Addr: {1000+i*4}", color='white', ha='center', fontsize=9, weight='bold')
                 ax.text(x+1, 1.2, f"Val{i+1}", color='white', ha='center', fontsize=12, weight='bold')
-            ax.set_title(f'{skill} - {topic} Memory Layout - PIC DIAGRAM', color='white', fontsize=13)
+            ax.set_title(f'{skill} - {topic} Memory Layout Diagram', color='white', fontsize=13)
             ax.set_xlim(0, 10.5); ax.set_ylim(0, 2.8)
-            diagrams.append((fig_to_buffer(fig), f"{skill} {topic} Memory Layout (Pic)"))
+            diagrams.append((fig_to_buffer(fig), f"{skill} {topic} Memory Layout"))
             
-            # Architecture Diagram Image
             fig2, ax2 = plt.subplots(figsize=(8, 1.5))
             fig2.patch.set_facecolor('#05000a'); ax2.set_facecolor('#05000a'); ax2.axis('off')
             steps = [f'{topic}', 'Compiler', f'{skill} Memory', 'Output']
@@ -97,23 +90,20 @@ def get_diagrams_for_topic(skill, topic):
                 ax2.text(x+1, 0.7, step, color='white', ha='center', va='center', fontsize=8, weight='bold')
                 if i<3:
                     ax2.annotate('', xy=(x+2.15, 0.7), xytext=(x+2.5, 0.7), arrowprops=dict(arrowstyle='->', color='#ff006a', lw=2))
-            ax2.set_title(f'{skill} {topic} Architecture - PIC', color='#a78bfa', fontsize=11)
-            diagrams.append((fig_to_buffer(fig2), f"{skill} {topic} Architecture (Pic)"))
+            diagrams.append((fig_to_buffer(fig2), f"{skill} {topic} Architecture"))
         except:
             pass
     
-    # Always add HTML fallback diagrams - works without matplotlib
     html_diagram = f"""
     <div class="diagram-box">
-        <h4 style="color:#fef08a;">📊 {skill} - {topic} - Memory Layout Diagram (PIC WAY)</h4>
+        <h4 style="color:#fef08a;">📊 {skill} - {topic} - Memory Layout Diagram</h4>
         <div style="display:flex;justify-content:center;gap:15px;margin-top:15px;flex-wrap:wrap;">
-            <div style="border:2px solid #0d4aff;border-radius:10px;padding:15px 25px;background:#0d4aff33;"><div style="color:#a78bfa;font-size:10px;">Addr: 1000</div><div style="font-size:18px;font-weight:bold;">Val1</div><div style="color:#00f5ff;font-size:10px;">4 bytes</div></div>
-            <div style="border:2px solid #ff006a;border-radius:10px;padding:15px 25px;background:#ff006a33;"><div style="color:#a78bfa;font-size:10px;">Addr: 1004</div><div style="font-size:18px;font-weight:bold;">Val2</div><div style="color:#00f5ff;font-size:10px;">4 bytes</div></div>
-            <div style="border:2px solid #fef08a;border-radius:10px;padding:15px 25px;background:#fef08a33;"><div style="color:#a78bfa;font-size:10px;">Addr: 1008</div><div style="font-size:18px;font-weight:bold;">Val3</div><div style="color:#00f5ff;font-size:10px;">4 bytes</div></div>
-            <div style="border:2px solid #00f5ff;border-radius:10px;padding:15px 25px;background:#00f5ff33;"><div style="color:#a78bfa;font-size:10px;">Addr: 1012</div><div style="font-size:18px;font-weight:bold;">Val4</div><div style="color:#00f5ff;font-size:10px;">4 bytes</div></div>
+            <div style="border:2px solid #0d4aff;border-radius:10px;padding:15px 25px;background:#0d4aff33;"><div style="color:#a78bfa;font-size:10px;">Addr: 1000</div><div style="font-size:18px;font-weight:bold;">Val1</div></div>
+            <div style="border:2px solid #ff006a;border-radius:10px;padding:15px 25px;background:#ff006a33;"><div style="color:#a78bfa;font-size:10px;">Addr: 1004</div><div style="font-size:18px;font-weight:bold;">Val2</div></div>
+            <div style="border:2px solid #fef08a;border-radius:10px;padding:15px 25px;background:#fef08a33;"><div style="color:#a78bfa;font-size:10px;">Addr: 1008</div><div style="font-size:18px;font-weight:bold;">Val3</div></div>
+            <div style="border:2px solid #00f5ff;border-radius:10px;padding:15px 25px;background:#00f5ff33;"><div style="color:#a78bfa;font-size:10px;">Addr: 1012</div><div style="font-size:18px;font-weight:bold;">Val4</div></div>
         </div>
-        <div style="margin-top:15px;color:#ff006a;">↑ pointer (ptr) → Points to 1000 → Contiguous Memory</div>
-        <div style="margin-top:10px;font-size:12px;color:#a78bfa;">Block Size: 4 bytes | Total: 16 bytes | {skill} {topic}</div>
+        <div style="margin-top:15px;color:#ff006a;">↑ pointer (ptr) → Contiguous Memory</div>
     </div>
     """
     diagrams.append((html_diagram, "HTML"))
@@ -151,7 +141,6 @@ TCS 2-3 Qs, Infosys coding, Amazon DSA.
 Practice 1 hr theory + 2 hr coding. Build project using {topic}.
 """
 
-# ================= PAGES =================
 if st.session_state.page == "welcome":
     st.markdown("""<div class='center' style='padding-top:22vh'><h1 style='color:#c7f0ff;font-size:78px;font-weight:900;'>Welcome to BhavPath</h1><div class='glass' style='display:inline-block;margin-top:20px;padding:28px 50px;'><h2 style='margin:0;font-size:34px;background:linear-gradient(90deg,#fef08a,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>What is Your Placement Story..??</h2></div></div>""", unsafe_allow_html=True)
     _,c,_=st.columns([1.4,1,1.4])
@@ -183,41 +172,39 @@ elif st.session_state.page == "purpose":
             if st.button("💼 Interview + Code", use_container_width=True): st.session_state.page="interview_welcome"; st.rerun()
 
 elif st.session_state.page == "placement_welcome":
-    st.markdown(f"<div class='center'><h1 style='color:white;'>Welcome to Placement Prediction</h1><p style='color:#a78bfa;'>{st.session_state.college}</p><p style='color:#fef08a;'>ML Model - {'Random Forest Ready' if SKLEARN_AVAILABLE else 'Rule Based Ready'} - No Error</p></div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='center'><h1 style='color:white;'>Welcome to Placement Prediction</h1><p style='color:#a78bfa;'>{st.session_state.college}</p></div>", unsafe_allow_html=True)
     _,c,_=st.columns([1.3,1,1.3])
     with c:
+        st.write(""); st.write("")
         if st.button("Next → Enter Details", use_container_width=True, type="primary"): st.session_state.page="placement_form"; st.rerun()
         if st.button("← Back"): st.session_state.page="purpose"; st.rerun()
 
 elif st.session_state.page == "placement_form":
-    st.markdown("<div class='center'><h1 style='color:white;'>Enter Your Details - ML Prediction</h1></div>", unsafe_allow_html=True)
+    st.markdown("<div class='center'><h1 style='color:white;'>Enter Your Details</h1></div>", unsafe_allow_html=True)
     _,col,_=st.columns([1,1.3,1])
     with col:
         name=st.text_input("1. Name"); tenth=st.number_input("2. 10th %",0.0,100.0,85.0); inter=st.number_input("3. Inter %",0.0,100.0,80.0); btech=st.number_input("4. B.Tech %",0.0,100.0,75.0); skills=st.text_input("5. Skills", placeholder="Python, Java, SQL")
-        if st.button("Predict with ML →", use_container_width=True, type="primary"): 
+        if st.button("Predict →", use_container_width=True, type="primary"): 
             st.session_state.pdata=(name,tenth,inter,btech,skills); st.session_state.page="placement_result"; st.rerun()
         if st.button("← Back"): st.session_state.page="placement_welcome"; st.rerun()
 
 elif st.session_state.page == "placement_result":
     name,tenth,inter,btech,skills=st.session_state.pdata
     skill_cnt = len([s for s in skills.split(",") if s.strip()]) if skills else 1
-    
     if SKLEARN_AVAILABLE and model is not None:
         X_new = pd.DataFrame({"tenth":[tenth], "inter":[inter], "btech":[btech], "skills":[skill_cnt]})
         prob = model.predict_proba(X_new)[0][1]*100
         pred = model.predict(X_new)[0]
     else:
-        # Fallback without sklearn - NO ERROR
         avg = (tenth+inter+btech)/3
         prob = avg + skill_cnt*3
         if prob>100: prob=92
         pred = 1 if prob>70 else 0
-    
     avg=(tenth+inter+btech)/3
-    st.markdown(f"<div class='center'><h1 style='color:white;'>ML Result for {name} - {prob:.1f}% Chance</h1></div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='center'><h1 style='color:white;'>Result for {name} - {prob:.1f}% Chance</h1></div>", unsafe_allow_html=True)
     _,col,_=st.columns([0.5,2,0.5])
     with col:
-        st.markdown(f"<div class='glass'><h3 style='color:{'#00ff88' if pred==1 else '#ff006a'}'>{'✅ HIGH CHANCE - PLACED' if pred==1 else '⚠️ NEED IMPROVEMENT'}</h3><p style='color:white;'>ML Model Status: {'Random Forest (85% accuracy)' if SKLEARN_AVAILABLE else 'Rule Based (No library needed)'} - Error Free</p><p style='color:white;'>Your Score: 10th {tenth}% | Inter {inter}% | BTech {btech}% | Skills {skill_cnt} | Avg {avg:.1f}% | Prob {prob:.1f}%</p></div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='glass'><h3 style='color:{'#00ff88' if pred==1 else '#ff006a'}'>{'✅ HIGH CHANCE - PLACED' if pred==1 else '⚠️ NEED IMPROVEMENT'}</h3><p style='color:white;'>Your Score: 10th {tenth}% | Inter {inter}% | BTech {btech}% | Skills {skill_cnt} | Avg {avg:.1f}%</p></div>", unsafe_allow_html=True)
         st.write("")
         if prob >= 80:
             comps = [["Google/Amazon","Eligible"],["TCS Digital","Eligible"],["Infosys SP","Eligible"],["Wipro Elite","Eligible"]]
@@ -225,15 +212,23 @@ elif st.session_state.page == "placement_result":
             comps = [["TCS Digital","Eligible"],["Infosys","Eligible"],["Wipro","Eligible"],["Capgemini","Eligible"]]
         else:
             comps = [["Wipro","Try"],["TCS NQT","Practice Needed"],["Improve Skills","Need DSA"]]
-        df=pd.DataFrame(comps, columns=["Company","ML Status"])
+        df=pd.DataFrame(comps, columns=["Company","Status"])
         st.dataframe(df, use_container_width=True)
-        st.bar_chart(pd.DataFrame({"Score":[tenth,inter,btech,prob]}, index=["10th","Inter","BTech","ML Prob"]))
+        st.bar_chart(pd.DataFrame({"Score":[tenth,inter,btech]}, index=["10th","Inter","BTech"]))
         st.progress(int(prob))
         st.write("")
-        if st.button("← Home"): st.session_state.page="welcome"; st.rerun()
+        b1, b2 = st.columns(2)
+        with b1:
+            if st.button("← Back", use_container_width=True):
+                st.session_state.page="placement_form"
+                st.rerun()
+        with b2:
+            if st.button("⌂ Home", use_container_width=True):
+                st.session_state.page="purpose"
+                st.rerun()
 
 elif st.session_state.page == "tech_welcome":
-    st.markdown("""<div class='center' style='padding-top:16vh'><h1 style='color:white;font-size:58px;font-weight:900;'>Welcoming to<br><span style='background:linear-gradient(90deg,#0d4aff,#ff006a,#fef08a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>BhavPath Technical Skills</span></h1><div class='glass' style='display:inline-block;margin-top:25px;'><p style='color:#c7f0ff;'>C, C++, Java, Python, SQL, DSA - All with Pic Diagrams + Code Runner - Error Free</p></div></div>""", unsafe_allow_html=True)
+    st.markdown("""<div class='center' style='padding-top:16vh'><h1 style='color:white;font-size:58px;font-weight:900;'>Welcoming to<br><span style='background:linear-gradient(90deg,#0d4aff,#ff006a,#fef08a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>BhavPath Technical Skills</span></h1><div class='glass' style='display:inline-block;margin-top:25px;'><p style='color:#c7f0ff;'>C, C++, Java, Python, SQL, DSA - All with Pic Diagrams + Code Runner</p></div></div>""", unsafe_allow_html=True)
     _,c,_=st.columns([1.3,1,1.3])
     with c:
         st.write(""); st.write("")
@@ -241,7 +236,7 @@ elif st.session_state.page == "tech_welcome":
         if st.button("← Back"): st.session_state.page="purpose"; st.rerun()
 
 elif st.session_state.page == "tech_skills":
-    st.markdown("<div class='center'><h1 style='color:white;font-size:42px;'>Select Your Skill</h1><p style='color:#a78bfa;'>48 Topics - Pic Diagrams + Run Code - Error Free</p></div>", unsafe_allow_html=True)
+    st.markdown("<div class='center'><h1 style='color:white;font-size:42px;'>Select Your Skill</h1><p style='color:#a78bfa;'>48 Topics - Pic Diagrams + Run Code</p></div>", unsafe_allow_html=True)
     _,col,_=st.columns([0.3,2,0.3])
     with col:
         st.write("")
@@ -282,7 +277,6 @@ elif st.session_state.page == "skill_detail":
         with col2:
             st.markdown("<div class='detail-box'>", unsafe_allow_html=True)
             st.markdown(f"<h2 style='color:#fef08a;margin-top:0;'>📘 {st.session_state.topic} in {skill}</h2>", unsafe_allow_html=True)
-            # PIC DIAGRAMS - ERROR FREE
             diagrams = get_diagrams_for_topic(skill, st.session_state.topic)
             for item in diagrams:
                 if isinstance(item[0], str) and "diagram-box" in item[0]:
@@ -291,12 +285,12 @@ elif st.session_state.page == "skill_detail":
                     try:
                         st.image(item[0], caption=item[1], use_container_width=True)
                     except:
-                        st.markdown(f"<div class='diagram-box'>{item[1]} - Diagram Ready</div>", unsafe_allow_html=True)
+                        pass
                 st.write("")
             content = get_detailed_content(skill, st.session_state.topic)
             st.markdown(f"<div style='color:white;white-space:pre-wrap;line-height:1.8;font-size:14px;'>{content}</div>", unsafe_allow_html=True)
             st.markdown("---", unsafe_allow_html=True)
-            st.markdown(f"<h3 style='color:#00ff88;'>💻 Try {skill} Code Here - Run Online (Error Free)</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='color:#00ff88;'>💻 Try {skill} Code Here - Run Online</h3>", unsafe_allow_html=True)
             default_code = f"# Write {skill} - {st.session_state.topic} code\nprint('Hello {skill} - {st.session_state.topic}')\narr=[1,2,3]\nprint(arr)"
             code_input = st.text_area("Code Editor", value=default_code, height=150, key=f"code_{skill}_{st.session_state.topic}")
             if st.button("▶️ Run Code", key=f"run_{skill}_{st.session_state.topic}"):
@@ -314,7 +308,7 @@ elif st.session_state.page == "skill_detail":
             st.markdown("</div>", unsafe_allow_html=True)
 
 elif st.session_state.page == "interview_welcome":
-    st.markdown("""<div class='center' style='padding-top:14vh'><h1 style='color:white;font-size:58px;font-weight:900;'>Welcoming to<br><span style='background:linear-gradient(90deg,#0d4aff,#ff006a,#fef08a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>BhavPath Interview Zone</span></h1><div class='glass' style='display:inline-block;margin-top:25px;'><p style='color:#c7f0ff;font-size:18px;'>Crack TCS, Infosys, Amazon, Google - Pic Diagrams - Error Free</p></div></div>""", unsafe_allow_html=True)
+    st.markdown("""<div class='center' style='padding-top:14vh'><h1 style='color:white;font-size:58px;font-weight:900;'>Welcoming to<br><span style='background:linear-gradient(90deg,#0d4aff,#ff006a,#fef08a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>BhavPath Interview Zone</span></h1><div class='glass' style='display:inline-block;margin-top:25px;'><p style='color:#c7f0ff;font-size:18px;'>Crack TCS, Infosys, Amazon, Google - Pic Diagrams</p></div></div>""", unsafe_allow_html=True)
     _,c,_=st.columns([1.3,1,1.3])
     with c:
         st.write(""); st.write("")
@@ -322,7 +316,7 @@ elif st.session_state.page == "interview_welcome":
         if st.button("← Back"): st.session_state.page="purpose"; st.rerun()
 
 elif st.session_state.page == "interview_skills":
-    st.markdown("<div class='center'><h1 style='color:white;'>Select Interview Skill</h1><p style='color:#a78bfa;'>All with Pic Diagrams - Error Free</p></div>", unsafe_allow_html=True)
+    st.markdown("<div class='center'><h1 style='color:white;'>Select Interview Skill</h1><p style='color:#a78bfa;'>All with Pic Diagrams</p></div>", unsafe_allow_html=True)
     _,col,_=st.columns([0.3,2,0.3])
     with col:
         st.write("")
@@ -332,38 +326,4 @@ elif st.session_state.page == "interview_skills":
         with r1_c2:
             if st.button("C++ Interview", use_container_width=True): st.session_state.selected_skill="C++"; st.session_state.page="interview_detail"; st.rerun()
         with r1_c3:
-            if st.button("Java Interview", use_container_width=True): st.session_state.selected_skill="Java"; st.session_state.page="interview_detail"; st.rerun()
-        st.write("")
-        r2_c1, r2_c2, r2_c3 = st.columns(3)
-        with r2_c1:
-            if st.button("Python Interview", use_container_width=True): st.session_state.selected_skill="Python"; st.session_state.page="interview_detail"; st.rerun()
-        with r2_c2:
-            if st.button("SQL Interview", use_container_width=True): st.session_state.selected_skill="SQL"; st.session_state.page="interview_detail"; st.rerun()
-        with r2_c3:
-            if st.button("DSA Interview", use_container_width=True): st.session_state.selected_skill="DSA"; st.session_state.page="interview_detail"; st.rerun()
-        st.write(""); st.write("")
-        if st.button("← Back"): st.session_state.page="interview_welcome"; st.rerun()
-
-elif st.session_state.page == "interview_detail":
-    skill = st.session_state.selected_skill
-    st.markdown(f"<div class='center'><h1 style='color:white;'>{skill} Interview - With Pics</h1></div>", unsafe_allow_html=True)
-    _,c,_=st.columns([0.1,3,0.1])
-    with c:
-        st.markdown("<div class='detail-box'>", unsafe_allow_html=True)
-        diagrams = get_diagrams_for_topic(skill, "Interview")
-        for item in diagrams:
-            if isinstance(item[0], str) and "diagram-box" in item[0]:
-                st.markdown(item[0], unsafe_allow_html=True)
-            else:
-                try:
-                    st.image(item[0], caption=item[1], use_container_width=True)
-                except:
-                    pass
-        st.markdown(f"<h2 style='color:#fef08a;'>{skill} Interview - 15 Qs Detailed</h2><p style='color:white;white-space:pre-wrap;'>Q1-Q15 detailed with diagrams, code, tips for TCS, Amazon etc. Pic diagrams for all languages.</p>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
-        st.write("")
-        if st.button("← Back to Interview Skills"): st.session_state.page="interview_skills"; st.rerun()
-
-else:
-    st.markdown("<div class='center'><h1 style='color:white;'>Coming Soon 🚀</h1></div>", unsafe_allow_html=True)
-    if st.button("← Back"): st.session_state.page="purpose"; st.rerun()
+            if st.button("Java Int
