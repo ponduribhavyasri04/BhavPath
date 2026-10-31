@@ -388,10 +388,9 @@ elif st.session_state.page == "interview_detail":
 else:
     st.markdown("<div class='center'><h1 style='color:white;'>Coming Soon 🚀</h1></div>", unsafe_allow_html=True)
     if st.button("← Back"): st.session_state.page="purpose"; st.rerun()
-*Ika ayipoyindi rey - idhe overall final:*
+
 
 - *Welcome -> Login -> Purpose (4 buttons working)*
 - *Technical Skills -> Select Skill (C, C++, Java, Python, SQL, DSA - 3 per row, cut avvavu) -> Topics -> Pic diagrams for all languages + huge English content*
 - *Interview + Code -> Select Interview Skill -> Pic diagrams + huge content 15 Qs each*
 
-*Inka em changes cheyanu, idhe final overall code. Commit kottu!*
