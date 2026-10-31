@@ -1,6 +1,4 @@
-Perfect rey! Nuvvu cheppina 3 improvements motham chesi overall code icha - *ML Model + Code Runner + Pic Diagrams for all languages.*
 
-*Idhe final `app.py` motham replace chey - inka em cheyanu:*
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
