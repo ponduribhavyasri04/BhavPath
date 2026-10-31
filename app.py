@@ -1,27 +1,30 @@
 import streamlit as st
-
-st.set_page_config(page_title="BhavPath", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Login - BhavPath", layout="wide", initial_sidebar_state="collapsed")
 
 st.markdown("""
 <style>
 [data-testid="stHeader"]{display:none}
-.stApp { background: #000000; }
-.g1{position:fixed;width:600px;height:600px;background:#6a00ff;filter:blur(120px);border-radius:50%;top:-150px;left:-150px;opacity:.8}
-.g2{position:fixed;width:700px;height:700px;background:#ff006a;filter:blur(120px);border-radius:50%;bottom:-200px;right:-150px;opacity:.7}
-.main{position:relative;z-index:10;text-align:center;padding-top:10vh}
-.title{font-size:90px;font-weight:900;background:linear-gradient(90deg,#fff,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent; line-height:1.1}
-.qbox{margin-top:35px;padding:28px 55px;border-radius:22px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);backdrop-filter:blur(20px);box-shadow:0 0 60px #ff006a66;display:inline-block}
-.qbox h2{font-size:42px;background:linear-gradient(90deg,#fde047,#ff006a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;margin:0}
+.stApp{background:#05000a}
+.bg-blue{position:fixed;width:800px;height:800px;background:radial-gradient(circle,#0d4aff 0%,#0d4aff00 70%);top:-100px;left:-100px;filter:blur(20px)}
+.bg-pink{position:fixed;width:900px;height:900px;background:radial-gradient(circle,#ff006a 0%,#ff006a00 70%);bottom:-200px;right:-200px;filter:blur(30px);opacity:.9}
+.card{position:relative;z-index:10;width:500px;margin:10vh auto;padding:40px;border-radius:24px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(25px);box-shadow:0 0 80px #3b82f688}
 </style>
-<div class="g1"></div>
-<div class="g2"></div>
-<div class="main">
-<div class="title">Welcome to BhavPath</div>
-<div class="qbox"><h2>What is Your Placement Story..??</h2></div>
-</div>
+<div class="bg-blue"></div><div class="bg-pink"></div>
 """, unsafe_allow_html=True)
 
-st.markdown("<br><br><br>", unsafe_allow_html=True)
-col1, col2, col3 = st.columns([1,1.5,1])
-with col2:
-    st.button("Start Your Journey →", use_container_width=True)
+st.markdown('<div style="position:relative;z-index:10;text-align:center;margin-top:8vh"><h1 style="color:white;font-size:38px;font-weight:900;">Login to BhavPath</h1><p style="color:#a78bfa;">Continue your placement story</p></div>', unsafe_allow_html=True)
+
+_,col,_ = st.columns([1,1.1,1])
+with col:
+    st.markdown("<br>")
+    email = st.text_input("📧 Email ID", placeholder="yourname@gmail.com")
+    college = st.text_input("🎓 College Name", placeholder="QIS College of Engineering")
+    st.markdown("<br>")
+    if st.button("Continue →", use_container_width=True, type="primary"):
+        if email and college:
+            st.session_state.email = email
+            st.session_state.college = college
+            st.success("Login Success!")
+            st.balloons()
+        else:
+            st.error("Email & College name compulsory rey!")
