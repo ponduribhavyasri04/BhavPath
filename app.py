@@ -1,6 +1,3 @@
-Idhe final overall code rey - *inka em changes cheyanu, motham okate file lo* - pic diagrams for *all languages C, C++, Java, Python, SQL, DSA* - Technical Skills 48 topics huge English content + Interview 15 Qs per skill huge content. *C(8) ledu, simple C, 3 buttons per row, cut avvadu.*
-
-*`app.py` motham delete chesi idhe paste chey, commit kottu - ayipoyindi:*
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
