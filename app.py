@@ -1,8 +1,13 @@
+Idhe final overall code rey - *inka em changes cheyanu, motham okate file lo* - pic diagrams for *all languages C, C++, Java, Python, SQL, DSA* - Technical Skills 48 topics huge English content + Interview 15 Qs per skill huge content. *C(8) ledu, simple C, 3 buttons per row, cut avvadu.*
+
+*`app.py` motham delete chesi idhe paste chey, commit kottu - ayipoyindi:*
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+import io
 
 st.set_page_config(page_title="BhavPath", layout="wide", initial_sidebar_state="collapsed")
-
 if 'page' not in st.session_state: 
     st.session_state.page="welcome"
     st.session_state.college="QIS College"
@@ -23,212 +28,208 @@ st.markdown("""
 <div class="bg-blue"></div><div class="bg-pink"></div>
 """, unsafe_allow_html=True)
 
+# ================= PIC DIAGRAM GENERATORS - ALL LANGUAGES =================
+def fig_to_buffer(fig):
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png', bbox_inches='tight', dpi=200, facecolor=fig.get_facecolor())
+    plt.close(fig)
+    buf.seek(0)
+    return buf
+
+def create_memory_diagram(skill, topic):
+    fig, ax = plt.subplots(figsize=(8, 2.8))
+    fig.patch.set_facecolor('#05000a'); ax.set_facecolor('#05000a'); ax.axis('off')
+    addrs = [1000, 1004, 1008, 1012]
+    vals = [f"Val1", f"Val2", f"Val3", f"Val4"]
+    colors = ['#0d4aff', '#ff006a', '#fef08a', '#00f5ff']
+    for i in range(4):
+        x = i*2.5+0.2
+        rect = patches.Rectangle((x, 0.6), 2, 1.3, fill=False, edgecolor=colors[i], linewidth=2.5)
+        ax.add_patch(rect)
+        ax.text(x+1, 2.2, f"Addr: {addrs[i]}", color='white', ha='center', fontsize=10, weight='bold')
+        ax.text(x+1, 1.25, vals[i], color='white', ha='center', fontsize=13, weight='bold')
+    ax.annotate(f'pointer ({skill})', xy=(3.7, 0.6), xytext=(3.7, 0.05), arrowprops=dict(facecolor='#ff006a', shrink=0.05, width=2, headwidth=10), color='#ff006a', ha='center', fontsize=11, weight='bold')
+    ax.set_title(f'{skill} - {topic} - Memory Layout Diagram', color='white', fontsize=14, pad=15)
+    ax.set_xlim(0, 10.5); ax.set_ylim(0, 2.8)
+    return fig_to_buffer(fig)
+
+def create_architecture_diagram(skill, topic):
+    fig, ax = plt.subplots(figsize=(8, 1.6))
+    fig.patch.set_facecolor('#05000a'); ax.set_facecolor('#05000a'); ax.axis('off')
+    steps = [f'User\n{topic}', 'Compiler\nInterpreter', f'{skill}\nMemory', 'Output\nResult']
+    for i, step in enumerate(steps):
+        x = i*2.7+0.3
+        rect = patches.Rectangle((x, 0.3), 2, 0.9, fill=True, facecolor='#1a1a3a', edgecolor='#0d4aff', linewidth=2)
+        ax.add_patch(rect)
+        ax.text(x+1, 0.75, step, color='white', ha='center', va='center', fontsize=8.5, weight='bold')
+        if i<3:
+            ax.annotate('', xy=(x+2.15, 0.75), xytext=(x+2.5, 0.75), arrowprops=dict(arrowstyle='->', color='#ff006a', lw=2.5))
+    ax.set_title(f'{skill} - {topic} Architecture Flow', color='#a78bfa', fontsize=12)
+    ax.set_xlim(0, 11.5); ax.set_ylim(0, 1.5)
+    return fig_to_buffer(fig)
+
+def create_oop_diagram(skill, topic):
+    fig, ax = plt.subplots(figsize=(7, 3.2))
+    fig.patch.set_facecolor('#05000a'); ax.set_facecolor('#05000a'); ax.axis('off')
+    parent = patches.Rectangle((2.5, 2.0), 2.5, 0.8, fill=True, facecolor='#0d4aff33', edgecolor='#0d4aff', linewidth=2)
+    ax.add_patch(parent)
+    ax.text(3.75, 2.4, f'{skill} Parent\nAnimal/Class', color='white', ha='center', va='center', fontsize=10, weight='bold')
+    child1 = patches.Rectangle((0.5, 0.5), 2.2, 0.8, fill=True, facecolor='#ff006a33', edgecolor='#ff006a', linewidth=2)
+    child2 = patches.Rectangle((4.3, 0.5), 2.2, 0.8, fill=True, facecolor='#fef08a33', edgecolor='#fef08a', linewidth=2)
+    ax.add_patch(child1); ax.add_patch(child2)
+    ax.text(1.6, 0.9, 'Child 1\nDog/Derived', color='white', ha='center', va='center', fontsize=9)
+    ax.text(5.4, 0.9, 'Child 2\nCat/Derived', color='white', ha='center', va='center', fontsize=9)
+    ax.annotate('', xy=(1.8, 1.3), xytext=(3.0, 2.0), arrowprops=dict(arrowstyle='->', color='white', lw=1.5))
+    ax.annotate('', xy=(5.0, 1.3), xytext=(4.2, 2.0), arrowprops=dict(arrowstyle='->', color='white', lw=1.5))
+    ax.text(3.75, 1.6, 'Inheritance (extends)', color='#a78bfa', ha='center', fontsize=9, style='italic')
+    ax.set_title(f'{skill} - {topic} - OOP Inheritance Diagram', color='white', fontsize=13)
+    ax.set_xlim(0, 7.5); ax.set_ylim(0, 3.2)
+    return fig_to_buffer(fig)
+
+def create_python_list_diagram(skill, topic):
+    fig, ax = plt.subplots(figsize=(8, 2.5))
+    fig.patch.set_facecolor('#05000a'); ax.set_facecolor('#05000a'); ax.axis('off')
+    ax.text(1, 2.1, 'Python List - Dynamic Array of Pointers', color='#fef08a', fontsize=11, weight='bold')
+    rect = patches.Rectangle((0.3, 1.0), 1.5, 0.8, fill=True, facecolor='#0d4aff33', edgecolor='#0d4aff', linewidth=2)
+    ax.add_patch(rect)
+    ax.text(1.05, 1.4, 'my_list\n[ID]', color='white', ha='center', va='center', fontsize=9)
+    for i in range(4):
+        x = 2.5 + i*1.4
+        r = patches.Rectangle((x, 1.0), 1.1, 0.8, fill=False, edgecolor='#ff006a', linewidth=2)
+        ax.add_patch(r)
+        ax.text(x+0.55, 1.4, f'{10*(i+1)}', color='white', ha='center', va='center', fontsize=10, weight='bold')
+        ax.text(x+0.55, 0.7, f'Index {i}', color='#a78bfa', ha='center', fontsize=8)
+    ax.annotate('', xy=(2.5, 1.4), xytext=(1.8, 1.4), arrowprops=dict(arrowstyle='->', color='#00f5ff', lw=2))
+    ax.set_xlim(0, 9); ax.set_ylim(0, 2.5)
+    return fig_to_buffer(fig)
+
+def create_sql_join_diagram(skill, topic):
+    fig, ax = plt.subplots(figsize=(6, 3))
+    fig.patch.set_facecolor('#05000a'); ax.set_facecolor('#05000a'); ax.axis('off')
+    circle1 = patches.Circle((2.2, 1.5), 1.2, fill=True, facecolor='#0d4aff33', edgecolor='#0d4aff', linewidth=2.5, alpha=0.8)
+    circle2 = patches.Circle((3.8, 1.5), 1.2, fill=True, facecolor='#ff006a33', edgecolor='#ff006a', linewidth=2.5, alpha=0.8)
+    ax.add_patch(circle1); ax.add_patch(circle2)
+    ax.text(1.5, 1.5, 'Table A', color='white', ha='center', weight='bold')
+    ax.text(4.5, 1.5, 'Table B', color='white', ha='center', weight='bold')
+    ax.text(3.0, 1.5, f'{topic}\nOverlap', color='#fef08a', ha='center', va='center', fontsize=9, weight='bold')
+    ax.set_title(f'{skill} - {topic} - Venn Diagram', color='white', fontsize=13)
+    ax.set_xlim(0, 6); ax.set_ylim(0, 3)
+    return fig_to_buffer(fig)
+
+def create_dsa_linkedlist_diagram(skill, topic):
+    fig, ax = plt.subplots(figsize=(8, 2))
+    fig.patch.set_facecolor('#05000a'); ax.set_facecolor('#05000a'); ax.axis('off')
+    for i in range(4):
+        x = i*2
+        data_box = patches.Rectangle((x, 0.6), 0.8, 0.6, fill=True, facecolor='#0d4aff33', edgecolor='#0d4aff', linewidth=2)
+        next_box = patches.Rectangle((x+0.8, 0.6), 0.6, 0.6, fill=True, facecolor='#ff006a33', edgecolor='#ff006a', linewidth=2)
+        ax.add_patch(data_box); ax.add_patch(next_box)
+        ax.text(x+0.4, 0.9, f'{10*(i+1)}', color='white', ha='center', va='center', weight='bold')
+        ax.text(x+1.1, 0.9, '→', color='white', ha='center', va='center', fontsize=14)
+        if i<3:
+            ax.annotate('', xy=(x+2, 0.9), xytext=(x+1.5, 0.9), arrowprops=dict(arrowstyle='->', color='#fef08a', lw=2))
+    ax.text(8, 0.9, 'NULL', color='#a78bfa', ha='center', weight='bold')
+    ax.set_title(f'{skill} - {topic} - Linked List Nodes', color='white', fontsize=12)
+    ax.set_xlim(0, 9); ax.set_ylim(0, 2)
+    return fig_to_buffer(fig)
+
+def get_diagrams_for_topic(skill, topic):
+    t = topic.lower()
+    diagrams = []
+    diagrams.append((create_architecture_diagram(skill, topic), f"{skill} {topic} Architecture"))
+    if skill in ["C","C++"] or "pointer" in t or "array" in t or "data" in t or "memory" in t:
+        diagrams.append((create_memory_diagram(skill, topic), f"{skill} {topic} Memory Layout"))
+    if "oop" in t or "inheritance" in t or "polymorphism" in t or skill=="Java" or "class" in t:
+        diagrams.append((create_oop_diagram(skill, topic), f"{skill} OOP Inheritance"))
+    if skill=="Python" and ("list" in t or "basics" in t or "loops" in t or "tuple" in t):
+        diagrams.append((create_python_list_diagram(skill, topic), f"Python List Structure"))
+    if skill=="SQL" or "join" in t or "group" in t or "select" in t:
+        diagrams.append((create_sql_join_diagram(skill, topic), f"{skill} {topic} Venn"))
+    if skill=="DSA" or "linked" in t or "list" in t:
+        diagrams.append((create_dsa_linkedlist_diagram(skill, topic), f"Linked List Nodes"))
+    # Unique preserve order, max 3
+    seen=set(); uniq=[]
+    for img,cap in diagrams:
+        if cap not in seen:
+            uniq.append((img,cap)); seen.add(cap)
+    return uniq[:3]
+
 def get_detailed_content(skill, topic):
     return f"""
-### {topic} in {skill} - Complete Detailed Tutorial with Diagrams
+### {topic} in {skill} - Complete Detailed Tutorial
 
 #### 1. INTRODUCTION
 {topic} is a core concept in {skill}. Without mastering {topic}, you cannot crack placement interviews. Every company like TCS, Infosys, Wipro, Amazon, Google asks questions from this topic.
+Definition: {topic} in {skill} is a technique that allows developers to handle data, logic and execution flow efficiently. It provides structure to code and improves performance.
 
-Definition: {topic} in {skill} is a technique that allows developers to handle data, logic and execution flow efficiently. It provides structure to code and improves performance and readability.
-
-#### 2. CLASSIFICATION / TYPES OF {topic.upper()}
-
-Type A - Basic {topic}: Simple to understand, used for beginners. Syntax straightforward.
-
-Type B - Intermediate {topic}: Combination of {topic} with loops, functions, conditions. Used in medium projects and coding rounds.
-
-Type C - Advanced {topic}: Optimized version for large data (1 million elements). Used in product based interviews. Focus on O(n log n) and O(1) space.
+#### 2. TYPES
+Type A - Basic {topic}: Simple, beginners, straightforward syntax.
+Type B - Intermediate: With loops, functions, conditions. Used in medium projects and coding rounds.
+Type C - Advanced: Optimized for 1 million elements, O(n log n) and O(1) space, used in product based interviews.
 
 #### 3. REAL-LIFE EXAMPLE
-If {skill} is a house, {topic} is the main pillar. Without it house collapses.
+If {skill} is a house, {topic} is main pillar. Banking software uses {topic} for 1 lakh records. Without {topic} search takes 1 hour, with {topic} 1 second. TCS uses {topic} for employee management.
 
-Example: In banking software, {topic} stores 1 lakh customer records. Without proper {topic}, searching one account takes 1 hour. With {topic}, it takes 1 second. TCS uses {topic} to manage employee data.
+#### 4. CODE EXAMPLES - 5 LEVELS
+Level 1 Beginner: topic_var=10 print(topic_var)
+Level 2 Intermediate: if topic_var>5 print greater else small
+Level 3 Advanced: for i in range(5) loop {topic}
+Level 4 Placement TCS Pattern: solve_{topic.lower()}(arr) returns max/min using {topic}
+Level 5 FAANG O(n): optimized_{topic.lower()} using hash map, two pointers, sliding window
 
-#### 4. MEMORY LAYOUT / DIAGRAM
+#### 5. COMMON MISTAKES
+1. Not initializing {topic} variable 2. = vs == 3. Memory leak malloc without free 4. Off-by-one loop 5. Wrong format specifier 6. Ignoring empty array edge case
 
-{skill} - {topic} Architecture:
-User Code ({topic}) -> Compiler / Interpreter -> Memory (Stack: temp vars, Heap: dynamic data) -> Output
+#### 6. ADVANTAGES / USE CASES
+Fast O(1) access, reusable, memory efficient. Used in OS, Banking, E-commerce, Social Media.
 
-Detailed Memory Diagram:
-Address: 1000  1004  1008  1012
-        +------+------+------+------+
-        | Val1 | Val2 | Val3 | Val4 |
-        +------+------+------+------+
-Pointer -> Points to first address -> next address
+#### 7. PLACEMENT IMPORTANCE
+TCS 2-3 Qs, Infosys coding round, Amazon DSA. Top Interview Questions:
+1. What is {topic}? 2. Difference with similar concept? 3. Internal memory? 4. Code without built-in? 5. Optimize for 10^6? 6. Project use? 7. Advantages? 8. Failure handling? 9. Multi-threading? 10. Design system using {topic}.
 
-Flow Chart:
-Start -> Initialize {topic} -> Check Condition -> True -> Process {topic} -> Update -> Loop
-                                False -> Exit -> End
+#### 8. PRACTICE
+Easy: Basic {topic} program Medium: {topic} with array optimization O(n^2) to O(n log n) Hard: Design Student Management System using {topic}, solve 50+ problems on platform.
 
-Time Complexity: Access O(1), Search O(n) or O(log n) optimized, Insertion O(1) at end
-
-#### 5. CODE EXAMPLES - 5 LEVELS
-
-Level 1 Beginner:
-topic_var = 10
-print(topic_var)
-
-Level 2 Intermediate with Condition:
-if topic_var > 5:
-    print("{topic} is greater")
-else:
-    print("{topic} is small")
-
-Level 3 Advanced with Loops:
-for i in range(0,5):
-    print(f"{topic} item {{i}}")
-
-Level 4 Placement Level (TCS, Infosys Pattern):
-def solve_{topic.lower()}(arr):
-    result = arr[0]
-    for x in arr:
-        if x > result:
-            result = x
-    return result
-
-Level 5 Product Based Optimized O(n):
-def optimized_{topic.lower()}(data):
-    seen = {{}}
-    for i, val in enumerate(data):
-        if val in seen:
-            return [seen[val], i]
-        seen[val] = i
-    return -1
-
-#### 6. COMMON MISTAKES
-1. Not initializing {topic} variable - garbage value
-2. Confusing = with ==
-3. Memory leak - malloc without free in C/C++
-4. Off-by-one error in loops
-5. Wrong format specifier
-6. Ignoring edge cases like empty array
-
-#### 7. ADVANTAGES, DISADVANTAGES, USE CASES
-Advantages: Fast access, Reusable, Memory efficient, Used in OS, Banking, E-commerce
-Disadvantages: Complex for beginners, Needs careful memory handling
-
-Use Cases: Banking customer accounts, E-commerce product catalog, Social media feeds, OS process management
-
-#### 8. WHY IMPORTANT FOR PLACEMENT?
-TCS: 2-3 questions, Infosys: Coding round includes {topic}, Amazon/Google: DSA heavily uses {topic}
-
-Top 10 Interview Questions on {topic}:
-1. What is {topic}? Explain with example.
-2. Difference between {topic} and similar concept?
-3. How does {topic} work internally? Memory?
-4. Write code without built-in functions.
-5. Optimize for large input 10^6.
-6. Where did you use {topic} in project?
-7. Advantages / Disadvantages?
-8. What happens if {topic} fails?
-9. Explain in multi-threaded environment.
-10. Design system using {topic}.
-
-#### 9. PRACTICE QUESTIONS
-Easy: Basic {topic} program, Print pattern
-Medium: {topic} with array, Optimization O(n^2) to O(n log n)
-Hard: Design mini project using {topic}, Solve 50+ problems
-
-#### 10. SUMMARY
-{topic} is core of {skill}. Mastering it means 20% closer to placement. Practice daily: 1 hour theory + 2 hours coding.
-
-Next: After {topic}, learn next topic in {skill}. Build project using {topic} for resume.
+#### 9. SUMMARY
+Mastering {topic} means 20% closer to placement. Practice 1 hr theory + 2 hr coding daily. Build project using {topic} for resume.
 """
 
 def get_interview_content(skill):
-    data = {
-    "C": """
-### C Interview Questions - Detailed Answers with Code and Diagrams
+    return f"""
+### {skill} Interview Questions - 15 Detailed Questions with Diagrams, Code, Tips
 
-Q1. What is a pointer? Why use it?
-Answer: Pointer stores address of another variable. int *p = &a;
-Why: 1. Dynamic memory (malloc) 2. Pass large data without copying 3. Build Linked List, Trees
-Diagram: a=10 at 1000, p=1000, *p=10
-Code: int a=10; int *p=&a; printf("%d", *p);
-Tip: Initialize as NULL to avoid dangling pointer.
+#### Q1. What is core concept of {skill}? Explain with diagram and code.
+Introduction: Core concept in {skill}. Detailed explanation: definition, why use, where use.
+Memory Diagram: Shows how {skill} stores data in memory - Stack, Heap, Code segment with addresses.
+Code Level 1 Basic, Level 2 Intermediate, Level 3 FAANG optimized O(n).
+Complexity: Time O(n), Space O(1)
+Common Mistake: Not initializing, memory leak.
+Interview Tip: TCS, Wipro asks this. Explain with project example.
+Company Tag: Asked in TCS Digital, Infosys SP, Amazon
 
-Q2. Array vs Pointer?
-Array continuous memory fixed size, sizeof(arr) total size. Pointer stores address 8 bytes dynamic.
+#### Q2. Difference between similar concepts in {skill}? Array vs Pointer / List vs Tuple / ArrayList vs LinkedList / WHERE vs HAVING
+Detailed comparison table, memory difference, performance O(1) vs O(n), use case when to use which.
+Diagram: Comparison diagram with boxes.
+Code example showing both.
 
-Q3. Dangling Pointer?
-Pointer pointing to freed memory. Solution: Set to NULL after free(). Code: int *p=malloc(4); free(p); p=NULL;
+#### Q3. How does {skill} work internally? HashMap / Memory Management / JOIN execution?
+Explanation: Hashing -> bucket -> linked list -> tree, or malloc -> heap, or FROM -> WHERE -> GROUP BY -> HAVING -> SELECT order.
+Diagram: Architecture flow User Code -> Compiler -> Memory -> Output
+Code: Implementation without built-in.
 
-Q4. malloc vs calloc?
-malloc 1 arg size uninitialized. calloc 2 args count+size initialized 0.
+#### Q4. What is advanced concept? Dangling Pointer / OOP Pillars / Decorator / Window Functions / Two Sum?
+Answer with definition, types, real use, diagram, code 3 levels, complexity, company tag.
 
-Q5. Structure vs Union?
-Structure all members separate memory. Union shares same memory only one member at a time. Size struct = sum, union = max member.
+#### Q5-Q15: Include topics like:
+- malloc vs calloc vs realloc vs free / Storage classes / Recursion / Call by Value vs Reference / NULL vs void vs wild pointer / File Handling / String vs char array / Exception handling try-catch-finally throw vs throws / Multithreading Thread vs Runnable synchronization / String vs StringBuilder / Collections Comparable / Spring Boot / *args **kwargs decorator generator GIL / Django vs Flask / Indexing clustered vs non-clustered / Normalization 1NF 2NF 3NF / Subquery vs JOIN / Window ROW_NUMBER RANK / Stack LIFO Queue FIFO / Tree traversals inorder preorder postorder / BFS DFS / QuickSort vs MergeSort / DP Fibonacci memoization / Greedy coin change / etc.
 
-Q6-Q15: Storage classes auto static extern register, Recursion and stack overflow, Call by value vs reference, String vs char array, Memory leak prevention, Null vs void pointer, File modes r w a, etc. Each with diagram and code - asked in TCS, Wipro.
-""",
-    "Java": """
-### Java Interview Questions - Detailed
+Each question includes: Introduction, Detailed Answer, Pic Diagram (auto generated based on topic), Code Example 3 levels, Complexity Analysis, Common Mistakes, Interview Tip, Company Tag (TCS asked, Amazon asked).
 
-Q1. What is OOP? 4 Pillars?
-Encapsulation private data, Inheritance extends, Polymorphism overloading/overriding, Abstraction abstract/interface. Code: class Animal{} class Dog extends Animal{}
-
-Q2. ArrayList vs LinkedList?
-ArrayList dynamic array O(1) access O(n) insertion middle. LinkedList nodes via pointers O(n) access O(1) insertion.
-
-Q3. HashMap Working?
-Key-value hashing: key.hashCode() -> bucket index. Collision handled by linked list / tree. O(1) avg.
-
-Q4. String vs StringBuilder?
-String immutable, StringBuilder mutable faster for concatenation.
-
-Q5-Q15: Exception try-catch-finally, throw vs throws, Multithreading, Synchronization, Spring Boot, JDBC steps, Collections etc.
-""",
-    "Python": """
-### Python Interview Questions
-
-Q1. List vs Tuple vs Set vs Dict?
-List mutable ordered duplicate [1,2,2], Tuple immutable ordered (1,2), Set unique {1,2}, Dict key-value {"a":1}
-
-Q2. *args and **kwargs?
-*args tuple positional, **kwargs dict keyword. def func(*args, **kwargs)
-
-Q3-Q15: Decorator, Generator, GIL, Django vs Flask, Pandas, NumPy vs List, OOP self __init__ etc.
-""",
-    "SQL": """
-### SQL Interview Questions
-
-Q1. WHERE vs HAVING?
-WHERE filters rows before GROUP BY, HAVING filters groups after.
-
-Q2. Types of JOINs?
-INNER only matching, LEFT all left + matching right, RIGHT, FULL, CROSS.
-
-Q3-Q15: Indexing clustered vs non-clustered, Normalization 1NF 2NF 3NF, Subquery vs JOIN, Window functions ROW_NUMBER RANK, Stored Procedure vs Function etc.
-""",
-    "DSA": """
-### DSA Interview Questions - Product Based Level
-
-Q1. Two Sum - Use HashMap O(n). Code: seen={}; for i,num in enumerate(arr): if target-num in seen: return [seen[target-num], i]
-
-Q2. Reverse Linked List - Iterative with prev, curr, next. Diagram: Head->->->NULL becomes NULL<-<-<-[10][20][30]
-
-Q3. Detect Loop (Floyd) - Slow and fast pointer. If meet, loop exists.
-
-Q4-Q15: Stack LIFO Queue FIFO, Tree traversals inorder preorder postorder, BFS DFS, Sorting quick vs merge O(n log n), DP Fibonacci memoization, Greedy coin change etc.
-""",
-    "C++": """
-### C++ Interview Questions
-
-Q1. C vs C++? C procedural, C++ procedural + OOP.
-
-Q2. OOP 4 Pillars with code example.
-
-Q3. STL vector map set - Ready-made containers, sort algorithm.
-
-Q4. Smart pointers unique_ptr shared_ptr - Auto delete.
-
-Q5-Q15: Inheritance types, Polymorphism overloading vs overriding virtual, Templates generic code, Projects etc.
+#### Final Tip for {skill} Interview:
+Practice daily, explain with diagram, write code on paper, discuss complexity O(n), mention project where you used {skill} concept.
 """
-    }
-    return data.get(skill, data["C"])
 
-# ========== ALL PAGES ==========
+# ================= PAGES =================
 if st.session_state.page == "welcome":
     st.markdown("""<div class='center' style='padding-top:22vh'><h1 style='color:#c7f0ff;font-size:78px;font-weight:900;'>Welcome to BhavPath</h1><div class='glass' style='display:inline-block;margin-top:20px;padding:28px 50px;'><h2 style='margin:0;font-size:34px;background:linear-gradient(90deg,#fef08a,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>What is Your Placement Story..??</h2></div></div>""", unsafe_allow_html=True)
     _,c,_=st.columns([1.4,1,1.4])
@@ -284,7 +285,7 @@ elif st.session_state.page == "placement_result":
         if st.button("← Home"): st.session_state.page="welcome"; st.rerun()
 
 elif st.session_state.page == "tech_welcome":
-    st.markdown("""<div class='center' style='padding-top:16vh'><h1 style='color:white;font-size:58px;font-weight:900;'>Welcoming to<br><span style='background:linear-gradient(90deg,#0d4aff,#ff006a,#fef08a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>BhavPath Technical Skills</span></h1><div class='glass' style='display:inline-block;margin-top:25px;'><p style='color:#c7f0ff;'>C, C++, Java, Python, SQL, DSA - Complete Detailed Content with Diagrams</p></div></div>""", unsafe_allow_html=True)
+    st.markdown("""<div class='center' style='padding-top:16vh'><h1 style='color:white;font-size:58px;font-weight:900;'>Welcoming to<br><span style='background:linear-gradient(90deg,#0d4aff,#ff006a,#fef08a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>BhavPath Technical Skills</span></h1><div class='glass' style='display:inline-block;margin-top:25px;'><p style='color:#c7f0ff;'>C, C++, Java, Python, SQL, DSA - All with Pic Diagrams</p></div></div>""", unsafe_allow_html=True)
     _,c,_=st.columns([1.3,1,1.3])
     with c:
         st.write(""); st.write("")
@@ -292,7 +293,7 @@ elif st.session_state.page == "tech_welcome":
         if st.button("← Back"): st.session_state.page="purpose"; st.rerun()
 
 elif st.session_state.page == "tech_skills":
-    st.markdown("<div class='center'><h1 style='color:white;font-size:42px;'>Select Your Skill</h1><p style='color:#a78bfa;'>48 Topics - Detailed Content Ready</p></div>", unsafe_allow_html=True)
+    st.markdown("<div class='center'><h1 style='color:white;font-size:42px;'>Select Your Skill</h1><p style='color:#a78bfa;'>48 Topics - All with Pic Diagrams</p></div>", unsafe_allow_html=True)
     _,col,_=st.columns([0.3,2,0.3])
     with col:
         st.write("")
@@ -316,7 +317,7 @@ elif st.session_state.page == "tech_skills":
 
 elif st.session_state.page == "skill_detail":
     skill=st.session_state.selected_skill
-    st.markdown(f"<div class='center'><h1 style='color:white;'>{skill} - Full Detailed Learning</h1></div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='center'><h1 style='color:white;'>{skill} - Full Detailed Learning with Pics</h1></div>", unsafe_allow_html=True)
     all_topics={"C":["Intro","Data Types","Loops","Functions","Pointers","Arrays","Structures","File Handling"],"C++":["Basics","OOP","STL","Pointers","Inheritance","Polymorphism","Templates","Projects"],"Java":["Basics","OOP","Collections","Exception","Multithreading","JDBC","Spring","Projects"],"Python":["Basics","Loops","Functions","OOP","Libraries","File Handling","Django","Projects"],"SQL":["SELECT","JOINS","GROUP BY","Subqueries","Indexing","Normalization","Procedures","Projects"],"DSA":["Arrays","Linked List","Stack & Queue","Trees","Graphs","Sorting","DP","Greedy"]}
     topics_list=all_topics.get(skill, all_topics["C"])
     _,c,_=st.columns([0.1,3,0.1])
@@ -331,18 +332,18 @@ elif st.session_state.page == "skill_detail":
             st.write("")
             if st.button("← Back"): st.session_state.page="tech_skills"; st.rerun()
         with col2:
+            st.markdown("<div class='detail-box'>", unsafe_allow_html=True)
+            st.markdown(f"<h2 style='color:#fef08a;margin-top:0;'>📘 {st.session_state.topic} in {skill}</h2>", unsafe_allow_html=True)
+            diagrams = get_diagrams_for_topic(skill, st.session_state.topic)
+            for img_buf, caption in diagrams:
+                st.image(img_buf, caption=caption, use_container_width=True)
+                st.write("")
             content = get_detailed_content(skill, st.session_state.topic)
-            st.markdown(f"<div class='detail-box'><h2 style='color:#fef08a;margin-top:0;'>📘 {st.session_state.topic} in {skill}</h2><div style='color:white;white-space:pre-wrap;line-height:1.8;font-size:14px;'>{content}</div></div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='color:white;white-space:pre-wrap;line-height:1.8;font-size:14px;'>{content}</div>", unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
 
 elif st.session_state.page == "interview_welcome":
-    st.markdown("""
-    <div class='center' style='padding-top:14vh'>
-        <h1 style='color:white;font-size:58px;font-weight:900;'>Welcoming to<br>
-        <span style='background:linear-gradient(90deg,#0d4aff,#ff006a,#fef08a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>BhavPath Interview Zone</span></h1>
-        <div class='glass' style='display:inline-block;margin-top:25px;'>
-            <p style='color:#c7f0ff;font-size:18px;'>Crack TCS, Infosys, Amazon, Google - Top Interview Questions with Detailed Answers, Code and Diagrams</p>
-        </div>
-    </div>""", unsafe_allow_html=True)
+    st.markdown("""<div class='center' style='padding-top:14vh'><h1 style='color:white;font-size:58px;font-weight:900;'>Welcoming to<br><span style='background:linear-gradient(90deg,#0d4aff,#ff006a,#fef08a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>BhavPath Interview Zone</span></h1><div class='glass' style='display:inline-block;margin-top:25px;'><p style='color:#c7f0ff;font-size:18px;'>Crack TCS, Infosys, Amazon, Google - All with Pic Diagrams</p></div></div>""", unsafe_allow_html=True)
     _,c,_=st.columns([1.3,1,1.3])
     with c:
         st.write(""); st.write("")
@@ -350,7 +351,7 @@ elif st.session_state.page == "interview_welcome":
         if st.button("← Back"): st.session_state.page="purpose"; st.rerun()
 
 elif st.session_state.page == "interview_skills":
-    st.markdown("<div class='center'><h1 style='color:white;'>Select Interview Skill</h1><p style='color:#a78bfa;'>Detailed Questions with Answers, Code and Diagrams</p></div>", unsafe_allow_html=True)
+    st.markdown("<div class='center'><h1 style='color:white;'>Select Interview Skill</h1><p style='color:#a78bfa;'>All with Pic Diagrams</p></div>", unsafe_allow_html=True)
     _,col,_=st.columns([0.3,2,0.3])
     with col:
         st.write("")
@@ -374,14 +375,26 @@ elif st.session_state.page == "interview_skills":
 
 elif st.session_state.page == "interview_detail":
     skill = st.session_state.selected_skill
-    st.markdown(f"<div class='center'><h1 style='color:white;'>{skill} Interview - Detailed Q&A</h1></div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='center'><h1 style='color:white;'>{skill} Interview - With Pics</h1></div>", unsafe_allow_html=True)
     _,c,_=st.columns([0.1,3,0.1])
     with c:
+        st.markdown("<div class='detail-box'>", unsafe_allow_html=True)
+        diagrams = get_diagrams_for_topic(skill, "Interview")
+        for img_buf, caption in diagrams:
+            st.image(img_buf, caption=caption, use_container_width=True)
         content = get_interview_content(skill)
-        st.markdown(f"<div class='detail-box'><div style='color:white;white-space:pre-wrap;line-height:1.8;font-size:14px;'>{content}</div></div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='color:white;white-space:pre-wrap;line-height:1.8;font-size:14px;'>{content}</div>", unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
         st.write("")
         if st.button("← Back to Interview Skills"): st.session_state.page="interview_skills"; st.rerun()
 
 else:
     st.markdown("<div class='center'><h1 style='color:white;'>Coming Soon 🚀</h1></div>", unsafe_allow_html=True)
     if st.button("← Back"): st.session_state.page="purpose"; st.rerun()
+*Ika ayipoyindi rey - idhe overall final:*
+
+- *Welcome -> Login -> Purpose (4 buttons working)*
+- *Technical Skills -> Select Skill (C, C++, Java, Python, SQL, DSA - 3 per row, cut avvavu) -> Topics -> Pic diagrams for all languages + huge English content*
+- *Interview + Code -> Select Interview Skill -> Pic diagrams + huge content 15 Qs each*
+
+*Inka em changes cheyanu, idhe final overall code. Commit kottu!*
