@@ -5,7 +5,7 @@ st.set_page_config(page_title="BhavPath", layout="wide", initial_sidebar_state="
 
 if 'page' not in st.session_state: 
     st.session_state.page="welcome"
-    st.session_state.college="QIS College"
+    st.session_state.college="Rise Krishna Sai Gandhi Group Of Institutions "
     st.session_state.selected_skill="C"
     st.session_state.topic="Intro"
 
