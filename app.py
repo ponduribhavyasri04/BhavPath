@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import random
@@ -156,20 +155,32 @@ def get_interview_content(skill):
     html += "<div class='diag'>Quick Diagram: Stack - Local vars | Heap - Objects malloc | Code - Text segment</div>"
     if skill == "C":
         html += "<div class='qbox'><b>Q1. What is pointer? Why use pointer? Explain pointer to pointer with diagram.</b></div><div class='abox'><b>Answer:</b> Pointer stores address. int a=10 at addr 1000. int *p = &a p stores 1000 at 2000. *p is value at address =10. Why use? 1 Dynamic memory malloc 2 Pass large data without copy 3 Build Linked List. Code int a=10; int *p=&a; printf percent d *p prints 10. Diagram a 1000=10 p 2000=1000 pp 3000=2000. Always init as NULL to avoid wild. TCS asks 90 percent times.</div>"
-        html += "<div class='qbox'><b>Q2. Array vs Pointer? Explain size difference?</b></div><div class='abox'><b>Answer:</b> Array continuous fixed size int arr 5 =20 bytes sizeof arr 20. Pointer stores address of first element. Array name is constant pointer cannot be reassigned.</div>"
+        html += "<div class='qbox'><b>Q2. Array vs Pointer? Explain size difference?</b></div><div class='abox'><b>Answer:</b> Array continuous fixed size int arr 5 =20 bytes sizeof arr 20. Pointer stores address of first element. Array name is constant pointer cannot be reassigned. sizeof pointer 8 bytes in 64-bit.</div>"
+        html += "<div class='qbox'><b>Q3. What is dangling pointer? How to avoid?</b></div><div class='abox'><b>Answer:</b> Pointer pointing to freed memory. int *p = malloc(4); free(p); Now p is dangling. Avoid by setting p = NULL after free.</div>"
+        html += "<div class='qbox'><b>Q4. malloc vs calloc vs realloc vs free?</b></div><div class='abox'><b>Answer:</b> malloc 1 arg count uninitialized garbage fast. calloc 2 args count size zero initialized. realloc resize existing block. free releases memory.</div>"
+        html += "<div class='qbox'><b>Q5. Structure vs Union vs padding?</b></div><div class='abox'><b>Answer:</b> Structure all members separate memory sum plus padding for alignment. Union all members share same memory size = largest member.</div>"
     elif skill == "Python":
-        html += "<div class='qbox'><b>Q1. List vs Tuple?</b></div><div class='abox'><b>Answer:</b> List mutable, Tuple immutable.</div>"
-        html += "<div class='qbox'><b>Q2. What is GIL?</b></div><div class='abox'><b>Answer:</b> Global Interpreter Lock - only one thread executes bytecode at a time.</div>"
+        html += "<div class='qbox'><b>Q1. List vs Tuple vs Set vs Dict? Explain with diagram and time complexity?</b></div><div class='abox'><b>Answer:</b> List mutable ordered duplicate allowed. Tuple immutable ordered. Set unordered unique. Dict key-value pair. List append O(1) search O(n) Dict search O(1).</div>"
+        html += "<div class='qbox'><b>Q2. args vs kwargs? How to use? Unpacking?</b></div><div class='abox'><b>Answer:</b> args tuple positional unlimited def add(*args): sum(args). kwargs dict keyword def show(**kwargs). Unpacking *list **dict.</div>"
+        html += "<div class='qbox'><b>Q3. Decorator Generator Iterator GIL?</b></div><div class='abox'><b>Answer:</b> Decorator wraps function adds behavior without modifying. Generator yields one by one memory efficient. Iterator has next(). GIL only one thread executes bytecode at a time.</div>"
     elif skill == "Java":
         html += "<div class='qbox'><b>Q1. Why Java platform independent?</b></div><div class='abox'><b>Answer:</b> Compiles to bytecode, runs on JVM any OS.</div>"
         html += "<div class='qbox'><b>Q2. == vs equals?</b></div><div class='abox'><b>Answer:</b> == reference, equals content.</div>"
+        html += "<div class='qbox'><b>Q3. String vs StringBuilder vs StringBuffer?</b></div><div class='abox'><b>Answer:</b> String immutable. StringBuilder mutable fast not thread safe. StringBuffer mutable thread safe slow.</div>"
     elif skill == "SQL":
         html += "<div class='qbox'><b>Q1. WHERE vs HAVING?</b></div><div class='abox'><b>Answer:</b> WHERE filters rows before GROUP BY, HAVING filters groups after.</div>"
         html += "<div class='qbox'><b>Q2. INNER vs LEFT JOIN?</b></div><div class='abox'><b>Answer:</b> INNER only matching, LEFT left full + matching.</div>"
+        html += "<div class='qbox'><b>Q3. Index and Normalization?</b></div><div class='abox'><b>Answer:</b> Index speeds search O(n) to O(log n). Normalization removes redundancy 1NF atomic 2NF no partial 3NF no transitive.</div>"
     else:
         html += "<div class='qbox'><b>Q1. Two Sum O(n)?</b></div><div class='abox'><b>Answer:</b> HashMap seen dict, O(n) time.</div>"
         html += "<div class='qbox'><b>Q2. Stack vs Queue?</b></div><div class='abox'><b>Answer:</b> Stack LIFO, Queue FIFO.</div>"
+        html += "<div class='qbox'><b>Q3. BFS vs DFS?</b></div><div class='abox'><b>Answer:</b> BFS queue level by level shortest path. DFS stack recursion deep first.</div>"
     return html
+
+def get_default_code(skill):
+    if skill == "C":
+        return "# Practice - Pointer and Array\\na=10\\np=&a\\nprint(a, p)\\narr=[10,20,30,40]\\nprint(arr)\\ns=list(\\"BhavPath\\")\\ni,j=0,len(s)-1\\nwhile i<j:\\n    s[i],s[j]=s[j],s[i]\\n    i+=1\\n    j-=1\\nprint(s)"
+    return "# Practice - Two Sum\\ndef two_sum(arr, target):\\n    seen={}\\n    for i,num in enumerate(arr):\\n        if target-num in seen:\\n            return [seen[target-num], i]\\n        seen[num]=i\\n    return [-1]"
 
 TOPICS_MAP = {
     "C": ["Loops", "Arrays", "Pointers", "Strings", "Functions", "Structures"],
@@ -181,13 +192,13 @@ TOPICS_MAP = {
 
 # ---------- WELCOME ----------
 if st.session_state.page == "welcome":
-    st.markdown("<div class='center'><h1 style='font-size:55px;'>BhavPath 🚀</h1><p>Your Placement Journey - Learn, Practice, Get Placed</p></div>", unsafe_allow_html=True)
-    st.markdown("<div class='glass center'>", unsafe_allow_html=True)
-    st.session_state.college = st.selectbox("Select College", ["QIS College", "Other College"])
-    if st.button("Start Learning ➜", use_container_width=True):
-        st.session_state.page = "home"
-        st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("<div class='center' style='padding-top:22vh'><h1 style='color:#c7f0ff;font-size:70px;font-weight:900;'>Welcome to BhavPath</h1><div class='glass' style='display:inline-block'><h3>Your Placement Journey</h3></div></div>", unsafe_allow_html=True)
+    c1, c2, c3 = st.columns([1.4, 1, 1.4])
+    with c2:
+        st.session_state.college = st.selectbox("Select College", ["QIS College", "Other College"])
+        if st.button("Start Learning ➜", use_container_width=True):
+            st.session_state.page = "home"
+            st.rerun()
 
 # ---------- HOME ----------
 elif st.session_state.page == "home":
@@ -258,6 +269,10 @@ elif st.session_state.page == "test":
                 score += 1
             st.markdown(f"<div class='abox'><b>Q{i+1}:</b> {q['q']}<br><b>Correct:</b> {q['options'][q['ans']]}<br><b>Exp:</b> {q['exp']}</div>", unsafe_allow_html=True)
         st.success(f"Your Score: {score} / {len(st.session_state.test_questions)}")
+    st.markdown("<br>", unsafe_allow_html=True)
+    if st.button("⬅ Back", key="test_back"):
+        st.session_state.page = "home"
+        st.rerun()
 
 # ---------- PREDICTION - OKKATE CHANGE IKKADA ----------
 elif st.session_state.page == "prediction":
@@ -273,7 +288,6 @@ elif st.session_state.page == "prediction":
         chance = int((cgpa / 10) * 40 + (avg_marks / 100) * 40 + skill_score)
         chance = min(chance, 98)
         st.session_state.pred_chance = chance
-        st.session_state.pred_skills = skills
         st.session_state.pred_tenth = tenth
         st.session_state.pred_inter = inter
         st.session_state.pred_btech = btech
@@ -295,7 +309,7 @@ elif st.session_state.page == "prediction":
             st.info("Medium chance - Focus on DSA + 1 project")
         else:
             st.info("Need improvement - Start with C + Python basics daily")
-    # KINDHA - BACK + HOME PAKKA PAKKANA - IDHE OKKATE CHANGE
+    # >>> OKKATE CHANGE - COMPANY LIST THARUVATHA BACK BUTTON <<<
     st.markdown("<br>", unsafe_allow_html=True)
     c1, c2 = st.columns(2)
     with c1:
