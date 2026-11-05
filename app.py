@@ -130,23 +130,48 @@ def get_weekly_random_questions(skill, num_q=10):
     return selected
 
 def get_detailed_content(skill, topic):
+    articles = {
+        ("C", "Intro"): ("C is a general-purpose, procedural language developed by Dennis Ritchie in 1972. It is called mother language because C++, Java, Python anni C nunchi vachayi.", "int main(){ printf(\"Hello\"); return 0; } // Output: Hello", "Compiler -> Machine Code. Fast execution, direct memory control."),
+        ("C", "Data Types"): ("Data Types ante variable lo em type data store chesthamo cheppedi. int - 4 bytes, char - 1 byte, float - 4 bytes, double - 8 bytes.", "int age=21; char grade='A'; float marks=85.5;", "int range -2,147,483,648 to 2,147,483,647. char stores single character."),
+        ("C", "Loops"): ("Loop ante same code ni malli malli run cheyadam. for - count telisinappudu, while - condition batti, do-while - atleast 1 time pakka run avvali ante.", "for(i=1;i<=5;i++){ printf(\"%d \",i); } // Output: 1 2 3 4 5", "i=1 -> print 1 -> i=2 -> print 2 ... i=6 -> False -> Exit. Time O(n)"),
+        ("C", "Functions"): ("Function ante oka pani chese block. Code reuse kosam. Call by Value - copy pothundi, Call by Reference - address pothundi.", "int add(int a,int b){ return a+b; } // add(2,3) = 5", "Function call -> Stack lo memory -> return -> Stack clear."),
+        ("C", "Pointers"): ("Pointer ante address store chese variable. int *p = &a. *p ante value, p ante address. malloc, free kosam pointer must.", "int a=10; int *p=&a; printf(\"%d\",*p); // 10", "a=10 at 1000, p=1000 at 2000, *p = go to 1000, take 10."),
+        ("C", "Arrays"): ("Array ante same type data ni continuous memory lo store cheyadam. Index 0 nunchi start. Address = Base + (index * size).", "int arr[]={10,20,30}; printf(\"%d\",arr[1]); // 20", "Base 1000, arr[1] = 1000 + 1*4 = 1004. Access O(1)."),
+        ("C", "Structures"): ("Structure ante different types ni okkate group lo pettadam. struct Student {int id; char name[20];}. Padding valla size peruguthundi.", "struct Student s1={1,\"Bhav\"}; printf(\"%d\",s1.id); // 1", "struct char 1 + padding 3 + int 4 = 8 bytes. Union lo size = max member."),
+        ("C", "File Handling"): ("File Handling ante file lo data read/write cheyadam. fopen, fclose, fprintf, fscanf. Modes: r, w, a, r+, w+.", "FILE *f=fopen(\"a.txt\",\"w\"); fprintf(f,\"Hi\"); fclose(f);", "File open -> write -> close. Close cheyakapothe data loss avthundi."),
+        ("Python", "Basics"): ("Python ante easy, readable, high-level language. Guido van Rossum 1991 lo create chesadu. Indentation tho code block decide avthundi.", "print(\"Hello\") # No semicolon, no brackets", "Python code -> Bytecode -> PVM -> Output. Slow kani easy."),
+        ("Python", "Loops"): ("Python lo for loop direct ga values meedha tiruguthundi. range(), list, string meedha. While loop condition false ayye varaku.", "for i in range(1,6): print(i) # 1 2 3 4 5", "range(1,6) gives 1,2,3,4,5. List comprehension [x*x for x in range(5)] faster."),
+        ("Python", "Functions"): ("def tho function create chestham. args - tuple, kwargs - dict, lambda - one line function, return - value pampadam.", "def add(a,b): return a+b\nprint(add(2,3)) # 5", "add(2,3) -> a=2,b=3 -> return 5. Mutable default argument vaddu."),
+        ("Python", "OOP"): ("OOP ante Class + Object. 4 Pillars: Encapsulation, Inheritance, Polymorphism, Abstraction. __init__ ante constructor.", "class Dog:\n def __init__(self,n): self.name=n\nd=Dog(\"Tom\")", "Class blueprint, Object real. self ante current object."),
+        ("Python", "Libraries"): ("Pandas - data analysis, Numpy - numbers, Matplotlib - graphs. pip install pandas tho install chestham.", "import pandas as pd\ndf=pd.DataFrame({'a':[1,2]})", "Pandas DataFrame ante Excel table lantidi. Placement projects lo must."),
+        ("Python", "File Handling"): ("with open() ante auto close. Modes r, w, a. Large file ni line by line chadavali, motham okesari vaddu.", "with open(\"a.txt\",\"r\") as f:\n print(f.read())", "with use chesthe close marchipoyina parledhu."),
+        ("Python", "Django"): ("Django ante Python full web framework. MVT - Model View Template. Batteries included - Admin, Auth, ORM anni untayi.", "python manage.py runserver # Server start", "Flask - micro, small API. Django - full, big project."),
+        ("Java", "Basics"): ("Java WORA - Write Once Run Anywhere. Code -> Bytecode -> JVM. public static void main() nunchi start avthundi.", "class Main{ public static void main(String[] a){ System.out.println(\"Hi\"); } }", "JDK - develop, JRE - run, JVM - execute. Bytecode anni OS lo same."),
+        ("Java", "OOP"): ("Java pure OOP. Class, Object, Inheritance extends, Polymorphism overloading/overriding, Encapsulation private + getter.", "class Dog extends Animal{ void bark(){} }", "Overloading - same name diff params compile time. Overriding - child redefines parent runtime."),
+        ("Java", "Collections"): ("ArrayList - dynamic array O(1) get, HashMap - key-value O(1), HashSet - unique. List vs Set vs Map.", "ArrayList<String> l=new ArrayList<>(); l.add(\"Bhav\");", "HashMap hashCode -> bucket index. HashMap lo null key okkate."),
+        ("SQL", "SELECT"): ("SELECT ante data ni chudatam. SELECT * FROM students WHERE avg>70 ORDER BY avg DESC.", "SELECT name, avg FROM students WHERE avg>70;", "WHERE row filter, ORDER BY sort, LIMIT top N."),
+        ("SQL", "JOINS"): ("JOIN ante 2 tables kalapadam. INNER - matching only, LEFT - left anni + matching, RIGHT - opposite.", "SELECT s.name FROM students s LEFT JOIN placements p ON s.id=p.student_id WHERE p.student_id IS NULL; // Not placed", "students 100, placements 70 -> INNER 70, LEFT 100."),
+        ("SQL", "GROUP BY"): ("GROUP BY ante group chesi aggregate cheyadam. COUNT, SUM, AVG, MAX. HAVING ante group filter.", "SELECT college, COUNT(*) FROM students GROUP BY college HAVING COUNT(*)>10;", "WHERE - row filter before GROUP BY, HAVING - group filter after."),
+        ("DSA", "Arrays"): ("Array O(1) access, O(n) search. Key techniques: Two Pointers, Sliding Window, Prefix Sum, HashMap.", "def two_sum(arr,t): seen={} # O(n) HashMap", "Brute O(n^2), HashMap O(n). Two Sum FAANG No.1 Q."),
+        ("DSA", "Linked List"): ("Linked List ante nodes chain. Each node data + next address. Reverse, Detect Loop - Floyd tortoise-hare.", "Reverse: prev=None, curr=head # O(n) O(1)", "Slow 1 step, Fast 2 steps - kalisithey loop undi."),
+        ("DSA", "Stack & Queue"): ("Stack LIFO - push pop, Queue FIFO - enqueue dequeue. Stack - Undo, Bracket check. Queue - BFS, Printer.", "Stack: push(10), pop() -> 10. Queue: enqueue(10), dequeue() -> 10", "Valid Parentheses - Stack use chesi check chestham."),
+        ("DSA", "Trees"): ("Tree ante hierarchical. Inorder Left-Root-Right BST lo sorted vasthundi. BFS Queue, DFS Stack.", "Inorder: Left -> Root -> Right", "BST lo search O(log n) average, O(n) worst."),
+        ("DSA", "Sorting"): ("Sorting ante order lo pettadam. Bubble O(n^2), Merge O(n log n) stable, Quick avg O(n log n) worst O(n^2).", "Quick Sort: pivot pick, small left, big right, repeat", "Merge stable, Quick in-place fast. Interview lo code rayamantaru."),
+    }
+    if (skill, topic) in articles:
+        intro, example, dry = articles[(skill, topic)]
+    else:
+        intro = f"{topic} is very important topic in {skill}. Idi nerchukunte {skill} lo strong avuthav. Real project lo {topic} ni daily use chestham."
+        example = f"# {topic} in {skill} - Practice Example\nprint('{topic} - {skill}')"
+        dry = f"Input -> Process {topic} -> Output. Small input tho dry run chey."
     html = ""
-    html += "<h2 style='color:#fef08a;margin-top:0;'>" + topic + " in " + skill + "</h2>"
-    html += "<div class='diag'><b>Quick Diagram: " + topic + " Memory</b><br>Addr 1000: Val1=10 | Addr 1004: Val2=20 | Addr 1008: Val3=30 | Addr 1012: Val4=40<br>Flow: Start -> Init i=0 -> Check i < n? -> Yes -> Execute -> i++ -> Loop -> No -> Exit</div>"
-    html += "<div class='cat'>Introduction to " + topic + "</div>"
-    html += "<p><b>What is " + topic + "?</b> " + topic + " is fundamental concept in " + skill + " that allows you to handle data efficiently. It is backbone of problem solving.</p>"
-    html += "<p><b>Why Learn " + topic + "?</b> Every major company like TCS, Infosys, Wipro, Amazon, Google asks at least 2-3 questions from " + topic + ". In BhavPath project, " + topic + " handles 1 lakh records.</p>"
-    html += "<div class='cat'>Detailed Explanation</div>"
-    html += "<p><b>Definition:</b> " + topic + " in " + skill + " is defined as technique that provides structured way to store, access, manipulate, iterate over data.</p>"
-    html += "<p><b>Working Principle:</b> When you declare variable or collection for " + topic + ", memory allocated in RAM. Array of 4 ints takes 16 bytes contiguous. Base address stored, access via index: Address = Base + (index * size). Gives O(1) random access.</p>"
-    html += "<div class='cat'>Types of " + topic + "</div>"
-    html += "<div class='qbox'><b>1. Basic " + topic + ":</b> Simple syntax, easy for beginners. TCS easy level. Example for i in range 5 print i. Time O(n) Space O(1).</div>"
-    html += "<div class='qbox'><b>2. Intermediate " + topic + ":</b> Nested loops, combination with conditions and functions. Medium-level TCS NQT. Example For i in range(n): For j in range(m): print(i,j). Time O(n^2).</div>"
-    html += "<div class='qbox'><b>3. Advanced / Optimized " + topic + ":</b> Designed for large data 10^6 elements. Uses list comprehension, generators, sliding window, hashing. Optimized to O(n log n) or O(n). Used in Amazon Google.</div>"
-    html += "<div class='cat'>Code Examples - 5 Levels</div>"
-    html += "<div class='qbox'><b>Level 1 Beginner:</b><br>var = 10<br>print var<br>Output 10</div>"
-    html += "<div class='qbox'><b>Level 4 Placement Level:</b><br>def find_max arr:<br>&nbsp;&nbsp;max_val = arr 0<br>&nbsp;&nbsp;for x in arr:<br>&nbsp;&nbsp;&nbsp;&nbsp;if x > max_val:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_val = x<br>&nbsp;&nbsp;return max_val<br>Time O(n)</div>"
-    html += "<div class='qbox'><b>Level 5 FAANG Optimized O(n) HashMap:</b><br>def two_sum arr target:<br>&nbsp;&nbsp;seen = dict<br>&nbsp;&nbsp;for i val in enumerate arr:<br>&nbsp;&nbsp;&nbsp;&nbsp;if target - val in seen:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return [seen[target-val], i]<br>&nbsp;&nbsp;&nbsp;&nbsp;seen[val] = i<br>&nbsp;&nbsp;return -1</div>"
+    html += f"<h2 style='color:#fef08a;margin-top:0;'>{topic} in {skill} - Complete Tutorial</h2>"
+    html += f"<div class='diag'>Topic: {topic} | Skill: {skill} | Level: Beginner to Advanced</div>"
+    html += f"<div class='cat'>1. What is {topic}?</div><p style='color:white;line-height:1.9;'>{intro}</p>"
+    html += f"<div class='cat'>2. Syntax / Example</div><div class='qbox' style='color:white;'>{example}</div>"
+    html += f"<div class='cat'>3. How it Works - Dry Run</div><div class='abox'>{dry}</div>"
+    html += f"<div class='cat'>4. Practice Questions</div><p style='color:white;'>1. Write 3 basic programs on {topic}<br>2. Write 2 medium problems on {topic}<br>3. Explain {topic} without seeing notes</p>"
+    html += f"<div class='cat'>5. Interview Questions</div><p style='color:white;'>1. Explain {topic} with example?<br>2. What is Time Complexity of {topic}?<br>3. Write code for {topic} without library?</p>"
     return html
 
 def get_interview_content(skill):
