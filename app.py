@@ -257,9 +257,15 @@ elif st.session_state.page == "placement_result":
         st.dataframe(df, use_container_width=True)
         st.bar_chart(pd.DataFrame({"Score":[tenth,inter,btech]}, index=["10th","Inter","BTech"]))
         st.progress(int(avg))
-        if st.button("Home"):
-            st.session_state.page="welcome"
-            st.rerun()
+        c1, c2 = st.columns(2)
+with c1:
+    if st.button("Back", use_container_width=True):
+        st.session_state.page="placement_welcome"
+        st.rerun()
+with c2:
+    if st.button("Home", use_container_width=True):
+        st.session_state.page="welcome"
+        st.rerun()
 
 elif st.session_state.page == "tech_welcome":
     st.markdown("""<div class='center' style='padding-top:16vh'><h1 style='color:white;font-size:58px;font-weight:900;'>Welcoming to<br><span style='background:linear-gradient(90deg,#0d4aff,#ff006a,#fef08a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>BhavPath Technical Skills</span></h1><div class='glass' style='display:inline-block;margin-top:25px;'><p style='color:#c7f0ff;'>C, C++, Java, Python, SQL, DSA - Full Detailed Content with Diagrams</p></div></div>""", unsafe_allow_html=True)
