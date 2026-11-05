@@ -130,37 +130,23 @@ def get_weekly_random_questions(skill, num_q=10):
     return selected
 
 def get_detailed_content(skill, topic):
-    CONTENT = {
-        ("C", "Loops"): {"intro": "Loop ante same code ni malli malli run cheyadam. for, while, do-while untayi. for lo init, condition, increment okate line lo untayi.", "example": "for(i=0; i<5; i++) printf(\"%d \", i); // Output: 0 1 2 3 4", "interview": "for vs while? for ki count telisinappudu, while ki condition telisinappudu. do-while at least 1 time run avuthundi."},
-        ("C", "Arrays"): {"intro": "Array ante same type data ni continuous memory lo store cheyadam. int arr[4] = 16 bytes. Index 0 nunchi start.", "example": "int arr[3]={10,20,30}; printf(\"%d\", arr[1]); // Output: 20", "interview": "Address = Base + index * size. Array O(1) random access isthundi."},
-        ("C", "Pointers"): {"intro": "Pointer ante address store chese variable. int *p = &a. *p ante aa address lo unna value.", "example": "int a=10; int *p=&a; printf(\"%d\", *p); // Output: 10", "interview": "Pointer valla dynamic memory, linked list, function lo large data pass cheyochu without copy."},
-        ("C", "Strings"): {"intro": "C lo string ante char array with \\0 at end. Hello ante H e l l o \\0.", "example": "char s[]=\"Hello\"; printf(\"%d\", strlen(s)); // Output: 5", "interview": "Two pointers tho reverse cheyochu: i=0, j=len-1 swap till i<j."},
-        ("C", "Functions"): {"intro": "Function ante reusable code block. Return type, name, parameters untayi.", "example": "int add(int a,int b){ return a+b; }", "interview": "static variable function calls madhya value ni save cheskuntundi."},
-        ("C", "Structures"): {"intro": "Structure ante different type data ni okate chota group cheyadam.", "example": "struct Student{ char name[20]; int marks; };", "interview": "struct {char a; int b;} size 8, padding valla 1+3+4=8 avuthundi."},
-        ("Python", "Loops"): {"intro": "Python lo for loop direct ga values meeda tiruguthundi. range() tho count control chestham.", "example": "for i in range(5):\n    print(i)  # Output: 0 1 2 3 4", "interview": "List comprehension for loop kanna fast, endukante C lo run avuthundi."},
-        ("Python", "Lists"): {"intro": "List ante mutable collection. Append, pop, slicing cheyochu.", "example": "a=[1,2,2,3]\nprint(len(set(a))) # Output: 3", "interview": "List mutable, Tuple immutable. List lo duplicate untayi, Set lo undavu."},
-        ("Python", "Functions"): {"intro": "Function ante reusable code. def tho create chestham. *args tuple, **kwargs dict.", "example": "def add(a,b):\n    return a+b\nprint(add(2,3)) # Output: 5", "interview": "Decorator ante function ni wrap chesi extra behaviour add cheyadam."},
-        ("Python", "Strings"): {"intro": "String ante immutable sequence. Slicing tho reverse cheyochu.", "example": "s=\"BhavPath\"\nprint(s[::-1]) # Output: htaPvahB", "interview": "First non-repeating char kosam Counter vadali."},
-        ("Python", "Dictionaries"): {"intro": "Dict ante key-value pair. HashMap laaga pani chesthundi. O(1) lookup.", "example": "seen={}\nseen[2]=0 # Two Sum lo use chestham", "interview": "Two Sum O(n) ki HashMap vadatham, brute force O(n^2)."},
-        ("Java", "OOP"): {"intro": "OOP ante Class nunchi Object create cheyadam. Encapsulation, Inheritance, Polymorphism, Abstraction 4 pillars.", "example": "class Car{ int speed; void start(){ } }", "interview": "Overloading compile-time, Overriding runtime. Same name diff params vs child redefines parent."},
-        ("Java", "Strings"): {"intro": "String immutable. Loop lo 10000 times concat chesthe 10000 objects create avuthayi. StringBuilder mutable, fast.", "example": "StringBuilder sb=new StringBuilder(); sb.append(\"hi\");", "interview": "== reference chusthundi, equals() content chusthundi."},
-        ("Java", "Collections"): {"intro": "ArrayList dynamic array O(1) get. LinkedList O(n) get kani O(1) insert/delete.", "example": "ArrayList<Integer> a=new ArrayList<>(); a.add(10);", "interview": "HashMap hashCode tho bucket index find chesthundi: hash & (n-1)."},
-        ("SQL", "Joins"): {"intro": "JOIN ante 2 tables ni kalapadam. INNER only matching, LEFT left table motham + matching.", "example": "SELECT s.name FROM students s LEFT JOIN placements p ON s.id=p.student_id WHERE p.student_id IS NULL; -- Not placed", "interview": "Not placed students kosam LEFT JOIN + IS NULL vadali."},
-        ("SQL", "GROUP BY"): {"intro": "GROUP BY ante rows ni group chesi aggregate cheyadam. HAVING groups ni filter chesthundi.", "example": "SELECT email, COUNT(*) FROM users GROUP BY email HAVING COUNT(*)>1; -- Duplicates", "interview": "WHERE rows ni GROUP BY ki mundu filter chesthundi, HAVING tarvata."},
-        ("DSA", "Arrays"): {"intro": "Array DSA lo base. Two Sum, Kadane lanti problems anni array meeda ne.", "example": "Two Sum: HashMap tho O(n) lo solve cheyochu.", "interview": "Kadane's algorithm maximum subarray sum kosam O(n)."},
-        ("DSA", "Linked List"): {"intro": "Linked List ante nodes with data + next pointer. O(1) insert/delete, O(n) search.", "example": "Reverse: prev=None, curr=head, next=curr.next loop", "interview": "Loop detect cheyadaniki Floyd tortoise-hare: slow 1 step, fast 2 steps."},
-        ("DSA", "Stack & Queue"): {"intro": "Stack LIFO - push/pop. Queue FIFO - enqueue/dequeue.", "example": "Valid Parentheses kosam Stack vadatham: opening push, closing vasthe top check chesi pop.", "interview": "BFS ki Queue, DFS ki Stack / Recursion vadatham."},
-        ("DSA", "Trees"): {"intro": "Tree lo Inorder ante Left Root Right. BST lo Inorder chesthe sorted order vasthundi.", "example": "Inorder: Left -> Root -> Right", "interview": "BFS level by level shortest path isthundi, Queue vaduthundi."},
-    }
-    data = CONTENT.get((skill, topic), {
-        "intro": f"{topic} is an important concept in {skill}. Idi placement lo chala important.",
-        "example": f"# {topic} example in {skill}",
-        "interview": f"{topic} gurinchi interview lo definition + 1 example + time complexity adugutharu."
-    })
-    html = f"<h2 style='color:#fef08a;margin-top:0;'>{topic} in {skill}</h2>"
-    html += f"<div class='cat'>Introduction to {topic}</div><p>{data['intro']}</p>"
-    html += f"<div class='cat'>Code Example - {topic}</div><div class='qbox'>{data['example']}</div>"
-    html += f"<div class='cat'>Interview Point - {topic}</div><div class='abox'>{data['interview']}</div>"
+    html = ""
+    html += "<h2 style='color:#fef08a;margin-top:0;'>" + topic + " in " + skill + "</h2>"
+    html += "<div class='diag'><b>Quick Diagram: " + topic + " Memory</b><br>Addr 1000: Val1=10 | Addr 1004: Val2=20 | Addr 1008: Val3=30 | Addr 1012: Val4=40<br>Flow: Start -> Init i=0 -> Check i < n? -> Yes -> Execute -> i++ -> Loop -> No -> Exit</div>"
+    html += "<div class='cat'>Introduction to " + topic + "</div>"
+    html += "<p><b>What is " + topic + "?</b> " + topic + " is fundamental concept in " + skill + " that allows you to handle data efficiently. It is backbone of problem solving.</p>"
+    html += "<p><b>Why Learn " + topic + "?</b> Every major company like TCS, Infosys, Wipro, Amazon, Google asks at least 2-3 questions from " + topic + ". In BhavPath project, " + topic + " handles 1 lakh records.</p>"
+    html += "<div class='cat'>Detailed Explanation</div>"
+    html += "<p><b>Definition:</b> " + topic + " in " + skill + " is defined as technique that provides structured way to store, access, manipulate, iterate over data.</p>"
+    html += "<p><b>Working Principle:</b> When you declare variable or collection for " + topic + ", memory allocated in RAM. Array of 4 ints takes 16 bytes contiguous. Base address stored, access via index: Address = Base + (index * size). Gives O(1) random access.</p>"
+    html += "<div class='cat'>Types of " + topic + "</div>"
+    html += "<div class='qbox'><b>1. Basic " + topic + ":</b> Simple syntax, easy for beginners. TCS easy level. Example for i in range 5 print i. Time O(n) Space O(1).</div>"
+    html += "<div class='qbox'><b>2. Intermediate " + topic + ":</b> Nested loops, combination with conditions and functions. Medium-level TCS NQT. Example For i in range(n): For j in range(m): print(i,j). Time O(n^2).</div>"
+    html += "<div class='qbox'><b>3. Advanced / Optimized " + topic + ":</b> Designed for large data 10^6 elements. Uses list comprehension, generators, sliding window, hashing. Optimized to O(n log n) or O(n). Used in Amazon Google.</div>"
+    html += "<div class='cat'>Code Examples - 5 Levels</div>"
+    html += "<div class='qbox'><b>Level 1 Beginner:</b><br>var = 10<br>print var<br>Output 10</div>"
+    html += "<div class='qbox'><b>Level 4 Placement Level:</b><br>def find_max arr:<br>&nbsp;&nbsp;max_val = arr 0<br>&nbsp;&nbsp;for x in arr:<br>&nbsp;&nbsp;&nbsp;&nbsp;if x > max_val:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_val = x<br>&nbsp;&nbsp;return max_val<br>Time O(n)</div>"
+    html += "<div class='qbox'><b>Level 5 FAANG Optimized O(n) HashMap:</b><br>def two_sum arr target:<br>&nbsp;&nbsp;seen = dict<br>&nbsp;&nbsp;for i val in enumerate arr:<br>&nbsp;&nbsp;&nbsp;&nbsp;if target - val in seen:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return [seen[target-val], i]<br>&nbsp;&nbsp;&nbsp;&nbsp;seen[val] = i<br>&nbsp;&nbsp;return -1</div>"
     return html
 
 def get_interview_content(skill):
@@ -168,139 +154,439 @@ def get_interview_content(skill):
     html += "<div class='cat'>Top Interview Questions - " + skill + "</div>"
     html += "<div class='diag'>Quick Diagram: Stack - Local vars | Heap - Objects malloc | Code - Text segment</div>"
     if skill == "C":
-        html += "<div class='qbox'><b>Q1. What is pointer? Why use pointer?</b></div><div class='abox'><b>Answer:</b> Pointer stores address. int a=10 at addr 1000. int *p = &a p stores 1000. *p = 10. Use: 1 Dynamic memory malloc 2 Pass large data without copy 3 Linked List.</div>"
-        html += "<div class='qbox'><b>Q2. Array vs Pointer?</b></div><div class='abox'><b>Answer:</b> Array continuous fixed size int arr[5]=20 bytes. Pointer stores address of first element.</div>"
-    elif skill == "Python":
-        html += "<div class='qbox'><b>Q1. List vs Tuple?</b></div><div class='abox'><b>Answer:</b> List mutable, Tuple immutable.</div>"
-        html += "<div class='qbox'><b>Q2. What is GIL?</b></div><div class='abox'><b>Answer:</b> Global Interpreter Lock - only one thread executes bytecode at a time.</div>"
-    elif skill == "Java":
-        html += "<div class='qbox'><b>Q1. Why Java platform independent?</b></div><div class='abox'><b>Answer:</b> Compiles to bytecode, runs on JVM any OS.</div>"
-        html += "<div class='qbox'><b>Q2. == vs equals?</b></div><div class='abox'><b>Answer:</b> == reference, equals content.</div>"
-    elif skill == "SQL":
-        html += "<div class='qbox'><b>Q1. WHERE vs HAVING?</b></div><div class='abox'><b>Answer:</b> WHERE filters rows before GROUP BY, HAVING filters groups after.</div>"
-        html += "<div class='qbox'><b>Q2. INNER vs LEFT JOIN?</b></div><div class='abox'><b>Answer:</b> INNER only matching, LEFT left full + matching.</div>"
+        html += "<div class='qbox'><b>Q1. What is pointer? Why use pointer? Explain pointer to pointer with diagram.</b></div><div class='abox'><b>Answer:</b> Pointer stores address. int a=10 at addr 1000. int *p = &a p stores 1000 at 2000. *p is value at address =10. Why use? 1 Dynamic memory malloc 2 Pass large data without copy 3 Build Linked List. Code int a=10; int *p=&a; printf percent d *p prints 10. Diagram a 1000=10 p 2000=1000 pp 3000=2000. Always init as NULL to avoid wild. TCS asks 90 percent times.</div>"
+        html += "<div class='qbox'><b>Q2. Array vs Pointer? Explain size difference?</b></div><div class='abox'><b>Answer:</b> Array continuous fixed size int arr 5 =20 bytes sizeof arr 20. Pointer 8 bytes stores address dynamic. Array name constant p++ allowed arr++ error.</div>"
+        html += "<div class='qbox'><b>Q3. What is dangling pointer? How to avoid?</b></div><div class='abox'><b>Answer:</b> Pointer pointing to freed memory. int *p=malloc 4; free p; Now p dangling using *p crashes segmentation fault. Solution After free set p=NULL. Code free p; p=NULL; if p not equal NULL safe.</div>"
+        html += "<div class='qbox'><b>Q4. malloc vs calloc vs realloc vs free?</b></div><div class='abox'><b>Answer:</b> malloc 1 arg size uninitialized garbage fast. calloc 2 args count size zero init safe slow. realloc resize existing block. free release memory.</div>"
+        html += "<div class='qbox'><b>Q5. Structure vs Union vs padding?</b></div><div class='abox'><b>Answer:</b> Structure all members separate memory sum plus padding for alignment. struct char a int b size not 5 but 8 due to 4-byte alignment padding. Union shares same memory size = max member only one active.</div>"
     else:
-        html += "<div class='qbox'><b>Q1. Two Sum O(n)?</b></div><div class='abox'><b>Answer:</b> HashMap seen dict, O(n) time.</div>"
-        html += "<div class='qbox'><b>Q2. Stack vs Queue?</b></div><div class='abox'><b>Answer:</b> Stack LIFO, Queue FIFO.</div>"
+        html += "<div class='qbox'><b>Q1. List vs Tuple vs Set vs Dict? Explain with diagram and time complexity?</b></div><div class='abox'><b>Answer:</b> List mutable ordered duplicate 1 2 2 O1 access On search use scores 85 90. Tuple immutable ordered 1 2 faster hashable can be dict key. Set unordered unique 1 2 O1 search no duplicate. Dict key-value a 1 O1 key must be hashable immutable.</div>"
+        html += "<div class='qbox'><b>Q2. args vs kwargs? How to use? Unpacking?</b></div><div class='abox'><b>Answer:</b> args tuple positional unlimited def add args sum args call add 1 2 3. kwargs dict keyword def func kwargs for k v in kwargs.items call func name Bhav college QIS. Unpacking list to args my_list 1 2 3 add *my_list. Dict to kwargs my_dict name Bhav func **my_dict.</div>"
+        html += "<div class='qbox'><b>Q3. Decorator Generator Iterator GIL?</b></div><div class='abox'><b>Answer:</b> Decorator wraps function adds behavior without modifying login_required. Generator yields one by one saves memory def gen yield 1 yield 2 for large file 1GB not load all for line in open file yield line. GIL only one thread executes Python bytecode at a time CPU-bound threading not faster but IO-bound ok use multiprocessing for CPU.</div>"
     return html
 
-TOPICS_MAP = {
-    "C": ["Loops", "Arrays", "Pointers", "Strings", "Functions", "Structures"],
-    "Python": ["Loops", "Lists", "Functions", "Strings", "Dictionaries"],
-    "Java": ["OOP", "Strings", "Collections"],
-    "SQL": ["Joins", "GROUP BY"],
-    "DSA": ["Arrays", "Linked List", "Stack & Queue", "Trees"]
-}
+def get_default_code(skill):
+    if skill == "C":
+        return "# Practice - Pointer and Array\na=10\np=id(a)\nprint(a, p)\narr=[10,20,30,40]\nprint(arr)\ns=list(\"BhavPath\")\ni,j=0,len(s)-1\nwhile i<j:\n    s[i],s[j]=s[j],s[i]\n    i+=1; j-=1\nprint(''.join(s))"
+    return "# Practice - Two Sum\ndef two_sum(arr, target):\n    seen={}\n    for i,num in enumerate(arr):\n        if target-num in seen:\n            return [seen[target-num], i]\n        seen[num]=i\n    return -1\nprint(two_sum([2,7,11,15], 9))"
 
-# ---------- WELCOME PAGE ----------
 if st.session_state.page == "welcome":
-    st.markdown("<div class='center'><h1 style='font-size:55px;'>BhavPath 🚀</h1><p>Your Placement Journey - Learn, Practice, Get Placed</p></div>", unsafe_allow_html=True)
-    st.markdown("<div class='glass center'>", unsafe_allow_html=True)
-    st.session_state.college = st.selectbox("Select College", ["QIS College", "Other College"])
-    if st.button("Start Learning ➜", use_container_width=True):
-        st.session_state.page = "home"
-        st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
-
-# ---------- HOME PAGE ----------
-elif st.session_state.page == "home":
-    st.markdown(f"<div class='center'><h1>BhavPath - {st.session_state.college}</h1></div>", unsafe_allow_html=True)
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        if st.button("📚 Technical Skills", use_container_width=True):
-            st.session_state.page = "skills"
-            st.rerun()
-    with c2:
-        if st.button("🧪 Test Zone", use_container_width=True):
-            st.session_state.page = "test"
-            st.rerun()
-    with c3:
-        if st.button("🔮 Prediction", use_container_width=True):
-            st.session_state.page = "prediction"
+    st.markdown("""<div class='center' style='padding-top:22vh'><h1 style='color:#c7f0ff;font-size:78px;font-weight:900;'>Welcome to BhavPath</h1><div class='glass' style='display:inline-block;margin-top:20px;padding:28px 50px;'><h2 style='margin:0;font-size:34px;background:linear-gradient(90deg,#fef08a,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>What is Your Placement Story..??</h2></div></div>""", unsafe_allow_html=True)
+    _,c,_=st.columns([1.4,1,1.4])
+    with c:
+        st.write("")
+        st.write("")
+        if st.button("Next", use_container_width=True):
+            st.session_state.page="login"
             st.rerun()
 
-# ---------- TECHNICAL SKILLS PAGE ----------
-elif st.session_state.page == "skills":
-    c1, c2 = st.columns([1, 5])
-    with c1:
-        if st.button("⬅ Back", key="skills_back"):
-            st.session_state.page = "home"
+elif st.session_state.page == "login":
+    st.markdown("<div class='center'><h1 style='color:white;'>Login to BhavPath</h1></div>", unsafe_allow_html=True)
+    _,col,_=st.columns([1.2,1,1.2])
+    with col:
+        st.write("")
+        email=st.text_input("Email")
+        college=st.text_input("College Name")
+        if st.button("Continue", use_container_width=True, type="primary"):
+            if email and college:
+                st.session_state.college=college
+                st.session_state.page="purpose"
+                st.rerun()
+        if st.button("Back"):
+            st.session_state.page="welcome"
             st.rerun()
-    with c2:
-        st.markdown("### 📚 Technical Skills")
-    st.session_state.selected_skill = st.selectbox("Select Skill", ["C", "Python", "Java", "SQL", "DSA"])
-    topics = TOPICS_MAP.get(st.session_state.selected_skill, ["Loops"])
-    st.session_state.topic = st.selectbox("Select Topic", topics)
-    if st.button("View Details", use_container_width=True):
-        st.session_state.page = "detail"
-        st.rerun()
-    st.markdown(get_interview_content(st.session_state.selected_skill), unsafe_allow_html=True)
 
-# ---------- DETAIL PAGE ----------
-elif st.session_state.page == "detail":
-    c1, c2 = st.columns([1, 5])
-    with c1:
-        if st.button("⬅ Back", key="detail_back"):
-            st.session_state.page = "skills"
-            st.rerun()
-    with c2:
-        st.markdown(f"### {st.session_state.topic} - {st.session_state.selected_skill}")
-    st.markdown(f"<div class='detail-box'>{get_detailed_content(st.session_state.selected_skill, st.session_state.topic)}</div>", unsafe_allow_html=True)
+elif st.session_state.page == "purpose":
+    st.markdown("<div class='center'><h1 style='color:white;'>What is the purpose?</h1></div>", unsafe_allow_html=True)
+    _,col,_=st.columns([1,1.5,1])
+    with col:
+        st.write("")
+        c1,c2=st.columns(2)
+        with c1:
+            if st.button("Placement Prediction", use_container_width=True):
+                st.session_state.page="placement_welcome"
+                st.rerun()
+            st.write("")
+            if st.button("Test Zone", use_container_width=True):
+                st.session_state.page="test_welcome"
+                st.rerun()
+        with c2:
+            if st.button("Technical Skills", use_container_width=True):
+                st.session_state.page="tech_welcome"
+                st.rerun()
+            st.write("")
+            if st.button("Interview + Code", use_container_width=True):
+                st.session_state.page="interview_welcome"
+                st.rerun()
 
-# ---------- TEST ZONE PAGE - FIX 1: BACK BUTTON ADDED ----------
-elif st.session_state.page == "test":
-    c1, c2 = st.columns([1, 5])
-    with c1:
-        if st.button("⬅ Back", key="test_back"):
-            st.session_state.page = "home"
+elif st.session_state.page == "placement_welcome":
+    st.markdown(f"<div class='center'><h1 style='color:white;'>Welcome to Placement Prediction</h1><p style='color:#a78bfa;'>{st.session_state.college}</p></div>", unsafe_allow_html=True)
+    _,c,_=st.columns([1.3,1,1.3])
+    with c:
+        if st.button("Next - Enter Details", use_container_width=True, type="primary"):
+            st.session_state.page="placement_form"
             st.rerun()
-    with c2:
-        st.markdown("### 🧪 Test Zone")
-    st.session_state.test_skill = st.selectbox("Select Skill for Test", ["C", "Python", "Java", "SQL", "DSA"])
-    if st.button("Start Weekly Test"):
-        st.session_state.test_questions = get_weekly_random_questions(st.session_state.test_skill, 10)
-        st.session_state.test_answers = {}
-        st.session_state.test_submitted = False
-        st.rerun()
-    if st.session_state.test_questions:
-        for i, q in enumerate(st.session_state.test_questions):
-            st.markdown(f"<div class='qbox'><b>Q{i+1}. {q['q']}</b></div>", unsafe_allow_html=True)
-            st.session_state.test_answers[i] = st.radio(f"Select - Q{i+1}", q["options"], key=f"test_q_{i}", index=None)
-        if st.button("Submit Test", use_container_width=True):
-            st.session_state.test_submitted = True
+        if st.button("Back"):
+            st.session_state.page="purpose"
             st.rerun()
-    if st.session_state.test_submitted and st.session_state.test_questions:
-        score = 0
-        for i, q in enumerate(st.session_state.test_questions):
-            chosen = st.session_state.test_answers.get(i)
-            if chosen is not None and q["options"].index(chosen) == q["ans"]:
-                score += 1
-            st.markdown(f"<div class='abox'><b>Q{i+1}:</b> {q['q']}<br><b>Correct:</b> {q['options'][q['ans']]}<br><b>Exp:</b> {q['exp']}</div>", unsafe_allow_html=True)
-        st.success(f"Your Score: {score} / {len(st.session_state.test_questions)}")
 
-# ---------- PREDICTION PAGE - FIX 2: BACK + HOME BOTH ----------
-elif st.session_state.page == "prediction":
-    c1, c2, c3 = st.columns([1, 1, 4])
-    with c1:
-        if st.button("⬅ Back", key="pred_back"):
-            st.session_state.page = "home"
+elif st.session_state.page == "placement_form":
+    st.markdown("<div class='center'><h1 style='color:white;'>Enter Your Details</h1></div>", unsafe_allow_html=True)
+    _,col,_=st.columns([1,1.3,1])
+    with col:
+        name=st.text_input("1. Name")
+        tenth=st.number_input("2. 10th %",0.0,100.0,85.0)
+        inter=st.number_input("3. Inter %",0.0,100.0,80.0)
+        btech=st.number_input("4. B.Tech %",0.0,100.0,75.0)
+        skills=st.text_input("5. Skills?", placeholder="Python, Java")
+        if st.button("Continue", use_container_width=True, type="primary"):
+            st.session_state.pdata=(name,tenth,inter,btech,skills)
+            st.session_state.page="placement_result"
             st.rerun()
-    with c2:
-        if st.button("🏠 Home", key="pred_home"):
-            st.session_state.page = "welcome"
+        if st.button("Back"):
+            st.session_state.page="placement_welcome"
             st.rerun()
-    with c3:
-        st.markdown("### 🔮 Prediction")
-    st.markdown("<div class='glass'>Enter your details to predict placement chance</div>", unsafe_allow_html=True)
-    cgpa = st.slider("CGPA", 5.0, 10.0, 7.5)
-    skills = st.multiselect("Skills Known", ["C", "Python", "Java", "SQL", "DSA"])
-    if st.button("Predict", use_container_width=True):
-        chance = int((cgpa / 10) * 60 + len(skills) * 8)
-        chance = min(chance, 98)
-        st.success(f"Predicted Placement Chance: {chance}%")
-        if chance >= 80:
-            st.info("High chance - Keep practicing mock interviews")
-        elif chance >= 60:
-            st.info("Medium chance - Focus on DSA + 1 project")
+
+elif st.session_state.page == "placement_result":
+    name,tenth,inter,btech,skills=st.session_state.pdata
+    avg=(tenth+inter+btech)/3
+    st.markdown(f"<div class='center'><h1 style='color:white;'>Company List - {avg:.1f}%</h1></div>", unsafe_allow_html=True)
+    _,col,_=st.columns([0.5,2,0.5])
+    with col:
+        df=pd.DataFrame([["Google/Amazon","75%+"],["TCS Digital","70%+"],["Wipro","65%+"]], columns=["Company","Eligibility"])
+        st.dataframe(df, use_container_width=True)
+        st.bar_chart(pd.DataFrame({"Score":[tenth,inter,btech]}, index=["10th","Inter","BTech"]))
+        st.progress(int(avg))
+        if st.button("Home"):
+            st.session_state.page="welcome"
+            st.rerun()
+
+elif st.session_state.page == "tech_welcome":
+    st.markdown("""<div class='center' style='padding-top:16vh'><h1 style='color:white;font-size:58px;font-weight:900;'>Welcoming to<br><span style='background:linear-gradient(90deg,#0d4aff,#ff006a,#fef08a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>BhavPath Technical Skills</span></h1><div class='glass' style='display:inline-block;margin-top:25px;'><p style='color:#c7f0ff;'>C, C++, Java, Python, SQL, DSA - Full Detailed Content with Diagrams</p></div></div>""", unsafe_allow_html=True)
+    _,c,_=st.columns([1.3,1,1.3])
+    with c:
+        st.write("")
+        st.write("")
+        if st.button("Explore Skills", use_container_width=True, type="primary"):
+            st.session_state.page="tech_skills"
+            st.rerun()
+        if st.button("Back"):
+            st.session_state.page="purpose"
+            st.rerun()
+
+elif st.session_state.page == "tech_skills":
+    st.markdown("<div class='center'><h1 style='color:white;font-size:42px;'>Select Your Skill</h1></div>", unsafe_allow_html=True)
+    _,col,_=st.columns([0.3,2,0.3])
+    with col:
+        st.write("")
+        r1_c1, r1_c2, r1_c3 = st.columns(3)
+        with r1_c1:
+            if st.button("C", use_container_width=True):
+                st.session_state.selected_skill="C"
+                st.session_state.topic="Intro"
+                st.session_state.page="skill_detail"
+                st.rerun()
+        with r1_c2:
+            if st.button("C++", use_container_width=True):
+                st.session_state.selected_skill="C++"
+                st.session_state.topic="Basics"
+                st.session_state.page="skill_detail"
+                st.rerun()
+        with r1_c3:
+            if st.button("Java", use_container_width=True):
+                st.session_state.selected_skill="Java"
+                st.session_state.topic="Basics"
+                st.session_state.page="skill_detail"
+                st.rerun()
+        st.write("")
+        r2_c1, r2_c2, r2_c3 = st.columns(3)
+        with r2_c1:
+            if st.button("Python", use_container_width=True):
+                st.session_state.selected_skill="Python"
+                st.session_state.topic="Loops"
+                st.session_state.page="skill_detail"
+                st.rerun()
+        with r2_c2:
+            if st.button("SQL", use_container_width=True):
+                st.session_state.selected_skill="SQL"
+                st.session_state.topic="SELECT"
+                st.session_state.page="skill_detail"
+                st.rerun()
+        with r2_c3:
+            if st.button("DSA", use_container_width=True):
+                st.session_state.selected_skill="DSA"
+                st.session_state.topic="Arrays"
+                st.session_state.page="skill_detail"
+                st.rerun()
+        st.write("")
+        st.write("")
+        if st.button("Back", use_container_width=True):
+            st.session_state.page="tech_welcome"
+            st.rerun()
+
+elif st.session_state.page == "skill_detail":
+    skill=st.session_state.selected_skill
+    st.markdown(f"<div class='center'><h1 style='color:white;'>{skill} - Full Detailed Learning</h1></div>", unsafe_allow_html=True)
+    all_topics={"C":["Intro","Data Types","Loops","Functions","Pointers","Arrays","Structures","File Handling"],"C++":["Basics","OOP","STL","Pointers","Inheritance","Polymorphism","Templates","Projects"],"Java":["Basics","OOP","Collections","Exception","Multithreading","JDBC","Spring","Projects"],"Python":["Basics","Loops","Functions","OOP","Libraries","File Handling","Django","Projects"],"SQL":["SELECT","JOINS","GROUP BY","Subqueries","Indexing","Normalization","Procedures","Projects"],"DSA":["Arrays","Linked List","Stack & Queue","Trees","Graphs","Sorting","DP","Greedy"]}
+    topics_list=all_topics.get(skill, all_topics["C"])
+    _,c,_=st.columns([0.1,3,0.1])
+    with c:
+        col1,col2=st.columns([1,2.5])
+        with col1:
+            st.markdown(f"<div class='glass'><h3 style='color:white;margin:0;'>{skill} Topics</h3></div>", unsafe_allow_html=True)
+            st.write("")
+            for i,t in enumerate(topics_list,1):
+                if st.button(f"{i}. {t}", key=f"{skill}{i}", use_container_width=True):
+                    st.session_state.topic=t
+                    st.rerun()
+            st.write("")
+            if st.button("Back"):
+                st.session_state.page="tech_skills"
+                st.rerun()
+        with col2:
+            content = get_detailed_content(skill, st.session_state.topic)
+            st.markdown("<div class='detail-box'>" + content + "</div>", unsafe_allow_html=True)
+
+elif st.session_state.page == "interview_welcome":
+    st.markdown("""<div class='center' style='padding-top:14vh'><h1 style='color:white;font-size:58px;font-weight:900;'>Welcoming to<br><span style='background:linear-gradient(90deg,#0d4aff,#ff006a,#fef08a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>BhavPath Interview Zone</span></h1><div class='glass' style='display:inline-block;margin-top:25px;'><p style='color:#c7f0ff;font-size:18px;'>Crack TCS, Infosys, Amazon, Google - Interview + Code Practice</p></div></div>""", unsafe_allow_html=True)
+    _,c,_=st.columns([1.3,1,1.3])
+    with c:
+        st.write("")
+        st.write("")
+        if st.button("Start Interview Prep", use_container_width=True, type="primary"):
+            st.session_state.page="interview_skills"
+            st.rerun()
+        if st.button("Back"):
+            st.session_state.page="purpose"
+            st.rerun()
+
+elif st.session_state.page == "interview_skills":
+    st.markdown("<div class='center'><h1 style='color:white;'>Select Interview Skill</h1></div>", unsafe_allow_html=True)
+    _,col,_=st.columns([0.3,2,0.3])
+    with col:
+        st.write("")
+        r1_c1, r1_c2, r1_c3 = st.columns(3)
+        with r1_c1:
+            if st.button("C Interview", use_container_width=True):
+                st.session_state.selected_skill="C"
+                st.session_state.page="interview_detail"
+                st.rerun()
+        with r1_c2:
+            if st.button("C++ Interview", use_container_width=True):
+                st.session_state.selected_skill="C++"
+                st.session_state.page="interview_detail"
+                st.rerun()
+        with r1_c3:
+            if st.button("Java Interview", use_container_width=True):
+                st.session_state.selected_skill="Java"
+                st.session_state.page="interview_detail"
+                st.rerun()
+        st.write("")
+        r2_c1, r2_c2, r2_c3 = st.columns(3)
+        with r2_c1:
+            if st.button("Python Interview", use_container_width=True):
+                st.session_state.selected_skill="Python"
+                st.session_state.page="interview_detail"
+                st.rerun()
+        with r2_c2:
+            if st.button("SQL Interview", use_container_width=True):
+                st.session_state.selected_skill="SQL"
+                st.session_state.page="interview_detail"
+                st.rerun()
+        with r2_c3:
+            if st.button("DSA Interview", use_container_width=True):
+                st.session_state.selected_skill="DSA"
+                st.session_state.page="interview_detail"
+                st.rerun()
+        st.write("")
+        st.write("")
+        if st.button("Back", use_container_width=True):
+            st.session_state.page="interview_welcome"
+            st.rerun()
+
+elif st.session_state.page == "interview_detail":
+    skill=st.session_state.selected_skill
+    st.markdown(f"<div class='center'><h1 style='color:white;'>{skill} - Interview + Code Practice</h1></div>", unsafe_allow_html=True)
+    _,c,_=st.columns([0.05,3,0.05])
+    with c:
+        col1, col2 = st.columns([1.4, 1])
+        with col1:
+            content=get_interview_content(skill)
+            st.markdown("<div class='detail-box'><h3 style='color:#fef08a;margin-top:0;'>Interview Questions - Detailed</h3><div style='color:white;line-height:1.8;font-size:13px;'>" + content + "</div></div>", unsafe_allow_html=True)
+        with col2:
+            st.markdown("<div class='detail-box'><h3 style='color:#00ff88;margin-top:0;'>Code Practice - Run Here</h3></div>", unsafe_allow_html=True)
+            default_code=get_default_code(skill)
+            code_input=st.text_area("Editor", value=default_code, height=420, key="editor_"+skill, label_visibility="collapsed")
+            if st.button("Run Code", key="run_iv_"+skill, type="primary", use_container_width=True):
+                import sys
+                from io import StringIO
+                try:
+                    old_stdout=sys.stdout
+                    sys.stdout=mystdout=StringIO()
+                    exec(code_input, {"pd": pd})
+                    sys.stdout=old_stdout
+                    output=mystdout.getvalue()
+                    st.success("Output:\n"+output)
+                except Exception as e:
+                    st.error("Error: "+str(e))
+            st.markdown("</div>", unsafe_allow_html=True)
+        st.write("")
+        if st.button("Back"):
+            st.session_state.page="interview_skills"
+            st.rerun()
+
+elif st.session_state.page == "test_welcome":
+    st.markdown("""<div class='center' style='padding-top:16vh'><h1 style='color:white;font-size:58px;font-weight:900;'>Welcoming to<br><span style='background:linear-gradient(90deg,#0d4aff,#ff006a,#fef08a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>BhavPath Test Zone</span></h1><div class='glass' style='display:inline-block;margin-top:25px;'><p style='color:#c7f0ff;font-size:18px;'>Weekly Tests - Practice Your Skills</p></div></div>""", unsafe_allow_html=True)
+    _,c,_=st.columns([1.3,1,1.3])
+    with c:
+        st.write("")
+        st.write("")
+        if st.button("Explore Tests", use_container_width=True, type="primary"):
+            st.session_state.page="test_skills"
+            st.rerun()
+        if st.button("Back"):
+            st.session_state.page="purpose"
+            st.rerun()
+
+elif st.session_state.page == "test_skills":
+    week = get_current_week()
+    st.markdown(f"<div class='center'><h1 style='color:white;'>Test Zone - Week {week}</h1><p style='color:#a78bfa;'>Select Skill for Test</p></div>", unsafe_allow_html=True)
+    _,col,_=st.columns([0.3,2,0.3])
+    with col:
+        st.write("")
+        r1_c1, r1_c2, r1_c3 = st.columns(3)
+        with r1_c1:
+            if st.button("C Test", use_container_width=True):
+                st.session_state.test_skill="C"
+                st.session_state.test_questions=get_weekly_random_questions("C", 10)
+                st.session_state.test_answers={}
+                st.session_state.test_submitted=False
+                st.session_state.test_week=week
+                st.session_state.page="test_attempt"
+                st.rerun()
+        with r1_c2:
+            if st.button("Java Test", use_container_width=True):
+                st.session_state.test_skill="Java"
+                st.session_state.test_questions=get_weekly_random_questions("Java", 10)
+                st.session_state.test_answers={}
+                st.session_state.test_submitted=False
+                st.session_state.test_week=week
+                st.session_state.page="test_attempt"
+                st.rerun()
+        with r1_c3:
+            if st.button("Python Test", use_container_width=True):
+                st.session_state.test_skill="Python"
+                st.session_state.test_questions=get_weekly_random_questions("Python", 10)
+                st.session_state.test_answers={}
+                st.session_state.test_submitted=False
+                st.session_state.test_week=week
+                st.session_state.page="test_attempt"
+                st.rerun()
+        st.write("")
+        r2_c1, r2_c2, r2_c3 = st.columns(3)
+        with r2_c1:
+            if st.button("SQL Test", use_container_width=True):
+                st.session_state.test_skill="SQL"
+                st.session_state.test_questions=get_weekly_random_questions("SQL", 10)
+                st.session_state.test_answers={}
+                st.session_state.test_submitted=False
+                st.session_state.test_week=week
+                st.session_state.page="test_attempt"
+                st.rerun()
+        with r2_c2:
+            if st.button("DSA Test", use_container_width=True):
+                st.session_state.test_skill="DSA"
+                st.session_state.test_questions=get_weekly_random_questions("DSA", 10)
+                st.session_state.test_answers={}
+                st.session_state.test_submitted=False
+                st.session_state.test_week=week
+                st.session_state.page="test_attempt"
+                st.rerun()
+        with r2_c3:
+            if st.button("Mixed Test", use_container_width=True):
+                all_q = []
+                for sk in ["C", "Python", "Java", "SQL", "DSA"]:
+                    all_q.extend(get_weekly_random_questions(sk, 2))
+                random.shuffle(all_q)
+                st.session_state.test_skill="Mixed"
+                st.session_state.test_questions=all_q
+                st.session_state.test_answers={}
+                st.session_state.test_submitted=False
+                st.session_state.test_week=week
+                st.session_state.page="test_attempt"
+                st.rerun()
+        st.write("")
+        st.write("")
+        if st.button("Back", use_container_width=True):
+            st.session_state.page="test_welcome"
+            st.rerun()
+
+elif st.session_state.page == "test_attempt":
+    skill = st.session_state.test_skill
+    questions = st.session_state.test_questions
+    week = st.session_state.test_week
+    st.markdown(f"<div class='center'><h1 style='color:white;'>{skill} Test - Week {week}</h1></div>", unsafe_allow_html=True)
+    _,c,_=st.columns([0.1,3,0.1])
+    with c:
+        if not st.session_state.test_submitted:
+            st.markdown("<div class='detail-box'>", unsafe_allow_html=True)
+            for idx, q in enumerate(questions):
+                st.markdown(f"<div class='qbox'><b>Q{idx+1}. {q['q']}</b></div>", unsafe_allow_html=True)
+                key = f"test_q_{idx}"
+                options = q["options"]
+                selected = st.radio(f"Select for Q{idx+1}", options, key=key, index=None, label_visibility="collapsed")
+                if selected is not None:
+                    sel_idx = options.index(selected)
+                    st.session_state.test_answers[idx] = sel_idx
+                st.write("")
+            st.markdown("</div>", unsafe_allow_html=True)
+            st.write("")
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("Submit Test - See Score", use_container_width=True, type="primary"):
+                    st.session_state.test_submitted=True
+                    st.rerun()
+            with col2:
+                if st.button("Back - Cancel Test", use_container_width=True):
+                    st.session_state.page="test_skills"
+                    st.rerun()
         else:
-            st.info("Need improvement - Start with C + Python basics daily")
+            score = 0
+            for idx, q in enumerate(questions):
+                user_ans = st.session_state.test_answers.get(idx, -1)
+                if user_ans == q["ans"]:
+                    score += 1
+            st.markdown(f"<div class='center'><h2 style='color:#00ff88;'>Your Score: {score} / {len(questions)} - {score*10} %</h2><p style='color:#a78bfa;'>Week {week} Test Completed</p></div>", unsafe_allow_html=True)
+            st.progress(score/len(questions))
+            st.markdown("<div class='detail-box'>", unsafe_allow_html=True)
+            for idx, q in enumerate(questions):
+                user_ans = st.session_state.test_answers.get(idx, -1)
+                correct = q["ans"]
+                is_correct = user_ans == correct
+                color = "#00ff88" if is_correct else "#ff006a"
+                status = "Correct" if is_correct else "Wrong"
+                st.markdown(f"<div class='qbox' style='border-left-color:{color};'><b>Q{idx+1}. {q['q']}</b><br><span style='color:{color};font-weight:bold;'>{status}</span> - Your Answer: {q['options'][user_ans] if user_ans!=-1 else 'Not Answered'} | Correct: {q['options'][correct]}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div class='abox'><b>Explanation:</b> {q['exp']}</div>", unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
+            st.write("")
+            c1, c2, c3 = st.columns(3)
+            with c1:
+                if st.button("Retake - New Questions", use_container_width=True, type="primary"):
+                    st.session_state.test_questions=get_weekly_random_questions(skill, 10)
+                    st.session_state.test_answers={}
+                    st.session_state.test_submitted=False
+                    st.rerun()
+            with c2:
+                if st.button("Change Skill", use_container_width=True):
+                    st.session_state.page="test_skills"
+                    st.rerun()
+            with c3:
+                if st.button("Home", use_container_width=True):
+                    st.session_state.page="purpose"
+                    st.rerun()
+
+else:
+    st.markdown("<div class='center'><h1 style='color:white;'>Coming Soon</h1></div>", unsafe_allow_html=True)
+    if st.button("Back"):
+        st.session_state.page="purpose"
+        st.rerun()
