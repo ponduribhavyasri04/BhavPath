@@ -131,39 +131,67 @@ def get_weekly_random_questions(skill, num_q=10):
 
 def get_detailed_content(skill, topic):
     articles = {
-        ("C", "Intro"): ("C is a general-purpose, procedural language developed by Dennis Ritchie in 1972. It is called mother language because C++, Java, Python anni C nunchi vachayi.", "int main(){ printf(\"Hello\"); return 0; } // Output: Hello", "Compiler -> Machine Code. Fast execution, direct memory control."),
-        ("C", "Data Types"): ("Data Types ante variable lo em type data store chesthamo cheppedi. int - 4 bytes, char - 1 byte, float - 4 bytes, double - 8 bytes.", "int age=21; char grade='A'; float marks=85.5;", "int range -2,147,483,648 to 2,147,483,647. char stores single character."),
-        ("C", "Loops"): ("Loop ante same code ni malli malli run cheyadam. for - count telisinappudu, while - condition batti, do-while - atleast 1 time pakka run avvali ante.", "for(i=1;i<=5;i++){ printf(\"%d \",i); } // Output: 1 2 3 4 5", "i=1 -> print 1 -> i=2 -> print 2 ... i=6 -> False -> Exit. Time O(n)"),
-        ("C", "Functions"): ("Function ante oka pani chese block. Code reuse kosam. Call by Value - copy pothundi, Call by Reference - address pothundi.", "int add(int a,int b){ return a+b; } // add(2,3) = 5", "Function call -> Stack lo memory -> return -> Stack clear."),
-        ("C", "Pointers"): ("Pointer ante address store chese variable. int *p = &a. *p ante value, p ante address. malloc, free kosam pointer must.", "int a=10; int *p=&a; printf(\"%d\",*p); // 10", "a=10 at 1000, p=1000 at 2000, *p = go to 1000, take 10."),
-        ("C", "Arrays"): ("Array ante same type data ni continuous memory lo store cheyadam. Index 0 nunchi start. Address = Base + (index * size).", "int arr[]={10,20,30}; printf(\"%d\",arr[1]); // 20", "Base 1000, arr[1] = 1000 + 1*4 = 1004. Access O(1)."),
-        ("C", "Structures"): ("Structure ante different types ni okkate group lo pettadam. struct Student {int id; char name[20];}. Padding valla size peruguthundi.", "struct Student s1={1,\"Bhav\"}; printf(\"%d\",s1.id); // 1", "struct char 1 + padding 3 + int 4 = 8 bytes. Union lo size = max member."),
-        ("C", "File Handling"): ("File Handling ante file lo data read/write cheyadam. fopen, fclose, fprintf, fscanf. Modes: r, w, a, r+, w+.", "FILE *f=fopen(\"a.txt\",\"w\"); fprintf(f,\"Hi\"); fclose(f);", "File open -> write -> close. Close cheyakapothe data loss avthundi."),
-        ("Python", "Basics"): ("Python ante easy, readable, high-level language. Guido van Rossum 1991 lo create chesadu. Indentation tho code block decide avthundi.", "print(\"Hello\") # No semicolon, no brackets", "Python code -> Bytecode -> PVM -> Output. Slow kani easy."),
-        ("Python", "Loops"): ("Python lo for loop direct ga values meedha tiruguthundi. range(), list, string meedha. While loop condition false ayye varaku.", "for i in range(1,6): print(i) # 1 2 3 4 5", "range(1,6) gives 1,2,3,4,5. List comprehension [x*x for x in range(5)] faster."),
-        ("Python", "Functions"): ("def tho function create chestham. args - tuple, kwargs - dict, lambda - one line function, return - value pampadam.", "def add(a,b): return a+b\nprint(add(2,3)) # 5", "add(2,3) -> a=2,b=3 -> return 5. Mutable default argument vaddu."),
-        ("Python", "OOP"): ("OOP ante Class + Object. 4 Pillars: Encapsulation, Inheritance, Polymorphism, Abstraction. __init__ ante constructor.", "class Dog:\n def __init__(self,n): self.name=n\nd=Dog(\"Tom\")", "Class blueprint, Object real. self ante current object."),
-        ("Python", "Libraries"): ("Pandas - data analysis, Numpy - numbers, Matplotlib - graphs. pip install pandas tho install chestham.", "import pandas as pd\ndf=pd.DataFrame({'a':[1,2]})", "Pandas DataFrame ante Excel table lantidi. Placement projects lo must."),
-        ("Python", "File Handling"): ("with open() ante auto close. Modes r, w, a. Large file ni line by line chadavali, motham okesari vaddu.", "with open(\"a.txt\",\"r\") as f:\n print(f.read())", "with use chesthe close marchipoyina parledhu."),
-        ("Python", "Django"): ("Django ante Python full web framework. MVT - Model View Template. Batteries included - Admin, Auth, ORM anni untayi.", "python manage.py runserver # Server start", "Flask - micro, small API. Django - full, big project."),
-        ("Java", "Basics"): ("Java WORA - Write Once Run Anywhere. Code -> Bytecode -> JVM. public static void main() nunchi start avthundi.", "class Main{ public static void main(String[] a){ System.out.println(\"Hi\"); } }", "JDK - develop, JRE - run, JVM - execute. Bytecode anni OS lo same."),
-        ("Java", "OOP"): ("Java pure OOP. Class, Object, Inheritance extends, Polymorphism overloading/overriding, Encapsulation private + getter.", "class Dog extends Animal{ void bark(){} }", "Overloading - same name diff params compile time. Overriding - child redefines parent runtime."),
-        ("Java", "Collections"): ("ArrayList - dynamic array O(1) get, HashMap - key-value O(1), HashSet - unique. List vs Set vs Map.", "ArrayList<String> l=new ArrayList<>(); l.add(\"Bhav\");", "HashMap hashCode -> bucket index. HashMap lo null key okkate."),
-        ("SQL", "SELECT"): ("SELECT ante data ni chudatam. SELECT * FROM students WHERE avg>70 ORDER BY avg DESC.", "SELECT name, avg FROM students WHERE avg>70;", "WHERE row filter, ORDER BY sort, LIMIT top N."),
-        ("SQL", "JOINS"): ("JOIN ante 2 tables kalapadam. INNER - matching only, LEFT - left anni + matching, RIGHT - opposite.", "SELECT s.name FROM students s LEFT JOIN placements p ON s.id=p.student_id WHERE p.student_id IS NULL; // Not placed", "students 100, placements 70 -> INNER 70, LEFT 100."),
-        ("SQL", "GROUP BY"): ("GROUP BY ante group chesi aggregate cheyadam. COUNT, SUM, AVG, MAX. HAVING ante group filter.", "SELECT college, COUNT(*) FROM students GROUP BY college HAVING COUNT(*)>10;", "WHERE - row filter before GROUP BY, HAVING - group filter after."),
-        ("DSA", "Arrays"): ("Array O(1) access, O(n) search. Key techniques: Two Pointers, Sliding Window, Prefix Sum, HashMap.", "def two_sum(arr,t): seen={} # O(n) HashMap", "Brute O(n^2), HashMap O(n). Two Sum FAANG No.1 Q."),
-        ("DSA", "Linked List"): ("Linked List ante nodes chain. Each node data + next address. Reverse, Detect Loop - Floyd tortoise-hare.", "Reverse: prev=None, curr=head # O(n) O(1)", "Slow 1 step, Fast 2 steps - kalisithey loop undi."),
-        ("DSA", "Stack & Queue"): ("Stack LIFO - push pop, Queue FIFO - enqueue dequeue. Stack - Undo, Bracket check. Queue - BFS, Printer.", "Stack: push(10), pop() -> 10. Queue: enqueue(10), dequeue() -> 10", "Valid Parentheses - Stack use chesi check chestham."),
-        ("DSA", "Trees"): ("Tree ante hierarchical. Inorder Left-Root-Right BST lo sorted vasthundi. BFS Queue, DFS Stack.", "Inorder: Left -> Root -> Right", "BST lo search O(log n) average, O(n) worst."),
-        ("DSA", "Sorting"): ("Sorting ante order lo pettadam. Bubble O(n^2), Merge O(n log n) stable, Quick avg O(n log n) worst O(n^2).", "Quick Sort: pivot pick, small left, big right, repeat", "Merge stable, Quick in-place fast. Interview lo code rayamantaru."),
+        # ===== C - 8 =====
+        ("C", "Intro"): ("C is mother language, Dennis Ritchie 1972. Procedural, fast, direct memory control. C nunchi C++, Java, Python vachayi.", "int main(){ printf(\"Hello\"); return 0; } // Hello", "Compiler -> Machine Code. Fast."),
+        ("C", "Data Types"): ("int - 4 bytes, char - 1 byte, float - 4 bytes, double - 8 bytes. Type batti size, range maruthundi.", "int age=21; char g='A'; float m=85.5;", "int range -2147483648 to 2147483647."),
+        ("C", "Loops"): ("Loop ante same code repeat. for - count telisinappudu, while - condition, do-while - atleast 1 time.", "for(i=1;i<=5;i++) printf(\"%d \",i); // 1 2 3 4 5", "i=1->print 1 ... i=6 False Exit. O(n)"),
+        ("C", "Functions"): ("Function ante oka pani chese block. Code reuse. Call by Value - copy, Call by Reference - address.", "int add(int a,int b){ return a+b; } // 5", "Call -> Stack -> Return -> Clear."),
+        ("C", "Pointers"): ("Pointer ante address store chese variable. int *p=&a. *p=value, p=address. malloc/free ki must.", "int a=10; int *p=&a; printf(\"%d\",*p); // 10", "a=10 at 1000, p=1000 at 2000."),
+        ("C", "Arrays"): ("Array same type continuous memory. Index 0 nunchi. Address = Base + index*size.", "int arr[]={10,20,30}; printf(\"%d\",arr[1]); // 20", "Base 1000, arr[1]=1004. Access O(1)."),
+        ("C", "Structures"): ("Structure different types ni okkate group lo. struct Student {int id; char name[20];}. Padding valla size peruguthundi.", "struct Student s1={1,\"Bhav\"};", "char 1 + padding 3 + int 4 = 8 bytes."),
+        ("C", "File Handling"): ("File lo read/write. fopen, fclose, fprintf, fscanf. Modes r,w,a,r+,w+.", "FILE *f=fopen(\"a.txt\",\"w\"); fprintf(f,\"Hi\"); fclose(f);", "Open->Write->Close. Close lekapothe data loss."),
+        # ===== C++ - 8 =====
+        ("C++", "Basics"): ("C++ ante C + OOP. Bjarne Stroustrup 1985. Cin cout, namespace std, fast + OOP. Game, OS, DSA ki best.", "#include <iostream>\nusing namespace std;\nint main(){ cout<<\"Hi\"; }", "C code kuda C++ lo run avthundi."),
+        ("C++", "OOP"): ("C++ OOP: Class, Object, Encapsulation, Inheritance, Polymorphism, Abstraction. C++ lo OOP + Pointer kalipi powerful.", "class Dog{ public: void bark(){ cout<<\"Bark\"; } };", "C++ lo private, public, protected access."),
+        ("C++", "STL"): ("STL ante Standard Template Library. Ready-made containers. vector, map, set, stack, queue, sort(). Interview lo STL must.", "vector<int> v={1,2,3}; v.push_back(4); sort(v.begin(), v.end());", "vector dynamic array, map key-value O(log n)."),
+        ("C++", "Pointers"): ("C++ Pointers C laage kani new/delete kuda untayi. int *p = new int(10); delete p; Smart pointer kuda undi.", "int *p = new int(10); cout<<*p; // 10 \ndelete p;", "malloc/free C style, new/delete C++ style."),
+        ("C++", "Inheritance"): ("Inheritance ante parent properties child ki. public, private, protected inheritance. Code reuse.", "class Animal{ void eat(){} }; class Dog : public Animal{ void bark(){} };", "Single, Multiple, Multilevel, Hierarchical."),
+        ("C++", "Polymorphism"): ("Polymorphism ante okkate name, different forms. Compile time - Overloading, Runtime - Overriding + virtual.", "void add(int a,int b){} void add(float a,float b){} // Overloading", "virtual function pettali ante runtime polymorphism."),
+        ("C++", "Templates"): ("Template ante generic code. Okkate function int, float, string anni types ki pani chesthundi.", "template<typename T> T add(T a, T b){ return a+b; }", "Function template + Class template."),
+        ("C++", "Projects"): ("C++ Projects: Bank Management, Library Management, Student Record, Tic-Tac-Toe, Snake Game.", "Project: Bank - class Account { deposit(), withdraw() }", "File handling + OOP + STL kalipi project chey."),
+        # ===== JAVA - 8 =====
+        ("Java", "Basics"): ("Java WORA - Write Once Run Anywhere. Code -> Bytecode -> JVM. public static void main() nunchi start.", "class Main{ public static void main(String[] a){ System.out.println(\"Hi\"); } }", "JDK-develop, JRE-run, JVM-execute."),
+        ("Java", "OOP"): ("Java pure OOP. Class, Object, Inheritance extends, Polymorphism overloading/overriding, Encapsulation private.", "class Dog extends Animal{ void bark(){} }", "Overloading compile time, Overriding runtime."),
+        ("Java", "Collections"): ("ArrayList dynamic O(1) get, HashMap key-value O(1), HashSet unique. List vs Set vs Map.", "ArrayList<String> l=new ArrayList<>(); l.add(\"Bhav\");", "HashMap hashCode -> bucket index."),
+        ("Java", "Exception"): ("Exception ante runtime error. try-catch-finally. Checked - compile time, Unchecked - runtime. finally always run avthundi.", "try{ int x=10/0; } catch(Exception e){ System.out.println(e); } finally{ System.out.println(\"Done\"); }", "throw vs throws difference adugutharu."),
+        ("Java", "Multithreading"): ("Multithreading ante okesari anni panulu. Thread create - extends Thread or implements Runnable. Runnable better.", "class MyThread extends Thread{ public void run(){ System.out.println(\"Run\"); } }", "sleep(), join(), synchronized() important."),
+        ("Java", "JDBC"): ("JDBC ante Java tho Database connect cheyadam. Connection, Statement, ResultSet. MySQL tho connect.", "Connection con = DriverManager.getConnection(\"jdbc:mysql://localhost:3306/db\",\"root\",\"pass\");", "Steps: Load driver -> Connect -> Query -> Close."),
+        ("Java", "Spring"): ("Spring ante Java popular framework. Dependency Injection, Spring Boot lo setup easy. Microservices ki Spring Boot.", "@SpringBootApplication\npublic class App{ public static void main(String[] a){ SpringApplication.run(App.class,a); } }", "Spring Boot vs Spring - Boot lo config thakkuva."),
+        ("Java", "Projects"): ("Java Projects: ATM System, Online Exam, Hospital Management, E-Commerce, Chat App.", "Project: ATM - class ATM { withdraw(), deposit(), checkBalance() }", "OOP + Collections + JDBC kalipi project."),
+        # ===== PYTHON - 8 =====
+        ("Python", "Basics"): ("Python easy, readable, high-level. Guido 1991. Indentation tho block decide. No semicolon.", "print(\"Hello\") # No brackets", "Code -> Bytecode -> PVM."),
+        ("Python", "Loops"): ("Python for loop direct values meedha. range(), list, string. While condition false ayye varaku.", "for i in range(1,6): print(i) # 1 2 3 4 5", "List comprehension [x*x for x in range(5)] faster."),
+        ("Python", "Functions"): ("def tho function. args-tuple, kwargs-dict, lambda-one line, return-value.", "def add(a,b): return a+b\nprint(add(2,3)) # 5", "Mutable default argument vaddu."),
+        ("Python", "OOP"): ("OOP Class+Object. 4 Pillars. __init__ constructor. self ante current object.", "class Dog:\n def __init__(self,n): self.name=n", "Inheritance, Polymorphism Python lo easy."),
+        ("Python", "Libraries"): ("Pandas-data, Numpy-numbers, Matplotlib-graphs. pip install tho install.", "import pandas as pd\ndf=pd.DataFrame({'a':[1,2]})", "DataFrame ante Excel table."),
+        ("Python", "File Handling"): ("with open() auto close. Modes r,w,a. Large file line by line.", "with open(\"a.txt\",\"r\") as f:\n print(f.read())", "with use chesthe close marchipovachu."),
+        ("Python", "Django"): ("Django full web framework. MVT - Model View Template. Admin, Auth, ORM anni untayi.", "python manage.py runserver # Server start", "Flask micro, Django full."),
+        ("Python", "Projects"): ("Python Projects: To-Do App, Weather App, Expense Tracker, Chatbot, Face Detection.", "Project: To-Do - list add/remove with file save", "Django + Pandas + Tkinter kalipi."),
+        # ===== SQL - 8 =====
+        ("SQL", "SELECT"): ("SELECT ante data chudatam. WHERE row filter, ORDER BY sort, LIMIT top N.", "SELECT name, avg FROM students WHERE avg>70;", "SELECT * ante anni columns."),
+        ("SQL", "JOINS"): ("JOIN 2 tables kalapadam. INNER-matching only, LEFT-left anni, RIGHT-opposite, FULL-anni.", "SELECT s.name FROM students s LEFT JOIN placements p ON s.id=p.student_id WHERE p.student_id IS NULL; // Not placed", "students 100, placements 70 -> INNER 70, LEFT 100."),
+        ("SQL", "GROUP BY"): ("GROUP BY group chesi aggregate. COUNT, SUM, AVG, MAX. HAVING group filter.", "SELECT college, COUNT(*) FROM students GROUP BY college HAVING COUNT(*)>10;", "WHERE before GROUP BY, HAVING after."),
+        ("SQL", "Subqueries"): ("Subquery ante query lopala query. INNER query result OUTER query ki use. IN, EXISTS tho.", "SELECT name FROM students WHERE avg > (SELECT AVG(avg) FROM students);", "Subquery kante JOIN generally faster."),
+        ("SQL", "Indexing"): ("Index ante book index lantidi. Search O(n) to O(log n) avthundi. B-Tree use chesthundi.", "CREATE INDEX idx_avg ON students(avg);", "Index ekkuva pettali ante INSERT slow avthundi."),
+        ("SQL", "Normalization"): ("Normalization ante redundancy thagginchadam. 1NF-atomic, 2NF-no partial, 3NF-no transitive.", "1NF: One cell lo okkate value. 'Python,Java' vaddu, vere rows chey.", "BCNF, 4NF kuda untayi."),
+        ("SQL", "Procedures"): ("Procedure ante save chesina SQL code. Malli malli call cheyochu. Function ki return undi, Procedure ki ledu.", "CREATE PROCEDURE get_top() BEGIN SELECT * FROM students ORDER BY avg DESC LIMIT 5; END;", "CALL get_top(); tho run."),
+        ("SQL", "Projects"): ("SQL Projects: Student DB, E-Commerce DB, Hospital DB, Bank DB. Tables + JOINS + Procedures.", "Project: Student DB - students, placements, results tables", "ER Diagram first gey, tharuvatha tables."),
+        # ===== DSA - 8 =====
+        ("DSA", "Arrays"): ("Array O(1) access, O(n) search. Techniques: Two Pointers, Sliding Window, Prefix Sum, HashMap.", "def two_sum(arr,t): seen={} # O(n) HashMap", "Brute O(n^2), HashMap O(n)."),
+        ("DSA", "Linked List"): ("Nodes chain. data + next address. Reverse, Detect Loop - Floyd tortoise-hare.", "Reverse: prev=None, curr=head # O(n) O(1)", "Slow 1, Fast 2 - kalisthe loop."),
+        ("DSA", "Stack & Queue"): ("Stack LIFO-push pop, Queue FIFO-enqueue dequeue. Stack-Undo, Queue-BFS.", "Stack: push(10), pop()->10. Queue: enqueue(10), dequeue()->10", "Valid Parentheses - Stack."),
+        ("DSA", "Trees"): ("Tree hierarchical. Inorder Left-Root-Right BST lo sorted. BFS Queue, DFS Stack.", "Inorder: Left -> Root -> Right", "BST search O(log n) avg."),
+        ("DSA", "Graphs"): ("Graph nodes + edges. BFS Queue shortest path, DFS Stack recursion. Adjacency List better.", "BFS: Queue lo start petti, visited mark, neighbours add", "Dijkstra shortest path, Cycle detection."),
+        ("DSA", "Sorting"): ("Bubble O(n^2), Merge O(n log n) stable, Quick avg O(n log n) worst O(n^2).", "Quick: pivot pick, small left, big right", "Merge stable, Quick in-place."),
+        ("DSA", "DP"): ("DP ante Dynamic Programming. Same subproblem malli malli vaste store cheskovadam. Memoization + Tabulation.", "Fibonacci: dp[0]=0, dp[1]=1, dp[i]=dp[i-1]+dp[i-2]", "Recursion O(2^n), DP O(n)."),
+        ("DSA", "Greedy"): ("Greedy ante prathi step lo best choose cheyadam. Future chudakunda present best. Activity Selection, Coin Change.", "Activity: End time batti sort chesi, overlapping kakunda pick", "Greedy anni chotla work avvadhu, DP kavali."),
     }
     if (skill, topic) in articles:
         intro, example, dry = articles[(skill, topic)]
     else:
-        intro = f"{topic} is very important topic in {skill}. Idi nerchukunte {skill} lo strong avuthav. Real project lo {topic} ni daily use chestham."
-        example = f"# {topic} in {skill} - Practice Example\nprint('{topic} - {skill}')"
-        dry = f"Input -> Process {topic} -> Output. Small input tho dry run chey."
+        intro = f"{topic} is very important topic in {skill}."
+        example = f"print('{topic} - {skill}')"
+        dry = f"Input -> Process {topic} -> Output."
     html = ""
     html += f"<h2 style='color:#fef08a;margin-top:0;'>{topic} in {skill} - Complete Tutorial</h2>"
     html += f"<div class='diag'>Topic: {topic} | Skill: {skill} | Level: Beginner to Advanced</div>"
@@ -173,7 +201,6 @@ def get_detailed_content(skill, topic):
     html += f"<div class='cat'>4. Practice Questions</div><p style='color:white;'>1. Write 3 basic programs on {topic}<br>2. Write 2 medium problems on {topic}<br>3. Explain {topic} without seeing notes</p>"
     html += f"<div class='cat'>5. Interview Questions</div><p style='color:white;'>1. Explain {topic} with example?<br>2. What is Time Complexity of {topic}?<br>3. Write code for {topic} without library?</p>"
     return html
-
 def get_interview_content(skill):
     html = ""
     html += "<div class='cat'>Top Interview Questions - " + skill + "</div>"
