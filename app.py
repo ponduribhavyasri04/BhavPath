@@ -211,7 +211,7 @@ def get_detailed_content(skill, topic):
     html += f"<div class='cat'>12. Practice Questions</div><p style='color:white;'>1. Write 3 basic programs on {topic}<br>2. Write 2 medium problems on {topic}<br>3. Explain {topic} without seeing notes - in 2 mins<br>4. Write {topic} code in 5 mins - Time challenge<br>5. Give one real example of {topic}</p>"
     html += f"<div class='cat'>13. Interview Questions</div><p style='color:white;'>1. Explain {topic} with example?<br>2. What is Time Complexity of {topic}?<br>3. Write code for {topic} without library?<br>4. What is common mistake in {topic}?<br>5. Where did you use {topic} in real project?<br>6. Difference between {topic} and similar topic?</p>"
     return html
-def get_interview_content(skill, topic):
+def get_interview_content(skill, topic=""):
     # All Skills - Interview Bank - 100% English, No external brand name
     bank = {
         ("C", "Pointers"): [
