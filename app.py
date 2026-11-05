@@ -211,22 +211,102 @@ def get_detailed_content(skill, topic):
     html += f"<div class='cat'>12. Practice Questions</div><p style='color:white;'>1. Write 3 basic programs on {topic}<br>2. Write 2 medium problems on {topic}<br>3. Explain {topic} without seeing notes - in 2 mins<br>4. Write {topic} code in 5 mins - Time challenge<br>5. Give one real example of {topic}</p>"
     html += f"<div class='cat'>13. Interview Questions</div><p style='color:white;'>1. Explain {topic} with example?<br>2. What is Time Complexity of {topic}?<br>3. Write code for {topic} without library?<br>4. What is common mistake in {topic}?<br>5. Where did you use {topic} in real project?<br>6. Difference between {topic} and similar topic?</p>"
     return html
-def get_interview_content(skill):
-    html = ""
-    html += "<div class='cat'>Top Interview Questions - " + skill + "</div>"
-    html += "<div class='diag'>Quick Diagram: Stack - Local vars | Heap - Objects malloc | Code - Text segment</div>"
-    if skill == "C":
-        html += "<div class='qbox'><b>Q1. What is pointer? Why use pointer? Explain pointer to pointer with diagram.</b></div><div class='abox'><b>Answer:</b> Pointer stores address. int a=10 at addr 1000. int *p = &a p stores 1000 at 2000. *p is value at address =10. Why use? 1 Dynamic memory malloc 2 Pass large data without copy 3 Build Linked List. Code int a=10; int *p=&a; printf percent d *p prints 10. Diagram a 1000=10 p 2000=1000 pp 3000=2000. Always init as NULL to avoid wild. TCS asks 90 percent times.</div>"
-        html += "<div class='qbox'><b>Q2. Array vs Pointer? Explain size difference?</b></div><div class='abox'><b>Answer:</b> Array continuous fixed size int arr 5 =20 bytes sizeof arr 20. Pointer 8 bytes stores address dynamic. Array name constant p++ allowed arr++ error.</div>"
-        html += "<div class='qbox'><b>Q3. What is dangling pointer? How to avoid?</b></div><div class='abox'><b>Answer:</b> Pointer pointing to freed memory. int *p=malloc 4; free p; Now p dangling using *p crashes segmentation fault. Solution After free set p=NULL. Code free p; p=NULL; if p not equal NULL safe.</div>"
-        html += "<div class='qbox'><b>Q4. malloc vs calloc vs realloc vs free?</b></div><div class='abox'><b>Answer:</b> malloc 1 arg size uninitialized garbage fast. calloc 2 args count size zero init safe slow. realloc resize existing block. free release memory.</div>"
-        html += "<div class='qbox'><b>Q5. Structure vs Union vs padding?</b></div><div class='abox'><b>Answer:</b> Structure all members separate memory sum plus padding for alignment. struct char a int b size not 5 but 8 due to 4-byte alignment padding. Union shares same memory size = max member only one active.</div>"
-    else:
-        html += "<div class='qbox'><b>Q1. List vs Tuple vs Set vs Dict? Explain with diagram and time complexity?</b></div><div class='abox'><b>Answer:</b> List mutable ordered duplicate 1 2 2 O1 access On search use scores 85 90. Tuple immutable ordered 1 2 faster hashable can be dict key. Set unordered unique 1 2 O1 search no duplicate. Dict key-value a 1 O1 key must be hashable immutable.</div>"
-        html += "<div class='qbox'><b>Q2. args vs kwargs? How to use? Unpacking?</b></div><div class='abox'><b>Answer:</b> args tuple positional unlimited def add args sum args call add 1 2 3. kwargs dict keyword def func kwargs for k v in kwargs.items call func name Bhav college QIS. Unpacking list to args my_list 1 2 3 add *my_list. Dict to kwargs my_dict name Bhav func **my_dict.</div>"
-        html += "<div class='qbox'><b>Q3. Decorator Generator Iterator GIL?</b></div><div class='abox'><b>Answer:</b> Decorator wraps function adds behavior without modifying login_required. Generator yields one by one saves memory def gen yield 1 yield 2 for large file 1GB not load all for line in open file yield line. GIL only one thread executes Python bytecode at a time CPU-bound threading not faster but IO-bound ok use multiprocessing for CPU.</div>"
-    return html
+def get_interview_content(skill, topic):
+    # All Skills - Interview Bank - 100% English, No external brand name
+    bank = {
+        ("C", "Pointers"): [
+            ("Easy: What is a pointer?", "Pointer is a variable that stores address of another variable. Example int *p = &a."),
+            ("Easy: Difference between *p and p?", "p is address, *p is value at that address."),
+            ("Easy: What is NULL pointer?", "Pointer that points to nothing. If you dereference it, program crashes."),
+            ("Medium: What is dangling pointer?", "Pointer pointing to memory that is already freed. Using it gives garbage or crash."),
+            ("Medium: malloc vs calloc?", "malloc takes 1 arg size, memory not initialized. calloc takes 2 args n,size, memory initialized to 0."),
+            ("Medium: What is pointer to pointer?", "Pointer that stores address of another pointer. int **pp = &p;"),
+            ("Hard: What is memory leak?", "When you allocate memory and forget to free it, memory is lost till program ends."),
+            ("Hard: Explain segmentation fault?", "When program tries to access memory it does not have permission for. Example dereferencing NULL."),
+            ("Tricky: int *p; *p = 10; What happens?", "Undefined behaviour. p is uninitialized, it points to random address. May crash."),
+            ("HR: Why are pointers difficult?", "Because you manage memory directly. One mistake can crash. But they give full control and speed."),
+        ],
+        ("C", "Arrays"): [
+            ("Easy: What is array?", "Collection of same type values in continuous memory. Index starts from 0."),
+            ("Medium: Why array access is O(1)?", "Because address is calculated directly with formula Base + index*size."),
+            ("Medium: Array vs Pointer?", "Array name is constant pointer to first element. You can do arr+1 but not arr++."),
+            ("Hard: What is out of bounds?", "Accessing arr[10] when size is 5. Gives garbage, may crash. C does not check bounds."),
+            ("Tricky: How to find size of array?", "sizeof(arr)/sizeof(arr[0]). In function this does not work because array decays to pointer."),
+        ],
+        ("C", "Loops"): [
+            ("Easy: What is loop?", "Loop repeats same work. for loop when count is known, while when condition based, do-while runs at least once."),
+            ("Medium: for vs while?", "for is best when iterations are known. while is best when condition based."),
+            ("Hard: What is infinite loop?", "Loop that never ends because condition never becomes false. Example forgetting i++."),
+            ("Tricky: Why semicolon after for is dangerous?", "for(i=0;i<5;i++); - body becomes separate, loop runs empty."),
+        ],
+        ("DSA", "DP"): [
+            ("Easy: What is DP?", "Dynamic Programming. Solve subproblem once, store it, reuse it. Recursion + Memo = DP."),
+            ("Easy: Memoization vs Tabulation?", "Memoization = Top-down, Recursion + Cache. Tabulation = Bottom-up, Table from 0 to n."),
+            ("Medium: When to use DP?", "When 2 conditions: Overlapping Subproblems + Optimal Substructure. Both must be there."),
+            ("Medium: Fibonacci with DP?", "dp[0]=0, dp[1]=1, dp[i]=dp[i-1]+dp[i-2]. Recursion O(2^n) becomes DP O(n)."),
+            ("Hard: DP vs Greedy?", "Greedy picks local best, may fail. DP checks all possibilities and picks global best. Knapsack Greedy fails, DP works."),
+            ("Tricky: Can DP always be optimized to O(1) space?", "Not always. If dp[i] depends only on last 1-2 values, yes. If it depends on all previous, no."),
+        ],
+        ("DSA", "Arrays"): [
+            ("Easy: What is Two Sum?", "Find two numbers that add to target. Brute O(n^2), HashMap O(n)."),
+            ("Medium: Two Pointers technique?", "Use two pointers from both ends. Best for sorted array, pair sum, palindrome."),
+            ("Medium: Sliding Window?", "Maintain a window and move it. Best for max subarray, longest substring."),
+            ("Hard: How to optimize Brute to Optimal?", "First write brute, find repeated work, use HashMap or sorting to optimize."),
+        ],
+        ("Python", "Django"): [
+            ("Easy: What is Django?", "Full web framework in Python. MVT - Model View Template. Admin, Auth, ORM are built-in."),
+            ("Easy: Django vs Flask?", "Flask is micro, only core. Django is full, everything built-in. Small project - Flask, Big project - Django."),
+            ("Medium: What is ORM?", "Object Relational Mapping. You write Python code, Django converts to SQL."),
+            ("Medium: What are Migrations?", "makemigrations creates migration file, migrate applies it to DB."),
+            ("Medium: What is MVT?", "Model = Database table, View = Logic, Template = HTML. Request goes URL -> View -> Model -> Template."),
+            ("Hard: How to optimize Django queries?", "Use select_related for ForeignKey, prefetch_related for ManyToMany, avoid N+1 query problem."),
+        ],
+        ("Java", "OOP"): [
+            ("Easy: What are 4 pillars of OOP?", "Encapsulation, Inheritance, Polymorphism, Abstraction."),
+            ("Easy: Class vs Object?", "Class is blueprint, Object is real thing created from blueprint."),
+            ("Medium: Overloading vs Overriding?", "Overloading = same name different params, compile time. Overriding = child rewrites parent method, runtime."),
+            ("Hard: Why Java does not support multiple inheritance?", "To avoid Diamond Problem. It uses Interface instead - class can implement many interfaces."),
+        ],
+        ("SQL", "JOINS"): [
+            ("Easy: What is JOIN?", "Combining 2 tables into one result using common column. ON tells how to join."),
+            ("Easy: INNER vs LEFT?", "INNER = only matching in both. LEFT = all in left + matching in right, else NULL."),
+            ("Medium: What is Cartesian Product?", "When you forget ON, every row joins with every row. 100*70=7000 rows. Wrong result."),
+            ("Hard: JOIN vs Subquery?", "JOIN is generally faster, DB can optimize. Subquery is easier to read for complex logic."),
+        ],
+    }
 
+    if (skill, topic) in bank:
+        qa = bank[(skill, topic)]
+    else:
+        qa = [
+            (f"Easy: What is {topic}?", f"{topic} is a core concept in {skill}. {topic} is used to solve real problems and write clean code."),
+            (f"Easy: Why do we use {topic}?", f"We use {topic} to make code fast, clean and reusable. Without {topic}, {skill} projects become messy."),
+            (f"Easy: Give one real example of {topic}?", f"In a real {skill} project, {topic} is used daily to build features faster."),
+            (f"Medium: How does {topic} work inside?", f"Inside {topic}, input is taken, logic is applied, output is given. If you understand this flow, you can explain in interview."),
+            (f"Medium: What is Time Complexity of {topic}?", f"Depends on implementation. Always try to go from Brute Force to Optimal. Explain trade-off between Time and Space."),
+            (f"Medium: {topic} vs similar topic?", f"Compare {topic} with similar concept in {skill}. Tell difference in use case, speed, memory, and when to use which."),
+            (f"Medium: Advantages of {topic}?", f"Advantages: Fast, Reusable, Clean code, Less bugs, Easy to test."),
+            (f"Medium: Disadvantages of {topic}?", f"If used in wrong place, {topic} can make code slow or complex. Always check use case."),
+            (f"Hard: Write code for {topic} without library?", f"Write from scratch without built-in functions. Interviewer checks if you know logic, not just library."),
+            (f"Hard: How to optimize {topic}?", f"First write brute force, then find repeated work, then use better data structure to optimize."),
+            (f"Hard: Explain {topic} to a 10 year old?", f"Use simple real life example. If you can explain simply, you really understand {topic}."),
+            (f"Tricky: What is common mistake in {topic}?", f"Common mistake: Only reading theory, not practicing. Second: Copy-paste without understanding. Third: Not doing dry run."),
+            (f"Tricky: Where did you use {topic} in real project?", f"Always prepare one project story: Problem -> Used {topic} -> Result. Interviewer loves real stories."),
+            (f"HR: Why should we hire you for {skill}?", f"I know {skill} with {topic} clearly, I have built projects, I can write code and explain it. I learn fast."),
+        ]
+
+    html = ""
+    html += f"<h2 style='color:#fef08a;margin-top:0;'>Interview Questions - {topic} in {skill}</h2>"
+    html += f"<div class='diag'>Total Questions: {len(qa)} | Easy + Medium + Hard + HR + Tricky | {skill} - {topic}</div>"
+    html += f"<div class='cat'>Interview Preparation - How to Answer?</div><p style='color:white;line-height:1.9;'>Rule: 1. Define in 1 line &nbsp; 2. Give Example &nbsp; 3. Tell Time Complexity &nbsp; 4. Tell Real Use. If you follow this, every answer becomes perfect.</p>"
+    for i, (q, a) in enumerate(qa, 1):
+        level = "Easy" if "Easy" in q else "Medium" if "Medium" in q else "Hard" if "Hard" in q else "Tricky / HR"
+        html += f"<div class='cat'>Q{i}. {q}</div>"
+        html += f"<p style='color:#a7f3d0;line-height:1.9;'><b>Level:</b> {level}<br><b>Answer:</b> {a}</p>"
+        html += f"<p style='color:white;line-height:1.9;'><b>Tip:</b> Do not just say definition. Always add one example of {topic} and one real project use.</p>"
+    html += f"<div class='cat'>Rapid Revision - 5 Minutes Before Interview</div><p style='color:white;'>1. Define {topic} in 10 seconds<br>2. Write code for {topic} without seeing<br>3. Tell Time Complexity<br>4. Tell 1 mistake + 1 real use<br>5. Tell {topic} vs similar topic difference</p>"
+    html += f"<div class='cat'>HR Questions - For Every Topic</div><p style='color:white;'>1. Tell me about yourself?<br>2. Why {skill}?<br>3. What is your best project and why?<br>4. What will you do if you get stuck?<br>5. Where do you see yourself in 2 years?</p>"
+    return html
 def get_default_code(skill):
     if skill == "C":
         return "# Practice - Pointer and Array\na=10\np=id(a)\nprint(a, p)\narr=[10,20,30,40]\nprint(arr)\ns=list(\"BhavPath\")\ni,j=0,len(s)-1\nwhile i<j:\n    s[i],s[j]=s[j],s[i]\n    i+=1; j-=1\nprint(''.join(s))"
