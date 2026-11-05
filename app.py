@@ -253,7 +253,16 @@ elif st.session_state.page == "placement_result":
     st.markdown(f"<div class='center'><h1 style='color:white;'>Company List - {avg:.1f}%</h1></div>", unsafe_allow_html=True)
     _,col,_=st.columns([0.5,2,0.5])
     with col:
-        df=pd.DataFrame([["Google/Amazon","75%+"],["TCS Digital","70%+"],["Wipro","65%+"]], columns=["Company","Eligibility"])
+      if "Java" in skills:
+    df=pd.DataFrame([["Oracle","75%+"],["Infosys","70%+"],["Accenture","68%+"],["Capgemini","65%+"]], columns=["Company","Eligibility"])
+elif "Python" in skills:
+    df=pd.DataFrame([["Google/Amazon","75%+"],["Flipkart","72%+"],["TCS Digital","70%+"]], columns=["Company","Eligibility"])
+elif "C" in skills:
+    df=pd.DataFrame([["Wipro","65%+"],["Tech Mahindra","60%+"],["TCS Ninja","60%+"]], columns=["Company","Eligibility"])
+elif "SQL" in skills:
+    df=pd.DataFrame([["Deloitte","68%+"],["Infosys","65%+"],["Wipro","65%+"]], columns=["Company","Eligibility"])
+else:
+    df=pd.DataFrame([["TCS Digital","70%+"],["Wipro","65%+"]], columns=["Company","Eligibility"])
         st.dataframe(df, use_container_width=True)
         st.bar_chart(pd.DataFrame({"Score":[tenth,inter,btech]}, index=["10th","Inter","BTech"]))
         st.progress(int(avg))
