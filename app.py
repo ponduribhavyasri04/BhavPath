@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import random
@@ -155,7 +156,7 @@ def get_interview_content(skill):
     html += "<div class='diag'>Quick Diagram: Stack - Local vars | Heap - Objects malloc | Code - Text segment</div>"
     if skill == "C":
         html += "<div class='qbox'><b>Q1. What is pointer? Why use pointer? Explain pointer to pointer with diagram.</b></div><div class='abox'><b>Answer:</b> Pointer stores address. int a=10 at addr 1000. int *p = &a p stores 1000 at 2000. *p is value at address =10. Why use? 1 Dynamic memory malloc 2 Pass large data without copy 3 Build Linked List. Code int a=10; int *p=&a; printf percent d *p prints 10. Diagram a 1000=10 p 2000=1000 pp 3000=2000. Always init as NULL to avoid wild. TCS asks 90 percent times.</div>"
-        html += "<div class='qbox'><b>Q2. Array vs Pointer? Explain size difference?</b></div><div class='abox'><b>Answer:</b> Array continuous fixed size int arr 5 =20 bytes sizeof arr 20. Pointer stores address of first element.</div>"
+        html += "<div class='qbox'><b>Q2. Array vs Pointer? Explain size difference?</b></div><div class='abox'><b>Answer:</b> Array continuous fixed size int arr 5 =20 bytes sizeof arr 20. Pointer stores address of first element. Array name is constant pointer cannot be reassigned.</div>"
     elif skill == "Python":
         html += "<div class='qbox'><b>Q1. List vs Tuple?</b></div><div class='abox'><b>Answer:</b> List mutable, Tuple immutable.</div>"
         html += "<div class='qbox'><b>Q2. What is GIL?</b></div><div class='abox'><b>Answer:</b> Global Interpreter Lock - only one thread executes bytecode at a time.</div>"
@@ -258,7 +259,7 @@ elif st.session_state.page == "test":
             st.markdown(f"<div class='abox'><b>Q{i+1}:</b> {q['q']}<br><b>Correct:</b> {q['options'][q['ans']]}<br><b>Exp:</b> {q['exp']}</div>", unsafe_allow_html=True)
         st.success(f"Your Score: {score} / {len(st.session_state.test_questions)}")
 
-# ---------- PREDICTION - OKKATE CHANGE IKKADA: BACK + HOME PAKKANA ----------
+# ---------- PREDICTION - OKKATE CHANGE IKKADA ----------
 elif st.session_state.page == "prediction":
     st.markdown("### 🔮 Prediction")
     cgpa = st.slider("CGPA", 5.0, 10.0, 7.5)
@@ -279,9 +280,14 @@ elif st.session_state.page == "prediction":
     if 'pred_chance' in st.session_state:
         chance = st.session_state.pred_chance
         st.markdown(f"### Company List - {chance}%")
-        df_comp = pd.DataFrame([("Google / Amazon", "75%+"), ("TCS Digital", "70%+"), ("Wipro", "65%+")], columns=["Company", "Eligibility"])
+        df_comp = pd.DataFrame(
+            [("Google / Amazon", "75%+"), ("TCS Digital", "70%+"), ("Wipro", "65%+")],
+            columns=["Company", "Eligibility"]
+        )
         st.dataframe(df_comp, use_container_width=True, hide_index=True)
-        df_chart = pd.DataFrame({"Subject": ["10th", "BTech", "Inter"], "Marks": [st.session_state.pred_tenth, st.session_state.pred_btech, st.session_state.pred_inter]})
+        df_chart = pd.DataFrame(
+            {"Subject": ["10th", "BTech", "Inter"], "Marks": [st.session_state.pred_tenth, st.session_state.pred_btech, st.session_state.pred_inter]}
+        )
         st.bar_chart(df_chart.set_index("Subject"))
         if chance >= 80:
             st.success("High chance - Keep practicing mock interviews")
