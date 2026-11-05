@@ -7,7 +7,7 @@ st.set_page_config(page_title="BhavPath", layout="wide", initial_sidebar_state="
 
 if 'page' not in st.session_state:
     st.session_state.page = "welcome"
-    st.session_state.college = "QIS College"
+    st.session_state.college = "Rise Krishna Sai Gandhi Group Of Institutions"
     st.session_state.selected_skill = "C"
     st.session_state.topic = "Loops"
     st.session_state.pdata = None
@@ -253,28 +253,44 @@ elif st.session_state.page == "placement_result":
     st.markdown(f"<div class='center'><h1 style='color:white;'>Company List - {avg:.1f}%</h1></div>", unsafe_allow_html=True)
     _,col,_=st.columns([0.5,2,0.5])
     with col:
-      if "Java" in skills:
-    df=pd.DataFrame([["Oracle","75%+"],["Infosys","70%+"],["Accenture","68%+"],["Capgemini","65%+"]], columns=["Company","Eligibility"])
-elif "Python" in skills:
-    df=pd.DataFrame([["Google/Amazon","75%+"],["Flipkart","72%+"],["TCS Digital","70%+"]], columns=["Company","Eligibility"])
-elif "C" in skills:
-    df=pd.DataFrame([["Wipro","65%+"],["Tech Mahindra","60%+"],["TCS Ninja","60%+"]], columns=["Company","Eligibility"])
-elif "SQL" in skills:
-    df=pd.DataFrame([["Deloitte","68%+"],["Infosys","65%+"],["Wipro","65%+"]], columns=["Company","Eligibility"])
-else:
-    df=pd.DataFrame([["TCS Digital","70%+"],["Wipro","65%+"]], columns=["Company","Eligibility"])
+        # --- SKILL BATTI COMPANIES - FIXED ---
+        skills_str = skills if isinstance(skills, str) else ",".join(skills) if isinstance(skills, list) else ""
+        skills_low = skills_str.lower()
+        skill_comp = {
+            "java": [["Oracle", 75], ["Infosys", 70], ["Accenture", 68], ["Capgemini", 65], ["TCS Digital", 70]],
+            "python": [["Google/Amazon", 75], ["Flipkart", 72], ["TCS Digital", 70], ["Swiggy", 68]],
+            "c": [["Wipro", 65], ["Tech Mahindra", 60], ["TCS Ninja", 60], ["HCL", 62]],
+            "sql": [["Deloitte", 68], ["Infosys", 65], ["Wipro", 65], ["Accenture", 68]],
+            "dsa": [["Google/Amazon", 75], ["Microsoft", 78], ["TCS Digital", 70]],
+            "c++": [["Wipro", 65], ["HCL", 62], ["TCS Ninja", 60]],
+        }
+        comp_list = []
+        found_skill = False
+        for key, clist in skill_comp.items():
+            if key in skills_low:
+                found_skill = True
+                for cname, elig in clist:
+                    if avg >= elig and [cname, f"{elig}%+"] not in comp_list:
+                        comp_list.append([cname, f"{elig}%+"])
+        if not found_skill:
+            comp_list = [["TCS Digital", "70%+"], ["Wipro", "65%+"]]
+        if not comp_list:
+            comp_list = [["Skill improve chey - basics strong chey", "-"]]
+        df = pd.DataFrame(comp_list, columns=["Company", "Eligibility"])
+        st.write(f"Your Skills: {skills_str} | Avg: {avg:.1f}%")
         st.dataframe(df, use_container_width=True)
         st.bar_chart(pd.DataFrame({"Score":[tenth,inter,btech]}, index=["10th","Inter","BTech"]))
         st.progress(int(avg))
-        c1, c2 = st.columns(2)
-with c1:
-    if st.button("Back", use_container_width=True):
-        st.session_state.page="placement_welcome"
-        st.rerun()
-with c2:
-    if st.button("Home", use_container_width=True):
-        st.session_state.page="welcome"
-        st.rerun()
+               # --- BACK + HOME ---
+        bc1, bc2 = st.columns(2)
+        with bc1:
+            if st.button("Back", use_container_width=True):
+                st.session_state.page="placement_form"
+                st.rerun()
+        with bc2:
+            if st.button("Home", use_container_width=True):
+                st.session_state.page="welcome"
+                st.rerun()
 
 elif st.session_state.page == "tech_welcome":
     st.markdown("""<div class='center' style='padding-top:16vh'><h1 style='color:white;font-size:58px;font-weight:900;'>Welcoming to<br><span style='background:linear-gradient(90deg,#0d4aff,#ff006a,#fef08a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;'>BhavPath Technical Skills</span></h1><div class='glass' style='display:inline-block;margin-top:25px;'><p style='color:#c7f0ff;'>C, C++, Java, Python, SQL, DSA - Full Detailed Content with Diagrams</p></div></div>""", unsafe_allow_html=True)
