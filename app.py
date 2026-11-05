@@ -584,8 +584,9 @@ elif st.session_state.page == "interview_detail":
     with c:
         col1, col2 = st.columns([1.4, 1])
         with col1:
-           topic = st.session_state.get("selected_topic", "")
-content = get_interview_content(skill, topic)
+            
+            topic = st.session_state.get("selected_topic", "") 
+            content = get_interview_content(skill, topic)
             st.markdown("<div class='detail-box'><h3 style='color:#fef08a;margin-top:0;'>Interview Questions - Detailed</h3><div style='color:white;line-height:1.8;font-size:13px;'>" + content + "</div></div>", unsafe_allow_html=True)
         with col2:
             st.markdown("<div class='detail-box'><h3 style='color:#00ff88;margin-top:0;'>Code Practice - Run Here</h3></div>", unsafe_allow_html=True)
