@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import random
 import datetime
-
+ 
 st.set_page_config(page_title="BhavPath", layout="wide", initial_sidebar_state="collapsed")
 
 if 'page' not in st.session_state:
