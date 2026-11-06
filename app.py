@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import random
-import datetime 
+import datetime
 
 st.set_page_config(page_title="BhavPath", layout="wide", initial_sidebar_state="collapsed")
 
@@ -20,36 +20,18 @@ if 'page' not in st.session_state:
 st.markdown("""
 <style>
 [data-testid="stHeader"]{display:none}
-.stApp{background:#000000}
+.stApp{background:#05000a}
 .bg-blue{position:fixed;width:800px;height:800px;background:radial-gradient(circle,#0d4aff 0%,#0d4aff00 70%);top:-100px;left:-100px;filter:blur(20px)}
-
+.bg-pink{position:fixed;width:900px;height:900px;background:radial-gradient(circle,#ff006a 0%,#ff006a00 70%);bottom:-200px;right:-200px;filter:blur(30px);opacity:.9}
+.glass{position:relative;z-index:10;padding:22px;border-radius:18px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(20px)}
 .center{text-align:center;position:relative;z-index:10}
 .detail-box{position:relative;z-index:10;max-height:85vh;overflow-y:auto;padding:25px;border-radius:18px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(20px)}
 .qbox{background:rgba(13,74,255,0.14);border-left:4px solid #0d4aff;padding:14px 16px;margin:18px 0 6px 0;border-radius:8px}
 .abox{background:rgba(0,255,136,0.09);border-left:4px solid #00ff88;padding:14px 16px;margin:6px 0 22px 0;border-radius:8px}
 .cat{background:linear-gradient(90deg,#0d4aff,#ff006a);padding:8px 16px;border-radius:20px;color:white;font-weight:bold;margin:22px 0 12px 0;display:inline-block}
 .diag{background:linear-gradient(135deg,#0d1a3a,#1a0a2a);border:1px solid #0d4aff;border-radius:10px;padding:10px;margin:12px 0;color:white;text-align:center;font-size:13px}
-.bg-yellow{position:fixed;width:600px;height:600px;background:radial-gradient(circle,#FFD600 0%,#FFD60000 70%);top:20%;left:30%;filter:blur(50px);opacity:.45;z-index:0;animation:move1 8s ease-in-out infinite alternate}
-
-.float-ball{position:fixed;border-radius:50%;z-index:0;filter:blur(1px)}
-
-.ball2{width:60px;height:60px;background:linear-gradient(135deg,#0D4AFF,#00E5FF);bottom:18%;right:6%;box-shadow:0 0 40px #0D4AFF;animation:floatY 5s ease-in-out infinite}
-.ball3{width:40px;height:40px;background:linear-gradient(135deg,#FF006A,#FF8A00);top:55%;right:15%;box-shadow:0 0 30px #FF006A;animation:floatY 3s ease-in-out infinite}
-.ring{position:fixed;border-radius:50%;z-index:0}
-.ring1{width:150px;height:150px;border:5px solid #00FF88;top:60%;left:3%;opacity:.4;animation:spin 12s linear infinite}
-.ring2{width:100px;height:100px;border:5px dashed #FFD600;top:8%;right:30%;opacity:.5;animation:spin 8s linear infinite}
-.emoji-float{position:fixed;font-size:42px;z-index:0;opacity:.9;filter:drop-shadow(0 0 10px rgba(255,255,255,0.5))}
-.e1{top:15%;left:45%;animation:floatY 3.5s ease-in-out infinite}
-.e2{top:70%;left:45%;font-size:50px;animation:floatY 4.5s ease-in-out infinite}
-.e3{top:45%;left:2%;animation:floatY 3s ease-in-out infinite}
-.e4{top:25%;right:3%;animation:floatY 5s ease-in-out infinite}
-.e5{bottom:10%;left:15%;animation:floatY 4s ease-in-out infinite}
-@keyframes floatY{0%{transform:translateY(0px) rotate(0deg)}50%{transform:translateY(-25px) rotate(10deg)}100%{transform:translateY(0px) rotate(0deg)}}
-@keyframes move1{from{transform:translateX(0px)}to{transform:translateX(80px)}}
-@keyframes move2{from{transform:translateY(0px)}to{transform:translateY(60px)}}
-@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 </style>
-<div class="bg-blue"></div><div class="bg-pink"></div><div class="bg-yellow"></div><div class="bg-green"></div><div class="float-ball ball1"></div><div class="float-ball ball2"></div><div class="float-ball ball3"></div><div class="ring ring1"></div><div class="ring ring2"></div><div class="emoji-float e1">💻</div><div class="emoji-float e2">🚀</div><div class="emoji-float e3">🔥</div><div class="emoji-float e4">⭐</div><div class="emoji-float e5">🎯</div>
+<div class="bg-blue"></div><div class="bg-pink"></div>
 """, unsafe_allow_html=True)
 
 def get_current_week():
