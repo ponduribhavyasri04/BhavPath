@@ -20,10 +20,9 @@ if 'page' not in st.session_state:
 st.markdown("""
 <style>
 [data-testid="stHeader"]{display:none}
-.stApp{background:#05000a}
+.stApp{background:#000000}
 .bg-blue{position:fixed;width:800px;height:800px;background:radial-gradient(circle,#0d4aff 0%,#0d4aff00 70%);top:-100px;left:-100px;filter:blur(20px)}
-.bg-pink{position:fixed;width:900px;height:900px;background:radial-gradient(circle,#ff006a 0%,#ff006a00 70%);bottom:-200px;right:-200px;filter:blur(30px);opacity:.9}
-.glass{position:relative;z-index:10;padding:22px;border-radius:18px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(20px)}
+
 .center{text-align:center;position:relative;z-index:10}
 .detail-box{position:relative;z-index:10;max-height:85vh;overflow-y:auto;padding:25px;border-radius:18px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(20px)}
 .qbox{background:rgba(13,74,255,0.14);border-left:4px solid #0d4aff;padding:14px 16px;margin:18px 0 6px 0;border-radius:8px}
@@ -31,9 +30,9 @@ st.markdown("""
 .cat{background:linear-gradient(90deg,#0d4aff,#ff006a);padding:8px 16px;border-radius:20px;color:white;font-weight:bold;margin:22px 0 12px 0;display:inline-block}
 .diag{background:linear-gradient(135deg,#0d1a3a,#1a0a2a);border:1px solid #0d4aff;border-radius:10px;padding:10px;margin:12px 0;color:white;text-align:center;font-size:13px}
 .bg-yellow{position:fixed;width:600px;height:600px;background:radial-gradient(circle,#FFD600 0%,#FFD60000 70%);top:20%;left:30%;filter:blur(50px);opacity:.45;z-index:0;animation:move1 8s ease-in-out infinite alternate}
-.bg-green{position:fixed;width:450px;height:450px;background:radial-gradient(circle,#00FF88 0%,#00FF8800 70%);top:5%;right:15%;filter:blur(40px);opacity:.35;z-index:0;animation:move2 10s ease-in-out infinite alternate}
+
 .float-ball{position:fixed;border-radius:50%;z-index:0;filter:blur(1px)}
-.ball1{width:90px;height:90px;background:linear-gradient(135deg,#FFD600,#FF6D00);top:12%;left:6%;box-shadow:0 0 40px #FFD600;animation:floatY 4s ease-in-out infinite}
+
 .ball2{width:60px;height:60px;background:linear-gradient(135deg,#0D4AFF,#00E5FF);bottom:18%;right:6%;box-shadow:0 0 40px #0D4AFF;animation:floatY 5s ease-in-out infinite}
 .ball3{width:40px;height:40px;background:linear-gradient(135deg,#FF006A,#FF8A00);top:55%;right:15%;box-shadow:0 0 30px #FF006A;animation:floatY 3s ease-in-out infinite}
 .ring{position:fixed;border-radius:50%;z-index:0}
