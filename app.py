@@ -334,7 +334,7 @@ elif st.session_state.page == "login":
         st.markdown('<p style="color:#FFFFFF !important; -webkit-text-stroke:0.7px #000000; text-shadow:2px 2px 0px #000000; background:rgba(0,0,0,0.6); padding:4px 12px; border-radius:8px; font-weight:800; display:inline-block; margin-bottom:2px;">College Name</p>', unsafe_allow_html=True)
         college=st.text_input("", placeholder="Enter your college name", label_visibility="collapsed")
               
-            if email and college:
+        if email and college:
                 st.session_state.college=college
                 st.session_state.page="purpose"
                 st.rerun()
