@@ -328,8 +328,12 @@ elif st.session_state.page == "login":
     with col:
         st.write("")
         email=st.text_input("Email")
-        college=st.text_input("College Name")
-        if st.button("Continue", use_container_width=True, type="primary"):
+                st.markdown('<p style="color:#FFFFFF !important; -webkit-text-stroke:0.7px #000000; text-shadow:2px 2px 0px #000000; background:rgba(0,0,0,0.6); padding:4px 12px; border-radius:8px; font-weight:800; display:inline-block; margin-bottom:2px;">Email</p>', unsafe_allow_html=True)
+        email=st.text_input("", placeholder="you@college.edu", label_visibility="collapsed")
+
+        st.markdown('<p style="color:#FFFFFF !important; -webkit-text-stroke:0.7px #000000; text-shadow:2px 2px 0px #000000; background:rgba(0,0,0,0.6); padding:4px 12px; border-radius:8px; font-weight:800; display:inline-block; margin-bottom:2px;">College Name</p>', unsafe_allow_html=True)
+        college=st.text_input("", placeholder="Enter your college name", label_visibility="collapsed")
+              
             if email and college:
                 st.session_state.college=college
                 st.session_state.page="purpose"
